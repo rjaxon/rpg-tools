@@ -7,6 +7,7 @@
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-cabaple" content="yes">
 
     </head>
 <style>
@@ -248,6 +249,10 @@
    transform: rotate(270deg);
  }
 
+ .selected {
+    background-color: yellow;
+ }
+
  .red {
      background: red;
  }
@@ -409,6 +414,7 @@ function roll_all() {
 
     for(let i = 0; i < items.length; ++i)
     {
+        $(items[i]).removeClass('selected');
         $(items[i]).removeClass('hidden');
         $(items[i]).addClass('gray');
         $(items[i]).removeClass('red');
@@ -459,6 +465,31 @@ function panel_sum_click(sender) {
 
 function panel_close_click(sender) {
     $(sender).parent().parent().addClass('hidden');
+}
+
+function dice_n(n, d) {
+
+  let sum = 0; 
+  let rolls = [];
+  for(let i = 0; i < n; ++i) {
+    let r = dice(d);
+    sum += r;
+    rolls.push(r);
+  }
+
+  return { results: rolls, sum: sum };
+}
+
+function test() {
+  let m = 500;
+  let r = 0;
+  for(let i = 0; i < m; ++i) {
+    r = dice_n(5, 20);
+    console.log(i + ': ' + r.results.join(' + ') + ' = ' + r.sum);
+    if(r.sum > 85)
+      break;
+  }
+
 }
 
 function dice(d)
@@ -542,6 +573,12 @@ function content_item_click(sender) {
     }
 
     if(is_rory() ) {
+      if($(sender.target).hasClass('selected')) {
+        $(sender.target).removeClass('selected');
+      }
+      else {
+        $(sender.target).addClass('selected');
+      }
       return;
     }
 
