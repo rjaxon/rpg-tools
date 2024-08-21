@@ -1,195 +1,195 @@
 
  .d1 {
-    background: url('../img/d6.png') 0px 0px !important; 
+    background: url('/rpg-tools/img/d6.png') 0px 0px !important; 
  }
  .d2 {
-    background: url('../img/d6.png') -180px 0px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px 0px !important; 
  }
  .d3 {
-    background: url('../img/d6.png') -360px 0px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px 0px !important; 
  }
  .d4 {
-    background: url('../img/d6.png') -540px 0px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px 0px !important; 
  }
  .d5 {
-    background: url('../img/d6.png') -720px 0px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px 0px !important; 
  }
  .d6 {
-    background: url('../img/d6.png') -900px 0px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px 0px !important; 
  }
 
  .r11 {
-    background: url('../img/d6.png')   -0px -180px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -180px !important; 
  }
  .r12 {
-    background: url('../img/d6.png') -180px -180px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -180px !important; 
  }
  .r13 {
-    background: url('../img/d6.png') -360px -180px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -180px !important; 
  }
  .r14 {
-    background: url('../img/d6.png') -540px -180px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -180px !important; 
  }
  .r15 {
-    background: url('../img/d6.png') -720px -180px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -180px !important; 
  }
  .r16 {
-    background: url('../img/d6.png') -900px -180px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -180px !important; 
  }
 
  .r21 {
-    background: url('../img/d6.png')   -0px -360px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -360px !important; 
  }
  .r22 {
-    background: url('../img/d6.png') -180px -360px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -360px !important; 
  }
  .r23 {
-    background: url('../img/d6.png') -360px -360px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -360px !important; 
  }
  .r24 {
-    background: url('../img/d6.png') -540px -360px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -360px !important; 
  }
  .r25 {
-    background: url('../img/d6.png') -720px -360px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -360px !important; 
  }
  .r26 {
-    background: url('../img/d6.png') -900px -360px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -360px !important; 
  }
 
  .r31 {
-    background: url('../img/d6.png')   -0px -540px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -540px !important; 
  }
  .r32 {
-    background: url('../img/d6.png') -180px -540px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -540px !important; 
  }
  .r33 {
-    background: url('../img/d6.png') -360px -540px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -540px !important; 
  }
  .r34 {
-    background: url('../img/d6.png') -540px -540px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -540px !important; 
  }
  .r35 {
-    background: url('../img/d6.png') -720px -540px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -540px !important; 
  }
  .r36 {
-    background: url('../img/d6.png') -900px -540px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -540px !important; 
  }
 
  .r41 {
-    background: url('../img/d6.png')   -0px -720px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -720px !important; 
  }
  .r42 {
-    background: url('../img/d6.png') -180px -720px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -720px !important; 
  }
  .r43 {
-    background: url('../img/d6.png') -360px -720px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -720px !important; 
  }
  .r44 {
-    background: url('../img/d6.png') -540px -720px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -720px !important; 
  }
  .r45 {
-    background: url('../img/d6.png') -720px -720px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -720px !important; 
  }
  .r46 {
-    background: url('../img/d6.png') -900px -720px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -720px !important; 
  }
 
  .r51 {
-    background: url('../img/d6.png')   -0px -900px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -900px !important; 
  }
  .r52 {
-    background: url('../img/d6.png') -180px -900px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -900px !important; 
  }
  .r53 {
-    background: url('../img/d6.png') -360px -900px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -900px !important; 
  }
  .r54 {
-    background: url('../img/d6.png') -540px -900px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -900px !important; 
  }
  .r55 {
-    background: url('../img/d6.png') -720px -900px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -900px !important; 
  }
  .r56 {
-    background: url('../img/d6.png') -900px -900px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -900px !important; 
  }
 
 
  .r61 {
-    background: url('../img/d6.png')   -0px -1080px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -1080px !important; 
  }
  .r62 {
-    background: url('../img/d6.png') -180px -1080px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -1080px !important; 
  }
  .r63 {
-    background: url('../img/d6.png') -360px -1080px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -1080px !important; 
  }
  .r64 {
-    background: url('../img/d6.png') -540px -1080px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -1080px !important; 
  }
  .r65 {
-    background: url('../img/d6.png') -720px -1080px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -1080px !important; 
  }
  .r66 {
-    background: url('../img/d6.png') -900px -1080px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -1080px !important; 
  }
 
  .r71 {
-    background: url('../img/d6.png')   -0px -1260px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -1260px !important; 
  }
  .r72 {
-    background: url('../img/d6.png') -180px -1260px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -1260px !important; 
  }
  .r73 {
-    background: url('../img/d6.png') -360px -1260px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -1260px !important; 
  }
  .r74 {
-    background: url('../img/d6.png') -540px -1260px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -1260px !important; 
  }
  .r75 {
-    background: url('../img/d6.png') -720px -1260px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -1260px !important; 
  }
  .r76 {
-    background: url('../img/d6.png') -900px -1260px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -1260px !important; 
  }
 
 
  .r81 {
-    background: url('../img/d6.png')   -0px -1440px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -1440px !important; 
  }
  .r82 {
-    background: url('../img/d6.png') -180px -1440px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -1440px !important; 
  }
  .r83 {
-    background: url('../img/d6.png') -360px -1440px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -1440px !important; 
  }
  .r84 {
-    background: url('../img/d6.png') -540px -1440px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -1440px !important; 
  }
  .r85 {
-    background: url('../img/d6.png') -720px -1440px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -1440px !important; 
  }
  .r86 {
-    background: url('../img/d6.png') -900px -1440px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -1440px !important; 
  }
 
 
  .r91 {
-    background: url('../img/d6.png')   -0px -1620px !important; 
+    background: url('/rpg-tools/img/d6.png')   -0px -1620px !important; 
  }
  .r92 {
-    background: url('../img/d6.png') -180px -1620px !important; 
+    background: url('/rpg-tools/img/d6.png') -180px -1620px !important; 
  }
  .r93 {
-    background: url('../img/d6.png') -360px -1620px !important; 
+    background: url('/rpg-tools/img/d6.png') -360px -1620px !important; 
  }
  .r94 {
-    background: url('../img/d6.png') -540px -1620px !important; 
+    background: url('/rpg-tools/img/d6.png') -540px -1620px !important; 
  }
  .r95 {
-    background: url('../img/d6.png') -720px -1620px !important; 
+    background: url('/rpg-tools/img/d6.png') -720px -1620px !important; 
  }
  .r96 {
-    background: url('../img/d6.png') -900px -1620px !important; 
+    background: url('/rpg-tools/img/d6.png') -900px -1620px !important; 
  }
 
 
