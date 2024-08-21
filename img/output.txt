@@ -1,0 +1,143 @@
+icons:
+total 4
+drwxr-xr-x 1 Rjack 197609    0 Aug 20 07:37 ffffff/
+-rw-r--r-- 1 Rjack 197609 1407 Aug 19 16:03 license.txt
+
+icons/ffffff:
+total 0
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 000000/
+
+icons/ffffff/000000:
+total 4
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 1x1/
+
+icons/ffffff/000000/1x1:
+total 16
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 andymeneely/
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 caro-asercion/
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 cathelineau/
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 darkzaitzev/
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 delapouite/
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 lorc/
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 quoting/
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 sbed/
+drwxr-xr-x 1 Rjack 197609 0 Aug 20 07:37 skoll/
+
+icons/ffffff/000000/1x1/andymeneely:
+total 1
+-rw-r--r-- 1 Rjack 197609 289 Aug 19 16:03 riposte.svg
+
+icons/ffffff/000000/1x1/caro-asercion:
+total 8
+-rw-r--r-- 1 Rjack 197609 937 Aug 19 16:03 mountain-climbing.svg
+-rw-r--r-- 1 Rjack 197609 719 Aug 19 16:03 ricochet.svg
+
+icons/ffffff/000000/1x1/cathelineau:
+total 4
+-rw-r--r-- 1 Rjack 197609 1568 Aug 19 16:03 annexation.svg
+
+icons/ffffff/000000/1x1/darkzaitzev:
+total 12
+-rw-r--r-- 1 Rjack 197609 1075 Aug 19 16:03 acrobatic.svg
+-rw-r--r-- 1 Rjack 197609 2120 Aug 19 16:03 catch.svg
+-rw-r--r-- 1 Rjack 197609 1734 Aug 19 16:03 running-ninja.svg
+
+icons/ffffff/000000/1x1/delapouite:
+total 147
+-rw-r--r-- 1 Rjack 197609 1203 Aug 19 16:03 arrest.svg
+-rw-r--r-- 1 Rjack 197609 2212 Aug 19 16:03 button-finger.svg
+-rw-r--r-- 1 Rjack 197609  333 Aug 19 16:03 chat-bubble.svg
+-rw-r--r-- 1 Rjack 197609  606 Aug 19 16:03 choice.svg
+-rw-r--r-- 1 Rjack 197609 5221 Aug 19 16:03 convince.svg
+-rw-r--r-- 1 Rjack 197609 2235 Aug 19 16:03 coronation.svg
+-rw-r--r-- 1 Rjack 197609  778 Aug 19 16:03 crafting.svg
+-rw-r--r-- 1 Rjack 197609 1815 Aug 19 16:03 discussion.svg
+-rw-r--r-- 1 Rjack 197609  976 Aug 19 16:03 drinking.svg
+-rw-r--r-- 1 Rjack 197609 1472 Aug 19 16:03 eating.svg
+-rw-r--r-- 1 Rjack 197609  946 Aug 19 16:03 evasion.svg
+-rw-r--r-- 1 Rjack 197609 2886 Aug 19 16:03 flying-fox.svg
+-rw-r--r-- 1 Rjack 197609  845 Aug 19 16:03 hiking.svg
+-rw-r--r-- 1 Rjack 197609 2424 Aug 19 16:03 hive-mind.svg
+-rw-r--r-- 1 Rjack 197609 1071 Aug 19 16:03 jump-across.svg
+-rw-r--r-- 1 Rjack 197609 1001 Aug 19 16:03 kneeling.svg
+-rw-r--r-- 1 Rjack 197609 1256 Aug 19 16:03 leapfrog.svg
+-rw-r--r-- 1 Rjack 197609 1079 Aug 19 16:03 look-at.svg
+-rw-r--r-- 1 Rjack 197609 1074 Aug 19 16:03 miner.svg
+-rw-r--r-- 1 Rjack 197609  599 Aug 19 16:03 night-sleep.svg
+-rw-r--r-- 1 Rjack 197609 1208 Aug 19 16:03 public-speaker.svg
+-rw-r--r-- 1 Rjack 197609 1401 Aug 19 16:03 pull.svg
+-rw-r--r-- 1 Rjack 197609 1185 Aug 19 16:03 push.svg
+-rw-r--r-- 1 Rjack 197609 1932 Aug 19 16:03 robber.svg
+-rw-r--r-- 1 Rjack 197609 2521 Aug 19 16:03 shaking-hands.svg
+-rw-r--r-- 1 Rjack 197609 1864 Aug 19 16:03 shield-bash.svg
+-rw-r--r-- 1 Rjack 197609  800 Aug 19 16:03 shrug.svg
+-rw-r--r-- 1 Rjack 197609  911 Aug 19 16:03 skills.svg
+-rw-r--r-- 1 Rjack 197609 2773 Aug 19 16:03 slalom.svg
+-rw-r--r-- 1 Rjack 197609 1118 Aug 19 16:03 stairs-goal.svg
+-rw-r--r-- 1 Rjack 197609 1703 Aug 19 16:03 switch-weapon.svg
+-rw-r--r-- 1 Rjack 197609 2298 Aug 19 16:03 teacher.svg
+-rw-r--r-- 1 Rjack 197609 1072 Aug 19 16:03 team-idea.svg
+-rw-r--r-- 1 Rjack 197609 3747 Aug 19 16:03 think.svg
+-rw-r--r-- 1 Rjack 197609 1077 Aug 19 16:03 throwing-ball.svg
+-rw-r--r-- 1 Rjack 197609 3617 Aug 19 16:03 uprising.svg
+-rw-r--r-- 1 Rjack 197609 1436 Aug 19 16:03 vote.svg
+-rw-r--r-- 1 Rjack 197609  832 Aug 19 16:03 walk.svg
+
+icons/ffffff/000000/1x1/lorc:
+total 154
+-rw-r--r-- 1 Rjack 197609  653 Aug 19 16:03 back-forth.svg
+-rw-r--r-- 1 Rjack 197609 1008 Aug 19 16:03 backstab.svg
+-rw-r--r-- 1 Rjack 197609  979 Aug 19 16:03 boot-kick.svg
+-rw-r--r-- 1 Rjack 197609 1889 Aug 19 16:03 boot-stomp.svg
+-rw-r--r-- 1 Rjack 197609  959 Aug 19 16:03 bowman.svg
+-rw-r--r-- 1 Rjack 197609 1663 Aug 19 16:03 conversation.svg
+-rw-r--r-- 1 Rjack 197609 3094 Aug 19 16:03 disintegrate.svg
+-rw-r--r-- 1 Rjack 197609  574 Aug 19 16:03 divert.svg
+-rw-r--r-- 1 Rjack 197609 1651 Aug 19 16:03 dodging.svg
+-rw-r--r-- 1 Rjack 197609 3505 Aug 19 16:03 drowning.svg
+-rw-r--r-- 1 Rjack 197609 1495 Aug 19 16:03 fruiting.svg
+-rw-r--r-- 1 Rjack 197609 1885 Aug 19 16:03 grab.svg
+-rw-r--r-- 1 Rjack 197609 1218 Aug 19 16:03 journey.svg
+-rw-r--r-- 1 Rjack 197609 1520 Aug 19 16:03 juggler.svg
+-rw-r--r-- 1 Rjack 197609 2395 Aug 19 16:03 kindle.svg
+-rw-r--r-- 1 Rjack 197609 1562 Aug 19 16:03 meditation.svg
+-rw-r--r-- 1 Rjack 197609 1038 Aug 19 16:03 mining.svg
+-rw-r--r-- 1 Rjack 197609 1040 Aug 19 16:03 muscle-up.svg
+-rw-r--r-- 1 Rjack 197609  930 Aug 19 16:03 pointing.svg
+-rw-r--r-- 1 Rjack 197609 2992 Aug 19 16:03 pouring-chalice.svg
+-rw-r--r-- 1 Rjack 197609 1345 Aug 19 16:03 prayer.svg
+-rw-r--r-- 1 Rjack 197609 1267 Aug 19 16:03 profit.svg
+-rw-r--r-- 1 Rjack 197609 1070 Aug 19 16:03 rally-the-troops.svg
+-rw-r--r-- 1 Rjack 197609 1271 Aug 19 16:03 run.svg
+-rw-r--r-- 1 Rjack 197609 2068 Aug 19 16:03 screaming.svg
+-rw-r--r-- 1 Rjack 197609 1622 Aug 19 16:03 shouting.svg
+-rw-r--r-- 1 Rjack 197609 1229 Aug 19 16:03 sing.svg
+-rw-r--r-- 1 Rjack 197609 1459 Aug 19 16:03 slap.svg
+-rw-r--r-- 1 Rjack 197609 1588 Aug 19 16:03 snatch.svg
+-rw-r--r-- 1 Rjack 197609  548 Aug 19 16:03 sprint.svg
+-rw-r--r-- 1 Rjack 197609 1640 Aug 19 16:03 stick-splitting.svg
+-rw-r--r-- 1 Rjack 197609  856 Aug 19 16:03 stone-crafting.svg
+-rw-r--r-- 1 Rjack 197609 1110 Aug 19 16:03 swallow.svg
+-rw-r--r-- 1 Rjack 197609 3072 Aug 19 16:03 targeting.svg
+-rw-r--r-- 1 Rjack 197609  801 Aug 19 16:03 tearing.svg
+-rw-r--r-- 1 Rjack 197609 2228 Aug 19 16:03 teleport.svg
+-rw-r--r-- 1 Rjack 197609  857 Aug 19 16:03 trade.svg
+-rw-r--r-- 1 Rjack 197609 1868 Aug 19 16:03 transfuse.svg
+-rw-r--r-- 1 Rjack 197609 1547 Aug 19 16:03 vomiting.svg
+-rw-r--r-- 1 Rjack 197609  857 Aug 19 16:03 wolf-howl.svg
+
+icons/ffffff/000000/1x1/quoting:
+total 4
+-rw-r--r-- 1 Rjack 197609 1123 Aug 19 16:03 trench-assault.svg
+
+icons/ffffff/000000/1x1/sbed:
+total 5
+-rw-r--r-- 1 Rjack 197609 290 Aug 19 16:03 crush.svg
+-rw-r--r-- 1 Rjack 197609 857 Aug 19 16:03 expander.svg
+
+icons/ffffff/000000/1x1/skoll:
+total 13
+-rw-r--r-- 1 Rjack 197609 1720 Aug 19 16:03 amputation.svg
+-rw-r--r-- 1 Rjack 197609 1854 Aug 19 16:03 drop-weapon.svg
+-rw-r--r-- 1 Rjack 197609  751 Aug 19 16:03 read.svg
+-rw-r--r-- 1 Rjack 197609  595 Aug 19 16:03 talk.svg
