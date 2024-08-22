@@ -168,3 +168,112 @@ data_dice_6d_per = [
 	url_root + 'img/icons/ffffff/000000/1x1/delapouite/perspective-dice-six-faces-five.svg',
 	url_root + 'img/icons/ffffff/000000/1x1/delapouite/perspective-dice-six-faces-six.svg'
 ]
+
+data_story_group_1 = [
+  {id: 'story1'},
+	url_root + 'img/story/group 1/contract.svg',
+	url_root + 'img/story/group 1/drama-masks.svg',
+	url_root + 'img/story/group 1/expand.svg',
+	url_root + 'img/story/group 1/lock-spy.svg',
+	url_root + 'img/story/group 1/move.svg',
+	url_root + 'img/story/group 1/parachute.svg',
+	url_root + 'img/story/group 1/pentarrows-tornado.svg',
+	url_root + 'img/story/group 1/radial-balance.svg',
+	url_root + 'img/story/group 1/salmon.svg',
+	url_root + 'img/story/group 1/slalom.svg',
+	url_root + 'img/story/group 1/sunflower.svg'
+];
+
+data_story_group_2 = [
+  {id: 'story2'},
+	url_root + 'img/story/group 2/celebration-fire.svg',
+	url_root + 'img/story/group 2/flame.svg',
+	url_root + 'img/story/group 2/footprint.svg',
+	url_root + 'img/story/group 2/magnet.svg',
+	url_root + 'img/story/group 2/padlock.svg',
+	url_root + 'img/story/group 2/secret-book.svg',
+	url_root + 'img/story/group 2/sheep.svg',
+	url_root + 'img/story/group 2/spell-book.svg'
+];
+
+data_story_group_3 = [
+  {id: 'story3'},
+  url_root + 'img/icons/ffffff/000000/1x1/delapouite/perspective-dice-six-faces-three.svg',
+	url_root + 'img/story/group 3/hand.svg',
+	url_root + 'img/story/group 3/magnifying-glass.svg',
+	url_root + 'img/story/group 3/prank-glasses.svg',
+	url_root + 'img/story/group 3/scarab-beetle.svg',
+	url_root + 'img/story/group 3/spider-mask.svg',
+	url_root + 'img/story/group 3/suspicious.svg',
+	url_root + 'img/story/group 3/turtle.svg',
+	url_root + 'img/story/group 3/two-shadows.svg',
+	url_root + 'img/story/group 3/yin-yang.svg'
+];
+
+data_story_group_4 = [
+  {id: 'story4'},
+	url_root + 'img/story/group 4/camping-tent.svg',
+	url_root + 'img/story/group 4/dead-head.svg',
+	url_root + 'img/story/group 4/falling-star.svg',
+	url_root + 'img/story/group 4/key.svg',
+	url_root + 'img/story/group 4/perspective-dice-six-faces-random.svg',
+	url_root + 'img/story/group 4/tear-tracks.svg',
+	url_root + 'img/story/group 4/uncertainty.svg',
+	url_root + 'img/story/group 4/water-fountain.svg'
+];
+
+data_story_group_5 = [
+  {id: 'story5'},
+	url_root + 'img/story/group 5/commercial-airplane.svg',
+	url_root + 'img/story/group 5/earth-africa-europe.svg',
+	url_root + 'img/story/group 5/flashlight.svg',
+	url_root + 'img/story/group 5/modern-city.svg',
+	url_root + 'img/story/group 5/shiny-apple.svg',
+	url_root + 'img/story/group 5/star-struck.svg'
+];
+
+data_story_group_6 = [
+  {id: 'story6'},
+	url_root + 'img/story/group 6/chat-bubble.svg',
+	url_root + 'img/story/group 6/fast-arrow.svg',
+	url_root + 'img/story/group 6/house.svg',
+	url_root + 'img/story/group 6/light-bulb.svg',
+	url_root + 'img/story/group 6/plain-arrow.svg',
+	url_root + 'img/story/group 6/sleepy.svg',
+	url_root + 'img/story/group 6/stopwatch.svg',
+	url_root + 'img/story/group 6/striking-arrows.svg'
+];
+
+data_story_group_7 = [
+  {id: 'story7'},
+	url_root + 'img/story/group 7/great-pyramid.svg',
+	url_root + 'img/story/group 7/pine-tree.svg',
+	url_root + 'img/story/group 7/rainbow-star.svg',
+	url_root + 'img/story/group 7/semi-closed-eye.svg',
+	url_root + 'img/story/group 7/subway-pass.svg',
+	url_root + 'img/story/group 7/tower-fall.svg',
+	url_root + 'img/story/group 7/wallet.svg',
+	url_root + 'img/story/group 7/white-tower.svg'
+];
+
+data_story_group_8 = [
+  {id: 'story8'},
+	url_root + 'img/story/group 8/alien-stare.svg',
+	url_root + 'img/story/group 8/arrow-cursor.svg',
+	url_root + 'img/story/group 8/lightning bolt.svg',
+	url_root + 'img/story/group 8/phone.svg',
+	url_root + 'img/story/group 8/scales.svg',
+	url_root + 'img/story/group 8/shepherds-crook.svg'
+];
+
+data_story_group_9 = [
+  {id: 'story9'},
+	url_root + 'img/story/group 9/abacus.svg',
+	url_root + 'img/story/group 9/bee.svg',
+	url_root + 'img/story/group 9/fairy-wand.svg',
+	url_root + 'img/story/group 9/moon.svg',
+	url_root + 'img/story/group 9/newspaper.svg',
+	url_root + 'img/story/group 9/open-book.svg',
+	url_root + 'img/story/group 9/secret-book.svg',
+	url_root + 'img/story/group 9/stone-bridge.svg'
+];

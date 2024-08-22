@@ -169,6 +169,30 @@ function is_rory() {
   return v === 'RR';
 }
 
+function load_story(dom_item, data_icons) {
+  // let last_box = items[9];
+  let count = data_icons.length - 1;
+  let config = {};
+  let _3d6 = dice_n(3, 6);
+
+  $(dom_item).removeClass('hidden');
+  dom_item.innerHTML = '-';
+
+  if(18 < _3d6.total) {
+    config.bg = 'red';
+    config.fg = 'yellow';
+  }
+  else if(_3d6.total <= 4) {
+    config.bg = 'red';
+    config.fg = 'black';
+  }
+  config.direction = dice(4);
+  load_icon(dom_item,
+      data_icons,
+      dice(count),
+      config);
+}
+
 function roll_all() {
 
     $('#panel-contents').removeClass('hidden');
@@ -195,6 +219,18 @@ function roll_all() {
       }
     }
 
+    let stories = [ '',
+        data_story_group_1,
+        data_story_group_2,
+        data_story_group_3,
+        data_story_group_4,
+        data_story_group_5,
+        data_story_group_6,
+        data_story_group_7,
+        data_story_group_8,
+        data_story_group_9 ];
+
+
     for(let i = 0; i < items.length; ++i)
     {
         let $current = $(items[i]);
@@ -220,10 +256,11 @@ function roll_all() {
         if(i + 1 <= count)
         {
           if(rr) {
-            items[i].innerHTML = '';
-            $current.removeClass('gray');
-            $current.addClass('r' + (pool.pop()) + v);
-            $current.addClass('rot' + dice(4) );
+            load_story(items[i], stories[pool.pop()] );
+            // items[i].innerHTML = '';
+            // $current.removeClass('gray');
+            // $current.addClass('r' + (pool.pop()) + v);
+            // $current.addClass('rot' + dice(4) );
           }
           else {
             $current.addClass('red');
@@ -239,9 +276,13 @@ function roll_all() {
         }
     }
 
+
     if(rr) {
       let last_box = items[9];
-      let count = data_icons_actions.length - 1;
+      // let d = data_story_group_1;
+      let d = data_story_group_3;
+      // let d = data_icons_actions;
+      let count = d.length - 1;
       let config = {};
       let _3d6 = dice_n(3, 6);
 
@@ -258,7 +299,7 @@ function roll_all() {
       }
       config.direction = dice(4);
       load_icon(last_box,
-          data_icons_actions,
+          d,
           dice(count),
           config);
     }
@@ -321,7 +362,11 @@ function load_icon(html_item, data_list, roll_result, params) {
   let l = roll_result;
 
   let populate_dom = function(result) {
-    html_item.innerHTML = result;
+    
+    // hack: removing from svg file isn't working. Cached maybe?
+    let r = result.replace('style="height: 512px; width: 512px;', '');
+
+    html_item.innerHTML = r;
     $(html_item).addClass('no-pad');
 
     if(params) {
