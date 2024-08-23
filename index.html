@@ -278,30 +278,31 @@ function roll_all() {
 
 
     if(rr) {
-      let last_box = items[9];
-      // let d = data_story_group_1;
-      let d = data_story_group_3;
-      // let d = data_icons_actions;
-      let count = d.length - 1;
-      let config = {};
-      let _3d6 = dice_n(3, 6);
+      load_story(items[9], data_icons_actions );
+      // let last_box = items[9];
+      // // let d = data_story_group_1;
+      // let d = data_story_group_3;
+      // // let d = data_icons_actions;
+      // let count = d.length - 1;
+      // let config = {};
+      // let _3d6 = dice_n(3, 6);
 
-      $(last_box).removeClass('hidden');
-      last_box.innerHTML = '-';
+      // $(last_box).removeClass('hidden');
+      // last_box.innerHTML = '-';
 
-      if(18 < _3d6.total) {
-        config.bg = 'red';
-        config.fg = 'yellow';
-      }
-      else if(_3d6.total <= 4) {
-        config.bg = 'red';
-        config.fg = 'black';
-      }
-      config.direction = dice(4);
-      load_icon(last_box,
-          d,
-          dice(count),
-          config);
+      // if(18 < _3d6.total) {
+      //   config.bg = 'red';
+      //   config.fg = 'yellow';
+      // }
+      // else if(_3d6.total <= 4) {
+      //   config.bg = 'red';
+      //   config.fg = 'black';
+      // }
+      // config.direction = dice(4);
+      // load_icon(last_box,
+      //     d,
+      //     dice(count),
+      //     config);
     }
 
     $('#panel-contents-sum').html(sum);
@@ -461,6 +462,20 @@ function content_item_click(sender) {
     let is_path = sender.target.tagName === 'path';
 
     if(is_rory() ) {
+      
+      // let div = sender.target;
+      // while(div.nodeName.toUpperCase() !== 'DIV') {
+      //   div = sender.parentElement;
+
+      //   if(div.parentElement.toUpperCase() === 'BODY')
+      //     break;
+      // }
+
+      // if(div.nodeName.toUpperCase('DIV') ) {
+      //   let $div = $(div);
+      //   $div.find('path').first().attr('fill', 'yellow');
+      // }
+
       if($(sender.target).hasClass('selected')) {
         $item.removeClass('selected');
       }
