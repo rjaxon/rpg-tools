@@ -113,27 +113,40 @@ function entity_new(params) {
 
   let entity = {
     id: null,
-    name: {first: params?.first, 
-           last_a: { v: params?.last_a[0], ab: params?.last_a[1], ext: params?.last_a[2] },
-           last_b: { v: params?.last_b[0], ab: params?.last_b[1], ext: params?.last_b[2] }},
-    core: {modifier: params?.core[0], noun: params?.core[1]},
-    power: params?.power,
-    motivation: [], // {verb: null, noun: null}
-    relationship: params?.relationship,
-    mood: params?.mood,
-    demeanor: params?.demeanor,
-    bearing: params?.bearing,
-    focus: params?.focus 
+    name: {first: params?.first || dice(100), 
+           last_a: { v: params?.last_a[0] || dice(100), 
+            ab: params?.last_a[1] || dice(100), 
+            ext: params?.last_a[2] || dice(100)},
+           last_b: { v: params?.last_b[0] || dice(100), 
+             ab: params?.last_b[1] || dice(100), 
+             ext: params?.last_b[2] || dice(100) }},
+    core: {modifier: params?.core[0] || dice(100), noun: params?.core[1] || dice(100)},
+    power: params?.power || dice_n(3, 6).total,
+    motivation: [], // {verb: null, noun: null}, initialization: see below
+    relationship: params?.relationship || dice_n(3, 6).total,
+    mood: params?.mood || dice(100),
+    demeanor: params?.demeanor || dice(8),
+    bearing: params?.bearing || dice(8),
+    focus: params?.focus  || dice(100)
 
   };
 
-  if(params.motivation) {
+  if(params && params.motivation) {
     for(let i = 0; i < params.motivation.length; ++i) {
       let current = params.motivation[i];
       entity.motivation.push(
         {
-          verb: current[0],
-          noun: current[1]
+          verb: current[0] || dice(100),
+          noun: current[1] || dice(100)
+        });
+    }
+  }
+  else {
+    for(let i = 1; i <= 3; ++i) {
+      entity.motivation.push(
+        {
+          verb: dice(100),
+          noun: dice(100)
         });
     }
   }
@@ -230,7 +243,7 @@ let data_npc_motivation_nouns = [
   'allies', 'secret societies', 'the world', 'military', 'the church',
   'dreams', 'discretion', 'love', 'freedom', 'pain',
   'faith', 'slavery', 'enlightenment', 'racism', 'sensuality',
-  'dissonance', 'peace', 'discrimination', 'disbeliefe', 'pleasure',
+  'dissonance', 'peace', 'discrimination', 'disbelief', 'pleasure',
   'hate', 'happiness', 'servitude', 'harmony', 'justice',
   'gluttony', 'lust', 'envy', 'greed', 'laziness',
   'wrath', 'pride', 'purity', 'moderation', 'vigilance',
@@ -551,7 +564,7 @@ let data_npc_mood = [
 ];
 
 let data_npc_demeanor = [
-  {id: 'npcdemeanor', note: 'used with npc_bearing' },
+  {id: 'npcdemeanor', note: 'used with npc_bearing. expected d8' },
   'scheming',
   'insane',
   'friendly',
@@ -988,6 +1001,18 @@ function ui_entity_focus(entity) {
   $('#focus').html(npc_focus(entity.focus));
 }
 
+function ui_entity_display(entity) {
+  ui_entity_name(entity);
+  ui_entity_motivation(entity);
+  ui_entity_power_level(entity);
+  ui_entity_core(entity);
+  ui_entity_relationship(entity);
+  ui_entity_mood(entity);
+  ui_entity_demanor(entity);
+  ui_entity_bearing(entity);
+  ui_entity_focus(entity);
+}
+
 function on_load() {
 
   let npc = entity_new(
@@ -1007,15 +1032,14 @@ function on_load() {
   );
   console.log(npc);
 
-  ui_entity_name(npc);
-  ui_entity_motivation(npc);
-  ui_entity_power_level(npc);
-  ui_entity_core(npc);
-  ui_entity_relationship(npc);
-  ui_entity_mood(npc);
-  ui_entity_demanor(npc);
-  ui_entity_bearing(npc);
-  ui_entity_focus(npc);
+  ui_entity_display(npc);
+
+
+  let npc2 = new entity_new(); {
+    ui_entity_display(npc);
+
+  }
+  ui_entity_display(npc2);
 
 }
 
