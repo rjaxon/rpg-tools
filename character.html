@@ -56,12 +56,27 @@
         </div>
         
         <div style="margin-top: 2em;" class="label">Interactions</div>
-        <div>NPC Mood</div>
-        <div class="label">Relationship to the speaking Character</div>
-        <div id="">Conversation Mood</div>
+        <div>
+          <span class="label">Relationship to: </span>
+          <span id="relationship"></span>
+        </div>
+        <div>
+          <span class="label">Conversation Mood</span>
+          <span id="mood"></span>
+        </div>
         <div class="label">NPC Importance</div>
-        <div id="">bearing</div>
-        <div id="">NPC Focus</div>
+        <div>
+          <span class="label">demeanor</span>
+          <span id="demeanor"></span>
+        </div>
+        <div>
+          <span class="label">bearing</span>
+          <span id="bearing"></span>
+        </div>
+        <div>
+          <span class="label">NPC Focus</span> 
+          <span id="focus"></span> 
+        </div>
       </panel>
     </body>
 
@@ -69,21 +84,46 @@
 <script type="text/javascript">
 
 
+function data_lookup_single(data, roll) {
+
+  let d = roll;
+  if(d == null) {
+    d = dice(data.length - 1);
+  }
+
+  return {roll: d, result: data[d] };
+}
+
+function data_lookup_range(data, roll) {
+
+  let result = null;
+  for(let i = 1; i <= data.length - 1; ++i) {
+    let current = data[i];
+    if(current[0] <= roll && roll <= current[1]) {
+      // result = current[2];
+      result = current;
+      break;
+    }
+  }
+
+  return {result: result, roll: roll};
+}
+
 function entity_new(params) {
 
   let entity = {
     id: null,
     name: {first: params?.first, 
-           last_a: { v: params?.last_a[0], ab: params?.last_a[1] },
-           last_b: { v: params?.last_b[0], ab: params?.last_b[1] }},
+           last_a: { v: params?.last_a[0], ab: params?.last_a[1], ext: params?.last_a[2] },
+           last_b: { v: params?.last_b[0], ab: params?.last_b[1], ext: params?.last_b[2] }},
     core: {modifier: params?.core[0], noun: params?.core[1]},
     power: params?.power,
     motivation: [], // {verb: null, noun: null}
-    relationship: null,
-    mood: null,
-    demeanor: null,
-    bearing: null,
-    focus: null
+    relationship: params?.relationship,
+    mood: params?.mood,
+    demeanor: params?.demeanor,
+    bearing: params?.bearing,
+    focus: params?.focus 
 
   };
 
@@ -437,6 +477,18 @@ let data_npc_names = [
 
 ];
 
+
+let data_npc_relationship = [
+  { id: 'relationship', note: '3d6' },
+  [  0,  3, 'loved'],
+  [  4,  5, 'friendly'],
+  [  6,  8, 'peaceful'],
+  [  9, 13, 'neutral'],
+  [ 14, 16, 'distrustful'],
+  [ 16, 17, 'hostile'],
+  [ 18, 18, 'hated']
+];
+
 let data_npc_mood = [
   {id: 'mood'},
   [ {id: 'loved' },
@@ -645,93 +697,132 @@ let npc_appearance_misc = [
 
 ];
 
+function npc_demeanor(roll) {
+  let r = data_lookup_single(data_npc_demeanor, roll);
+  return r.result + ' (' + r.roll + ') ';
+}
+
 function npc_bearing(demeanor, roll) {
 
-  let v = dice(10);
-  let d = dice(8);
+  let bearing = data_npc_bearing[demeanor];
+  let r = data_lookup_single(bearing, roll);
 
-  if(roll)
-    v = roll;
+  return r.result + ' (' + r.roll + ') ';
 
-  if(demeanor)
-    d = demeanor;
+  // let v = dice(10);
+  // let d = dice(8);
 
-  let bearing = {};
-  bearing.demeanor = data_npc_demeanor[d];
-  bearing.bearing = data_npc_bearing[d][v];
-  
-  return bearing.demeanor + ' ' +
-         bearing.bearing + ' (' + v + ', ' + d + ')';
+  // if(roll)
+  //   v = roll;
+
+  // if(demeanor)
+  //   d = demeanor;
+
+  // let bearing = {};
+  // bearing.demeanor = data_npc_demeanor[d];
+  // bearing.bearing = data_npc_bearing[d][v];
+  // 
+  // return bearing.demeanor + ' ' +
+  //        bearing.bearing + ' (' + v + ', ' + d + ')';
 }
 
 function npc_focus(roll) {
 
-  let v = dice(100);
-  if(roll)
-    v = roll;
+  let r = data_lookup_range(data_npc_focus, roll);
 
-  let f = data_npc_focus;
+  // let v = dice(100);
+  // if(roll)
+  //   v = roll;
 
-  let result = '-';
+  // let f = data_npc_focus;
 
-  for(let i = 1; i < f.length; ++i) {
-    let current = f[i];
-    if(current[0] <= v && v <= current[1]) {
-      result = current[2];
-      break;
-    }
-  }
+  // let result = '-';
 
-  return "PC's " + result + ' (' + v + ')';
+  // for(let i = 1; i < f.length; ++i) {
+  //   let current = f[i];
+  //   if(current[0] <= v && v <= current[1]) {
+  //     result = current[2];
+  //     break;
+  //   }
+  // }
+
+  return "PC's " + r.result[2] + ' (' + r.roll + ')';
 }
 
-function npc_mood(mood, roll) {
 
-  let v = dice(100);
-  if(roll)
-    v = roll;
+function npc_relationship(roll_3d6) {
 
-  let m = data_npc_mood[mood];
+  let d = roll_3d6;
+  if(d == null)
+    d = dice_n(3, 6);
 
-  let result = '-';
+  let r = data_lookup_range(data_npc_relationship, d);
+  return r.result[2] + ' (' + r.roll + ')'; 
+}
 
-  for(let i = 1; i < m.length; ++i) {
-    let current = m[i];
-    if(current[0] <= v && v <= current[1]) {
-      result = current[2];
+function npc_mood(relationship, roll) {
+
+  let r = roll;
+  if(roll == null)
+    r = dice(100);
+
+  let relate = 3;
+  for(let i = 1; i < data_npc_relationship.length - 1; ++i) {
+    let current = data_npc_relationship[i];
+    if(current[0] <= relationship && relationship <= current[1]) {
+      relate = i;
       break;
     }
+
   }
 
-  return result
-    + ' (' + v + ')';
+  let result = data_lookup_range(data_npc_mood[relate], r);
+  
+  // let m = data_npc_mood[r];
+
+  // let result = '-';
+
+  // for(let i = 1; i < m.length; ++i) {
+  //   let current = m[i];
+  //   if(current[0] <= v && v <= current[1]) {
+  //     result = current[2];
+  //     break;
+  //   }
+  // }
+
+  return result.result[2] + ' (' + result.roll + ')';
 
 }
 
 function npc_name_first(roll) {
-  let d = roll;
-  if(d == null) {
-    d = dice(data_npc_names.length - 1);
-  }
 
-  return data_npc_names[d][0]
-   + ' (' + d + ')';
-
+  let r = data_lookup_single(data_npc_names, roll);
+  return r.result[0] + ' (' + r.roll + ')'; 
 }
 
-function npc_name_last_a(roll, ab) {
-  let d = roll;
-  if(d == null) {
-    d = dice(data_npc_names.length - 1);
-  }
+function npc_name_last(use_first, roll, ab, extended) {
 
+  let is_a = false || use_first;
+  let r = data_lookup_single(data_npc_names, roll);
+  let d = r.roll;
+  let result = r.result;
   let a = ab;
+  let ext = extended;
+
   if(a == null)
     a = dice(2);
 
-  let n = data_npc_names[d][ab == 1 ? 1 : 3];
+  let n = 0;
+  if(is_a)  // first half of last name?
+    n = result[ab == 1 ? 1 : 3];
+  else
+    n = result[ab == 1 ? 2 : 4];
 
-  if(dice(2) == 1) {
+  // ie: use the -er in slay(er)
+  if(ext == null)
+    ext = dice(2);
+
+  if(ext == 1) {
     n = n.replace('(', '').replace(')', '');
   }
   else if(0 < n.indexOf('(')) {
@@ -742,27 +833,27 @@ function npc_name_last_a(roll, ab) {
 
 }
 
-function npc_name_last_b(roll, ab) {
-  let d = roll;
-  if(d == null) {
-    d = dice(data_npc_names.length - 1);
-  }
-
-  let a = ab;
-  if(a == null)
-    a = dice(2);
-
-  let n = data_npc_names[d][ab == 1 ? 2 : 4];
-  if(dice(2) == 1) {
-    n = n.replace('(', '').replace(')', '');
-  }
-  else if(0 < n.indexOf('(')) {
-    n = n.substring(0, n.indexOf('('));
-  }
-
-  return n + ' (' + d + ')';
-
-}
+// function npc_name_last_b(roll, ab) {
+//   let d = roll;
+//   if(d == null) {
+//     d = dice(data_npc_names.length - 1);
+//   }
+// 
+//   let a = ab;
+//   if(a == null)
+//     a = dice(2);
+// 
+//   let n = data_npc_names[d][ab == 1 ? 2 : 4];
+//   if(dice(2) == 1) {
+//     n = n.replace('(', '').replace(')', '');
+//   }
+//   else if(0 < n.indexOf('(')) {
+//     n = n.substring(0, n.indexOf('('));
+//   }
+// 
+//   return n + ' (' + d + ')';
+// 
+// }
 
 function npc_name(entity) {
   // let length = data_npc_names.length - 1;
@@ -771,8 +862,10 @@ function npc_name(entity) {
   // name.last_b = data_npc_names[dice(length) ][dice(2) == 1 ? 2 : 4];
  
   let name = npc_name_first(entity.name.first) + ' ' +
-            npc_name_last_a(entity.name.last_a.v, entity.name.last_a.ab) +
-            npc_name_last_b(entity.name.last_b.v, entity.name.last_b.ab);
+//             npc_name_last_a(entity.name.last_a.v, entity.name.last_a.ab) +
+//             npc_name_last_b(entity.name.last_b.v, entity.name.last_b.ab);
+             npc_name_last(true, entity.name.last_a.v, entity.name.last_a.ab, entity.name.last_a.ext) +
+             npc_name_last(false, entity.name.last_b.v, entity.name.last_b.ab, entity.name.last_b.ext);
 
   return name;
 }
@@ -829,24 +922,15 @@ function npc_motivation() {
 //   }
 // }
 
-function data_get_range(data, roll) {
-
-  let result = 0;
-  for(let i = 1; i < data.length - 1; ++i) {
-    let current = data[i];
-    if(current[0] <= roll && roll <= current[1]) {
-      result = current[2];
-      break;
-    }
-  }
-
-  return result;
-}
 
 function npc_power_level(roll_3d6) {
 
-  return data_get_range(data_npc_power_level, roll_3d6) 
-    + ' (' + roll_3d6 + ')';
+  let d = roll_3d6;
+  if(d == null)
+    d = dice_n(3, 6);
+
+  let r =  data_lookup_range(data_npc_power_level, d);
+  return r.result[2] + ' (' + r.roll + ')';
 
 }
 
@@ -882,16 +966,43 @@ function ui_entity_core(entity) {
   $('#core').html(core.join(''));
 }
 
+function ui_entity_relationship(entity) {
+  $('#relationship').html(npc_relationship(entity.relationship));
+}
+
+function ui_entity_mood(entity) {
+  $('#mood').html(npc_mood(
+    entity.relationship,
+    entity.mood));
+}
+
+function ui_entity_demanor(entity) {
+  $('#demeanor').html(npc_demeanor(entity.demeanor));
+}
+
+function ui_entity_bearing(entity) {
+  $('#bearing').html(npc_bearing(entity.demeanor, entity.bearing));
+}
+
+function ui_entity_focus(entity) {
+  $('#focus').html(npc_focus(entity.focus));
+}
+
 function on_load() {
 
   let npc = entity_new(
     {
       first: 1,
-      last_a: [12,2],
-      last_b: [17,2],
+      last_a: [ 1,1, 2],
+      last_b: [33,2, 1],
       core: [12, 77],
       power: 14,
-      motivation: [[5, 2], [8, 9], [20, 5]]
+      motivation: [[5, 2], [8, 9], [20, 5]],
+      relationship: 5,
+      mood: 2,
+      demeanor: 4,
+      bearing: 5,
+      focus:  32
     }
   );
   console.log(npc);
@@ -900,6 +1011,11 @@ function on_load() {
   ui_entity_motivation(npc);
   ui_entity_power_level(npc);
   ui_entity_core(npc);
+  ui_entity_relationship(npc);
+  ui_entity_mood(npc);
+  ui_entity_demanor(npc);
+  ui_entity_bearing(npc);
+  ui_entity_focus(npc);
 
 }
 
