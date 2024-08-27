@@ -11,6 +11,7 @@
         <link href="css/dice.css" rel="stylesheet">
 
         <script src="scripts/data/icons.js"></script>
+        <script src="scripts/dice.js"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -95,7 +96,7 @@
           </div>
           <div class="row">
             <div class="col-6"><div class="panel-dicetype-item gray ui-item">RR</div></div>
-            <div class="col-6"><div class="panel-dicetype-item gray ui-item">2</div></div>
+            <div class="col-6"><div class="panel-dicetype-item gray ui-item">FF</div></div>
           </div>
         </div>
 
@@ -125,15 +126,15 @@
         <div id="panel-contents" class="gray-lt absolute hidden container">
           <div class="row">
             <div class="col-6"><div class="test-000 content-item ui-item">1 1 of 2 <img src="img/spinner.svg"/> </div></div>
-            <div class="col-6"><div class="content-item ui-item">2 2 of 2 </div></div>
-            <div class="col-6"><div class="content-item ui-item">3 1 of 2 </div></div>
-            <div class="col-6"><div class="content-item ui-item">4 2 of 2 </div></div>
-            <div class="col-6"><div class="content-item ui-item">5 1 of 2 </div></div>
-            <div class="col-6"><div class="content-item ui-item">6 2 of 2 </div></div>
-            <div class="col-6"><div class="content-item ui-item">7 1 of 2 </div></div>
-            <div class="col-6"><div class="content-item ui-item">8 2 of 2 </div></div>
-            <div class="col-6"><div class="content-item ui-item">9 1 of 2 </div></div>
-            <div class="col-6"><div class="content-item ui-item">10 2 of 2 </div></div>
+            <div class="col-6"><div class="test-001 content-item ui-item">2 2 of 2 </div></div>
+            <div class="col-6"><div class="test-002 content-item ui-item">3 1 of 2 </div></div>
+            <div class="col-6"><div class="test-003 content-item ui-item">4 2 of 2 </div></div>
+            <div class="col-6"><div class="test-004 content-item ui-item">5 1 of 2 </div></div>
+            <div class="col-6"><div class="test-005 content-item ui-item">6 2 of 2 </div></div>
+            <div class="col-6"><div class="test-006 content-item ui-item">7 1 of 2 </div></div>
+            <div class="col-6"><div class="test-007 content-item ui-item">8 2 of 2 </div></div>
+            <div class="col-6"><div class="test-008 content-item ui-item">9 1 of 2 </div></div>
+            <div class="col-6"><div class="test-009 content-item ui-item">10 2 of 2 </div></div>
           </div>
           <div class="row">
              <div class="col-6" onclick="panel_sum_click(this)"   ><div id="panel-contents-sum" class="gray ui-item">=</div></div>
@@ -169,29 +170,46 @@ function is_rory() {
   return v === 'RR';
 }
 
-function load_story(dom_item, data_icons) {
+function is_fudge() {
+  let v = $('#panel-dicetype').find('.selected').html();
+  return v === 'FF';
+}
+
+function load_story(dom_item, data_icons, roll) {
   // let last_box = items[9];
   let count = data_icons.length - 1;
-  let config = {};
-  let _3d6 = dice_n(3, 6);
+  let config = null;
 
-  $(dom_item).removeClass('hidden');
-  dom_item.innerHTML = '-';
+  if(is_rory() ) {
+    let _3d6 = dice_n(3, 6);
 
-  if(18 < _3d6.total) {
-    config.bg = 'red';
-    config.fg = 'yellow';
+    config = {};
+
+    $(dom_item).removeClass('hidden');
+    dom_item.innerHTML = '-';
+    if(18 < _3d6.total) {
+      config.bg = 'red';
+      config.fg = 'yellow';
+    }
+    else if(_3d6.total <= 4) {
+      config.bg = 'red';
+      config.fg = 'black';
+    }
+    config.direction = dice(4);
   }
-  else if(_3d6.total <= 4) {
-    config.bg = 'red';
-    config.fg = 'black';
-  }
-  config.direction = dice(4);
   load_icon(dom_item,
       data_icons,
-      dice(count),
+      roll || dice(count),
       config);
 }
+
+data_fudge_dice = [
+  {id: 'fudge'},
+
+	url_root + 'img/minus.svg',
+	url_root + 'img/plus.svg',
+	url_root + 'img/zero.svg',
+];
 
 function roll_all() {
 
@@ -199,6 +217,7 @@ function roll_all() {
     let count = $('#panel-dicecount').find('.selected').html();
     let type  = $('#panel-dicetype').find('.selected').html();
     let rr = false;
+    let ff = is_fudge();
     let items = $('.content-item');
     let sum = 0;
     $('#panel-contents-sum').html('=');
@@ -208,6 +227,13 @@ function roll_all() {
       rr = true;
       sum = '=';
     }
+    
+    if(ff) {
+      type = 3;
+      count = 4;
+      sum = 0;
+    }
+    
 
     let pool = [];
     if(rr) {
@@ -262,7 +288,29 @@ function roll_all() {
             // $current.addClass('r' + (pool.pop()) + v);
             // $current.addClass('rot' + dice(4) );
           }
-          else {
+          else if(ff) {
+            let d = dice(6);
+            switch(d) {
+              case 1:
+              case 2:
+                items[i].innerHTML = '-';
+                sum -= 1;
+                load_story(items[i], data_fudge_dice, 1 );
+                break;
+              case 3:
+              case 4:
+                items[i].innerHTML = '+';
+                sum += 1;
+                load_story(items[i], data_fudge_dice, 2 );
+                break;
+              case 5:
+              case 6:
+                items[i].innerHTML = 'O';
+                load_story(items[i], data_fudge_dice, 3 );
+                break;
+            }
+          }
+          else{
             $current.addClass('red');
             $current.removeClass('gray');
             items[i].innerHTML = v;
@@ -350,6 +398,8 @@ function on_load()
     }
 }
 
+let data_image_tooltips = [];
+
 function load_icon(html_item, data_list, roll_result, params) {
   $(html_item).removeClass('no-pad');
   $(html_item).removeClass('rot1');
@@ -362,12 +412,25 @@ function load_icon(html_item, data_list, roll_result, params) {
   let cache = data.cache;
   let l = roll_result;
 
-  let populate_dom = function(result) {
+  let populate_dom = function(result, key) {
     
     // hack: removing from svg file isn't working. Cached maybe?
-    let r = result.replace('style="height: 512px; width: 512px;', '');
+    let svg_image = result.replace('style="height: 512px; width: 512px;', '');
 
-    html_item.innerHTML = r;
+    let svg_tooltip = null;
+    if(svg_tooltip) {
+
+      let index = svg_image.indexOf('>') + 1; // the closing bracket of <svg ...  >
+      svg_image = [ svg_image.slice(0, index),
+                      '<title>',
+                      svg_tooltip,
+                      '</title>',
+                      svg_image.slice(index) ].join('');
+
+    }
+
+
+    html_item.innerHTML = svg_image;
     $(html_item).addClass('no-pad');
 
     if(params) {
@@ -397,7 +460,7 @@ function load_icon(html_item, data_list, roll_result, params) {
 
     let result = cache.get(key);
 
-    populate_dom(result);
+    populate_dom(result, key);
 
     return;
   }
@@ -408,7 +471,7 @@ function load_icon(html_item, data_list, roll_result, params) {
       success: function(result) {
         cache.add(key, result);
 
-        populate_dom(result);
+        populate_dom(result, key);
       }
     }
   );
@@ -425,6 +488,10 @@ function content_item_make_all_used() {
 }
 
 function calculate_sum() {
+
+    if(is_fudge() ) {
+      return;
+    }
 
     let count = $('#panel-dicecount').find('.selected').html();
     let type  = $('#panel-dicetype').find('.selected').html();
@@ -447,6 +514,10 @@ function calculate_sum() {
 }
 
 function content_item_click(sender) {
+
+    if(is_fudge() ) {
+      return;
+    }
 
     if(sender.target.innerHTML === '-') {
       return;
@@ -621,29 +692,6 @@ function format(input, replace)
 
     return string;
 }
-
-function dice(d)
-{
-    let _d = 6;
-    if(!isNaN(d))
-        _d = d;
-
-    return 1 + Math.floor(Math.random() * _d);
-}
-
-function dice_n(n, d) {
-
-  let sum = 0; 
-  let rolls = [];
-  for(let i = 0; i < n; ++i) {
-    let r = dice(d);
-    sum += r;
-    rolls.push(r);
-  }
-
-  return { rolls: rolls, total: sum };
-}
-
 
 
 on_load();

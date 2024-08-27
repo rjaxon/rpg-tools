@@ -99,16 +99,6 @@ let data_npc_motivation_nouns = [
 
 ];
 
-// let data_npc_power_level = [
-//   {id: 'npcpowerlevel', note: 'expected 3d6' },
-//   '-', '-', 
-//   'Much Weaker', 'Much Weaker', 'Much Weaker', 'Much Weaker',
-//   'Slightly Weaker', 'Slightly Weaker', 'Slightly Weaker', 'Slightly Weaker',
-//   'Comparable', 'Comparable', 'Comparable',
-//   'Slightly Stronger', 'Slightly Stronger', 'Slightly Stronger',
-//   'Much Stronger', 'Much Stronger'
-// ];
-
 let data_npc_power_level = [
   {id: 'npcpowerlevel', note: 'expected 3d6' },
   [  3,  6, 'Much Weaker'],
@@ -346,65 +336,77 @@ let data_npc_relationship = [
 ];
 
 let data_npc_mood = [
-  {id: 'mood'},
-  [ {id: 'loved' },
-    [1,    1, 'withdrawn'],
-    [2,    6, 'guarded'],
-    [7,   16, 'cautious'],
-    [17,  31, 'neutral'],
-    [32,  70, 'sociable'],
-    [71,  85, 'helpful'],
-    [86, 100, 'forthcoming'] ],
-  [ {id: 'friendly' },
-    [1,    2, 'withdrawn'],
-    [3,    8, 'guarded'],
-    [9,   20, 'cautious'],
-    [21,  40, 'neutral'],
-    [41,  76, 'sociable'],
-    [77,  89, 'helpful'],
-    [90, 100, 'forthcoming'] ],
-  [ {id: 'peaceful' },
-    [1,    3, 'withdrawn'],
-    [4,   11, 'guarded'],
-    [12,  25, 'cautious'],
-    [26,  55, 'neutral'],
-    [56,  82, 'sociable'],
-    [83,  93, 'helpful'],
-    [94, 100, 'forthcoming'] ],
-  [ {id: 'neutral' },
-    [1,    5, 'withdrawn'],
-    [6,   15, 'guarded'],
-    [16,  30, 'cautious'],
-    [31,  60, 'neutral'],
-    [71,  85, 'sociable'],
-    [86,  95, 'helpful'],
-    [96, 100, 'forthcoming'] ],
-  [ {id: 'distrustful' },
-    [1,    7, 'withdrawn'],
-    [8,   18, 'guarded'],
-    [19,  46, 'cautious'],
-    [47,  76, 'neutral'],
-    [77,  90, 'sociable'],
-    [91,  97, 'helpful'],
-    [98, 100, 'forthcoming'] ],
-  [ {id: 'hostile' },
-    [1,   11, 'withdrawn'],
-    [12,  24, 'guarded'],
-    [25,  61, 'cautious'],
-    [62,  81, 'neutral'],
-    [82,  93, 'sociable'],
-    [94,  98, 'helpful'],
-    [99, 100, 'forthcoming'] ],
-  [ {id: 'hated' },
-    [1,    15, 'withdrawn'],
-    [16,   30, 'guarded'],
-    [31,   69, 'cautious'],
-    [70,   84, 'neutral'],
-    [85,   94, 'sociable'],
-    [95,   99, 'helpful'],
-    [100, 100, 'forthcoming'] ],
-
+  {id: 'mood', note: 'column 0 is a list of distributions based on relationship'},
+    /*       |  loved   |  friendly| peaceful | neutral | distrustful | hostile|   hated    | */
+    [ [[0, 0], [ 1,   1], [ 1,   2], [ 1,   3], [ 1,   5], [ 1,   7], [ 1,  11], [  1,  15] ], 'withdrawn'],
+    [ [[0, 0], [ 2,   6], [ 3,   8], [ 4,  11], [ 6,  15], [ 8,  18], [12,  24], [ 16,  30] ], 'guarded'],
+    [ [[0, 0], [ 7,  16], [ 9,  20], [12,  25], [16,  30], [19,  46], [25,  61], [ 31,  69] ], 'cautious'],
+    [ [[0, 0], [17,  31], [21,  40], [26,  55], [31,  60], [47,  76], [62,  81], [ 70,  84] ], 'neutral'],
+    [ [[0, 0], [32,  70], [41,  76], [56,  82], [61,  85], [77,  90], [82,  93], [ 85,  94] ], 'sociable'],
+    [ [[0, 0], [71,  85], [77,  89], [83,  93], [86,  95], [91,  97], [94,  98], [ 95,  99] ], 'helpful'],
+    [ [[0, 0], [86, 100], [90, 100], [94, 100], [96, 100], [98, 100], [99, 100], [100, 100] ], 'forthcoming']
 ];
+
+// let data_npc_mood = [
+//   {id: 'mood'},
+//   [ {id: 'loved' },
+//     [1,    1, 'withdrawn'],
+//     [2,    6, 'guarded'],
+//     [7,   16, 'cautious'],
+//     [17,  31, 'neutral'],
+//     [32,  70, 'sociable'],
+//     [71,  85, 'helpful'],
+//     [86, 100, 'forthcoming'] ],
+//   [ {id: 'friendly' },
+//     [1,    2, 'withdrawn'],
+//     [3,    8, 'guarded'],
+//     [9,   20, 'cautious'],
+//     [21,  40, 'neutral'],
+//     [41,  76, 'sociable'],
+//     [77,  89, 'helpful'],
+//     [90, 100, 'forthcoming'] ],
+//   [ {id: 'peaceful' },
+//     [1,    3, 'withdrawn'],
+//     [4,   11, 'guarded'],
+//     [12,  25, 'cautious'],
+//     [26,  55, 'neutral'],
+//     [56,  82, 'sociable'],
+//     [83,  93, 'helpful'],
+//     [94, 100, 'forthcoming'] ],
+//   [ {id: 'neutral' },
+//     [1,    5, 'withdrawn'],
+//     [6,   15, 'guarded'],
+//     [16,  30, 'cautious'],
+//     [31,  60, 'neutral'],
+//     [71,  85, 'sociable'],
+//     [86,  95, 'helpful'],
+//     [96, 100, 'forthcoming'] ],
+//   [ {id: 'distrustful' },
+//     [1,    7, 'withdrawn'],
+//     [8,   18, 'guarded'],
+//     [19,  46, 'cautious'],
+//     [47,  76, 'neutral'],
+//     [77,  90, 'sociable'],
+//     [91,  97, 'helpful'],
+//     [98, 100, 'forthcoming'] ],
+//   [ {id: 'hostile' },
+//     [1,   11, 'withdrawn'],
+//     [12,  24, 'guarded'],
+//     [25,  61, 'cautious'],
+//     [62,  81, 'neutral'],
+//     [82,  93, 'sociable'],
+//     [94,  98, 'helpful'],
+//     [99, 100, 'forthcoming'] ],
+//   [ {id: 'hated' },
+//     [1,    15, 'withdrawn'],
+//     [16,   30, 'guarded'],
+//     [31,   69, 'cautious'],
+//     [70,   84, 'neutral'],
+//     [85,   94, 'sociable'],
+//     [95,   99, 'helpful'],
+//     [100, 100, 'forthcoming'] ],
+// 
+// ];
 
 let data_npc_demeanor = [
   {id: 'npcdemeanor', note: 'used with npc_bearing. expected d8' },
@@ -419,7 +421,7 @@ let data_npc_demeanor = [
 ];
 
 let data_npc_bearing = [
-  {id: 'npcbearing', note: 'zeroth column is disposition' },
+  {id: 'npcbearing', note: 'zeroth column is disposition name' },
  [ 'scheming', 'intent', 'bargain', 'means', 'proposition', 'plan', 'compromise', 'agenda', 'arrangement', 'negotiation', 'plot' ],
  [ 'insane', 'madness', 'fear', 'accident', 'chaos', 'idiocy', 'illusion', 'turmoil', 'confusion', 'facade', 'bewilderment' ],
  [ 'friendly', 'alliance', 'comfort', 'gratitude', 'shelter', 'happiness', 'support', 'promise', 'delight', 'aid', 'celebration' ],
@@ -483,7 +485,7 @@ let data_npc_focus = [
 ];
 
 let npc_appearance_skin = [
-  {},
+  { id: 'skin', name: 'Skin' },
   [1,   4, 'Pale'],
   [5,   8, 'Fair'],
   [9,  12, 'Tan'],
@@ -492,7 +494,7 @@ let npc_appearance_skin = [
 ];
 
 let npc_appearance_hair_color = [ 
-  {},
+  { id: 'haircolor', name: 'Hair Color' },
   [  1,  24, 'Black'],
   [ 25,  48, 'Brown'],
   [ 49,  57, 'Red'],
@@ -505,7 +507,7 @@ let npc_appearance_hair_color = [
 ];
 
 let npc_appearance_hair_length = [ 
-  {},
+  { id: 'haillength', name: 'Hair Length' },
   [  1,  11, 'Bald/Buzz Cut'],
   [ 12,  22, 'Short'],
   [ 23,  33, 'Half Cut'],
@@ -518,7 +520,7 @@ let npc_appearance_hair_length = [
 ];
 
 let npc_appearance_hair_texture = [
-  {},
+  { id: 'texture', name: 'Hair Texture' },
   [  1,  20, 'Straight'],
   [ 31,  50, 'Wavy'],
   [ 51,  65, 'Curly'],
@@ -542,14 +544,51 @@ let npc_appearance_eyes = [
 
 ];
 
+let npc_appearance_height = [
+  {},
+  [  1,   9, 'Very Short'],
+  [ 10,  29, 'Short'],
+  [ 30,  69, 'Average'],
+  [ 70,  89, 'Tall'],
+  [ 90, 100, 'Very Tall'],
+];
+
 let npc_appearance_misc = [
 
   {},
-  [  1,  35, 'None'],
-  [ 36,  49, 'Tall'],
-  [ 50,  69, 'Short'],
-  [ 70,  79, 'Visible Scars'],
-  [ 80, 100, 'Facial Hair']
+  [  1,  19, 'None'],
+  [ 20,  39, 'Visible Scars'],
+  [ 40, 100, 'Facial Hair']
 
+];
+
+let npc_personality_dimension_5 = [
+  { id: 'personalitydimension5' },
+  [ 'Openness to experience', 'This dimension refers to a person’s level of curiosity, creativity, and willingness to try new things. Individuals who score high in openness to experience tend to be imaginative, adventurous, and enjoy exploring new ideas and concepts. People who score low in openness to experience tend to be more traditional, practical, and prefer routine and familiarity. They may be less open to new experiences or ideas, and prefer to stick with what is familiar and predictable.'],
+  [ 'Conscientiousness', 'This dimension refers to a person’s level of self-discipline, responsibility, and dependability. Individuals who score high in conscientiousness tend to be organized, reliable, and diligent in their work. People who score low in conscientiousness tend to be more spontaneous, flexible, and may struggle with organization and self-discipline.'],
+  [ 'Extraversion', 'This dimension describes how a person rates on traits such as sociability, assertiveness, and outgoingness. Those who are high in extroversion tend to be outgoing, talkative, and enjoy socializing with others.'],
+  [ 'Agreeableness', 'This dimension refers to a person’s level of compassion, cooperativeness, and tendency to avoid conflict. Those who are high in agreeableness tend to be compassionate, empathetic, and value harmonious relationships with others. People who are low in agreeableness tend to be more competitive, assertive, and may be more willing to engage in conflict.'],
+  [ 'Neuroticism', 'This is a person’s level of emotional stability, anxiety, and tendency to experience negative emotions. People with high levels of neuroticism tend to be more anxious, easily stressed, and prone to experiencing negative emotions such as sadness, worry, and fear. Less neurotic people tend to be more emotionally stable, resilient, and better able to handle stress and difficult situations.']
+];
+
+
+let npc_personality_dimension_16 = [
+  { id: 'personalitydimension16' },
+  ['Warmth', 'Friendliness, kindness, and approachability towards others.'],
+  ['Reasoning', 'Logical thinking, problem-solving ability, and intellectual curiosity.'],
+  ['Emotional Stability', 'Calmness, resilience, and ability to manage stress.'],
+  ['Dominance', 'Assertiveness, leadership tendencies, and desire for control.'],
+  ['Liveliness', 'Enthusiasm, energy, and spontaneity in social interactions.'],
+  ['Rule-Consciousness', 'Conformity to social norms, adherence to rules, and respect for authority.'],
+  ['Social Boldness', 'Confidence in social situations, willingness to take risks, and assertiveness.'],
+  ['Sensitivity', 'Emotional responsiveness, empathy, and awareness of others’ feelings.'],
+  ['Vigilance', 'Alertness, cautiousness, and attentiveness to potential threats.'],
+  ['Abstractedness', 'Imagination, creativity, and inclination towards abstract thinking.'],
+  ['Privateness', 'Preference for solitude, introspection, and privacy.'],
+  ['Apprehension', 'Anxiety, worry, and tendency to feel fearful or nervous.'],
+  ['Openness to Change', 'Willingness to embrace new experiences, ideas, and adaptability to change.'],
+  ['Self-Reliance', 'Independence, self-confidence, and autonomy in decision-making.'],
+  ['Perfectionism', 'High standards, attention to detail, and desire for precision.'],
+  ['Tension', 'Feelings of stress, discomfort, and emotional strain.']
 ];
 
