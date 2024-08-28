@@ -282,7 +282,10 @@ function roll_all() {
         if(i + 1 <= count)
         {
           if(rr) {
-            load_story(items[i], stories[pool.pop()] );
+            items[i].innerHTML = '<img src="img/spinner.svg" />';
+            setTimeout(function() {
+            load_story(items[i], stories[pool.pop()] )
+            }, dice(750));
             // items[i].innerHTML = '';
             // $current.removeClass('gray');
             // $current.addClass('r' + (pool.pop()) + v);
@@ -290,31 +293,42 @@ function roll_all() {
           }
           else if(ff) {
             let d = dice(6);
+            let f = 1;
             switch(d) {
               case 1:
               case 2:
                 items[i].innerHTML = '-';
                 sum -= 1;
-                load_story(items[i], data_fudge_dice, 1 );
+                f = 1;
                 break;
               case 3:
               case 4:
                 items[i].innerHTML = '+';
                 sum += 1;
-                load_story(items[i], data_fudge_dice, 2 );
+                f = 2;
                 break;
               case 5:
               case 6:
                 items[i].innerHTML = 'O';
-                load_story(items[i], data_fudge_dice, 3 );
+                f = 3;
                 break;
             }
+            items[i].innerHTML = '<img src="img/spinner.svg" />';
+            setTimeout(function() {
+              load_story(items[i], data_fudge_dice, f )
+            }, dice(750) );
           }
           else{
-            $current.addClass('red');
-            $current.removeClass('gray');
-            items[i].innerHTML = v;
-            sum += v;
+
+            // $current.addClass('red');
+            // $current.removeClass('gray');
+            // items[i].innerHTML = v;
+            // sum += v;
+
+            items[i].innerHTML = '<img src="img/spinner.svg" />';
+            setTimeout(function() {
+              roll_single_number(items[i]);
+            }, dice(750) );
           }
         }
         else
@@ -353,7 +367,17 @@ function roll_all() {
       //     config);
     }
 
-    $('#panel-contents-sum').html(sum);
+    if(ff) {
+      setTimeout(function() { 
+        $('#panel-contents-sum').html(sum);
+      }, 1000);
+    }
+    else {
+      setTimeout(function() { 
+        calculate_sum();
+        // $('#panel-contents-sum').html(sum);
+      }, 1000);
+    }
 }
 
 function panel_sum_click(sender) {
@@ -513,6 +537,37 @@ function calculate_sum() {
     $('#panel-contents-sum').html(sum);
 }
 
+function roll_single_number(element) {
+  
+  let id = '#panel-dicetype';
+  let type = $(id).find('.selected').html();
+    let item = element;
+    let $item = $(item);
+
+    let is_svg = element.tagName === 'svg';
+    let is_path = element.tagName === 'path';
+
+    if(is_path) {
+      if(element.parentNode.parentNode.tagName === 'DIV') {
+        item = element.parentNode.parentNode;
+        item.innerHTML = '';
+      }
+    }
+    else if(is_svg) {
+      if(element.parentNode.tagName === 'DIV') {
+        item = element.parentNode;
+        item.innerHTML = '';
+      }
+    }
+
+    item.innerHTML = dice(type);
+    $item.removeClass('no-pad');
+    $item.removeClass('gray');
+    $item.addClass('red');
+
+    calculate_sum();
+}
+
 function content_item_click(sender) {
 
     if(is_fudge() ) {
@@ -559,27 +614,30 @@ function content_item_click(sender) {
     content_item_make_all_used();
 
 
-    if(is_path) {
-      if(sender.target.parentNode.parentNode.tagName === 'DIV') {
-        item = sender.target.parentNode.parentNode;
-        item.innerHTML = '';
-      }
-    }
-    else if(is_svg) {
-      if(sender.target.parentNode.tagName === 'DIV') {
-        item = sender.target.parentNode;
-        item.innerHTML = '';
-      }
-    }
+    // if(is_path) {
+    //   if(sender.target.parentNode.parentNode.tagName === 'DIV') {
+    //     item = sender.target.parentNode.parentNode;
+    //     item.innerHTML = '';
+    //   }
+    // }
+    // else if(is_svg) {
+    //   if(sender.target.parentNode.tagName === 'DIV') {
+    //     item = sender.target.parentNode;
+    //     item.innerHTML = '';
+    //   }
+    // }
 
+    // item.innerHTML = dice(type);
+    // $item.removeClass('no-pad');
+    // $item.removeClass('gray');
+    // $item.addClass('red');
 
-
-    item.innerHTML = dice(type);
-    $item.removeClass('no-pad');
-    $item.removeClass('gray');
-    $item.addClass('red');
-
-    calculate_sum();
+    // calculate_sum();
+  
+    sender.target.innerHTML = '<img src="img/spinner.svg" />';
+    setTimeout(function() {
+      roll_single_number(sender.target);
+    }, 1000);
 }
 
 
