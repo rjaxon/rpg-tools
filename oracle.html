@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            RJ's RPG Tools
+        </title>
+
+        <link rel="icon" href="img/icons/ffffff/000000/1x1/delapouite/dice-twenty-faces-twenty.svg">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+        <link href="css/dice.css" rel="stylesheet">
+
+        <script src="scripts/data/icons.js"></script>
+        <script src="scripts/dice.js"></script>
+
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    </head>
+<style>
+
+    div {
+    }
+
+    button {
+      border-bottom-color: white;
+    }
+
+    .oracle-scene-stage {
+      border-radius: 5px;
+      border-bottom-left-radius: unset;
+      border-bottom-right-radius: unset;
+    }
+
+    button.selected {
+      background: none;
+      border: 2px solid black;
+      border-bottom-color: white;
+      position: relative;
+      top: 2px;
+    }
+
+
+    #oracle-container {
+      padding: 1em;;
+    }
+    
+    #oracle {
+    }
+
+    #oracle-result {
+      border: 2px solid black;
+      border-radius: 5px;
+      border-top-left-radius: unset;
+
+      padding: 2em;
+
+      font-weight: bold;
+      font-size: 2em;
+      text-align: center;
+
+    }
+
+    #oracle-result-contents {
+      cursor: pointer;
+    }
+
+    .oracle-result-image {
+      padding: 5px;
+    }
+
+    .oracle-scene-stage-item {
+      border: 1px solid black;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    textarea {
+        width: 100%;
+        height: 100%;
+    }
+
+</style>
+
+<body>
+
+  <div id="oracle-container">
+    <div id="oracle">
+       <div id="oracle-surge" class="hidden">0</div>
+        <div class="row">
+            <div class="col-12">
+              <div class="w3-bar w3-black">
+                <button class="w3-bar-item w3-button oracle-scene-stage selected" value="1" onclick="tab_click(this);">To Knowledge</button>
+                <button class="w3-bar-item w3-button oracle-scene-stage" value="2" onclick="tab_click(this);">To Conflict</button>
+                <button class="w3-bar-item w3-button oracle-scene-stage" value="3" onclick="tab_click(this);">To Endings</button>
+              </div>
+            </div>
+            <div class="col-sm">
+                <div id="oracle-result" value="1" surge="0">
+                  <div id="oracle-result-contents" onclick="oracle_result_contents_click(this);">
+                    Click here to query the loom of fate 
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                  <div id="oracle-result-contents-hint"> </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+    <div id="thread-main" class="hidden">
+        <div id="thread-edit">
+            <textarea></textarea>
+        </div>
+
+        <div id="thread-view">
+            thread view
+        </div>
+        <div>
+            <button>Done</button>
+        </div>
+    </div>
+
+
+</body>
+
+
+    <script type="text/javascript">
+
+
+let data_oracle_loom = [
+  {id: 'oracle_cgre_loom', note: 'column 0 is a list of distributions for knowledge, conflict, ending'},
+         /*  | knowledge |  conflict |  endings   | */
+    [ [[0, 0], [  1,   5], [  1,   2], [  1,   1]  ], 'No, and unexpectedly'],
+    [ [[0, 0], [  6,  15], [  3,   6], [  2,   2]  ], 'No, but'],
+    [ [[0, 0], [ 16,  20], [  7,  16], [  3,  20]  ], 'No, and'],
+    [ [[0, 0], [ 21,  50], [ 17,  50], [ 21,  50]  ], 'No'],
+    [ [[0, 0], [ 51,  80], [ 51,  84], [ 51,  80]  ], 'Yes'],
+    [ [[0, 0], [ 81,  85], [ 85,  94], [ 81,  98]  ], 'Yes, and'],
+    [ [[0, 0], [ 86,  95], [ 95,  98], [ 99,  99]  ], 'Yes, but'],
+    [ [[0, 0], [ 96, 100], [ 99, 100], [100, 100]  ], 'Yes, and unexpectedly'],
+];
+
+
+let data_oracle_crge_unexpected = [
+  { id: 'oracle_cgre_unexpected' },
+  [ 'Cross-stitch', 'choose another thread to be the main thread for the rest of the scene.'],
+  [ 'Entering the Red', 'threat of danger or combat arrives. The premise of the scene gets more dangerous in a way that forces the PC’s to respond by leaving, fighting, or taking their chances.'],
+  [ 'Enter Stage Left', 'a PC or NPC (new or pre-existing) arrives fresh in the scene.'],
+  [ 'Costume Change', 'an NPC drastically changes their mind, motivations, alliances, etc. for better or worse. This could be a big story reveal or a simple change of heart.'],
+  [ 'Foreshadowing', 'set a thread to be the main thread for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
+  [ 'Framing', 'an NPC (new or pre-existing) or object becomes critical to the main thread.'],
+  [ 'Key Grip', 'set the location or general elements for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
+  [ 'Limelit', 'the rest of the scene goes great for the PC’s. Assume that the majority of the questions pertaining to the main thread with regard to the scene are answered in a way that benefits the PC’s.'],
+  [ 'Montage', 'the timeframe of the scene changes to a montage of actions set across various scenes to move forward.'],
+  [ 'Pattern Change', 'the main thread gets modified, drastically. Whatever direction the main thread was heading, make a hard left. Use a generator, such as Rory’s Story Cubes, tarot cards or a random Wikipedia page, as necessary.'],
+  [ 'Reroll / Reserved', 'these slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
+  [ 'Reroll / Reserved', 'these slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
+  [ 'Reroll / Reserved', 'these slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
+  [ 'Set Change', 'scene continues in another location. The current thread remains as much as makes sense.'],
+  [ 'Six Degrees', 'a meaningful, but not always positive, connection forms between two PC’s and/or NPC’s.'],
+  [ 'To Endings', 'the next scene resolves or substantially moves forward a thread of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
+  [ 'To Conflict', 'the next scene centers on a conflict of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
+  [ 'To Knowledge', 'the next scene centers on lore or investigation of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
+  [ 'Tying Off ', 'the main thread resolves or substantially moves forward in this scene by narrative decree. This does not mean that the main thread cannot create follow-up threads.'],
+  [ 'Upstaged', 'an NPC makes a big move. If the NPC has any motivations, plot vectors, or goals they go into overdrive']
+
+];
+
+
+// https://alyssalostinspace.com/wp-content/uploads/2022/09/d100-keyword-chart.pdf
+let data_plot_hooks = [
+  {id: 'plot_hooks'},
+  /* who, where, what, description, additional element, sensory detail */
+['Priest', 'Village', 'Pyre', 'Decayed', 'Fall', 'Rustling Leaves'],
+['Ghost', 'Plains', 'Tome', 'Abandoned', 'Puzzle', 'Eerie Silence'],
+['Minstrel', 'Lake', 'Lock', 'Scorched', 'Escape', 'Birdsong'],
+['Heretic', 'Cliffs', 'Cage', 'Sparkling', 'Fear', 'Distant Shouts'],
+['Veteran', 'Fortress', 'Heirloom', 'Embroidered', 'Betray', 'Ominous Echo'],
+['Trickster', 'Wasteland', 'Drug', 'Torn', 'Drown', 'Thick Smoke'],
+['Researcher', 'Farm', 'Book', 'Damaged', 'Despair', 'Wet Earth'],
+['Cultist', 'Swamp', 'Sword', 'Ancient', 'Loss', 'Damp Wood'],
+['Ruler', 'Glade', 'Totem', 'Carved', 'Marriage', 'A Swinging Blade'],
+['Prophet', 'Sewers', 'Dagger', 'Ornate', 'Extortion', 'Crackling Fire'],
+['Pirate', 'Forest', 'Egg', 'Possessed', 'Blessing', 'Bubbling Cauldron'],
+['Cartographer', 'Trail', 'Door', 'Small', 'Feud', 'Soft Weeping'],
+['Scholar', 'Monastery', 'Secret', 'Stolen', 'Protect', 'Shattering Glass'],
+['Monk', 'Garden', 'Letter', 'corrupted', 'Heresy', 'Tingling Skin'],
+['Slave', 'Mountains', 'Curse', 'Enchanted', 'Climb', 'Quiet Singing'],
+['Child', 'Observatory', 'Puzzle', 'Forged', 'Espionage', 'Beating ofLarge Wings'],
+['Spy', 'Museum', 'Shield', 'Collapsed', 'Belief', 'Sulfuric Odor'],
+['God', 'Temple', 'Song', 'Rusted', 'Mystery', 'Burning Wood'],
+['Courtesan', 'Sea', 'Campfire', 'Cracked', 'Revenge', 'Metallic Odor'],
+['Merchant', 'Bridge', 'Tool', 'Vibrant', 'Prejudice', 'Light Rain'],
+['Healer', 'Prison', 'Storm', 'Worn', 'Discover', 'Animal Calls'],
+['Knight', 'Marsh', 'Ship', 'Pearlescent', 'Assassination', 'Clashing of Steel'],
+['Blacsmith', 'Desert', 'Shrine', 'Ruined', 'Promise', 'Pouring Tea'],
+['Thief', 'Lair', 'Poison', 'Valuable', 'Journey', 'Cooking Spices'],
+['Fortune Teller', 'Caravan', 'Artifact', 'Polished', 'Jealousy', 'Heavy Perfume'],
+['Noble', 'Ruins', 'Seal', 'Divine', 'Obsession', 'Fresh Blood'],
+['Spirit', 'Greatwood', 'Map', 'Forgotten', 'Endure', 'Buzzing in the Air'],
+['Sailor', 'Battlefield', 'Promise', 'Floating', 'Memory', 'A Slick Surface'],
+['Mage', 'Waterfall', 'Decoy', 'Cursed', 'Return', 'A Distant Glow'],
+['Soldier', 'Coast', 'Painting', 'Pulsating', 'Exchange', 'Falling Snow'],
+['Undertaker', 'Valley', 'Signal', 'Blighted', 'Redemption', 'Something Hissing Nearby'],
+['Witch', 'Palace', 'Chest', 'Frozen', 'Disease', 'Snapping Branches'],
+['Alchemist', 'Harbor', 'Treasure', 'Weathered', 'Love', 'Heavy, Humid Air'],
+['Smuggler', 'Catacombs', 'Rune', 'Sticky', 'Destroy', 'Burning in the Back ofYour Throat'],
+['Necromancer', 'Tower', 'Portal', 'Gilded', 'Break', 'Jangling Coins'],
+['Servant', 'Ravine', 'Name', 'Hungry', 'Guilt', 'Footsteps in Mud'],
+['Monk', 'Cairn', 'Obelisk', 'Massive', 'Forgive', 'The Smell of Old Parchment'],
+['Assassin', 'City', 'Statue', 'Colourful', 'Travel', 'Roasting Meat'],
+['Emissary', 'Graveyard', 'Tree', 'Broken', 'Arrive', 'Heavy Rain'],
+['Professor', 'Abbey', 'Bell', 'Silvery', 'Reconciliation', 'An Herbal Aroma'],
+['Dragon', 'Hideout', 'Arrow', 'Illegal', 'Control', 'Grinding Teeth'],
+['Artist', 'Altar', 'Amulet', 'Whispering', 'Risk', 'Spoiled Meat'],
+['Gladiator', 'River', 'Coin', 'Ashen', 'Abandon', 'Bracing Breeze'],
+['Engineer', 'Library', 'Key', 'Fragile', 'Repulse', 'Pressure on Your Mind'],
+['Farmer', 'Oasis', 'Instrument', 'Glassy', 'Mourn', 'A Cry for Help'],
+['Mercenary', 'Grove', 'Tomb', 'Glowing', 'Create', 'A Rumble ofThunder'],
+['Bandit', 'Tavern', 'Monument', 'Sentient', 'Expense', 'Fresh Baked Bread'],
+['Criminal', 'Castle', 'Flower', 'Singing', 'Flee', 'Heaving Coughs'],
+['Orphan', 'Hamlet', 'Pearl', 'Sodden', 'Hypocrisy', 'A Blaring Horn'],
+['Guildmaster', 'Dungeon', 'Wine', 'Fettered', 'Humiliatioon', 'Gentle Music'],
+['Ship Captain', 'Guild', 'Flag', 'Sealed', 'Respect', 'Distressed Animals'],
+['Coachman', 'Moor', 'Scroll', 'Animated', 'Panic', 'The Glint of Metal'],
+['Animal Tamer', 'Jungle', 'Medicine', 'Festering', 'Torment', 'Clean Soap'],
+['Steward', 'Inn', 'Oil', 'Petrified', 'Death', 'Loud Chewing'],
+['Demon', 'Outpost', 'Symbol', 'Bloody', 'Determined', 'Scrapping Wood'],
+['Preacher', 'Carnival', 'Crystal', 'Dirty', 'Influence', 'Old Manure'],
+['Traveler', 'Hot Spring', 'Rope', 'Frayed', 'Escort', 'Staccato Dripping'],
+['Scribe', 'Camp', 'Ink', 'Mossy', 'Distract', 'Cloying Incense'],
+['Guardian', 'Cave', 'Charm', 'Rare', 'Depart', 'A Medicinal Odor'],
+['Peddler', 'Thicket', 'Crown', 'Crystallized', 'Slumber', 'Startled Birds'],
+['Centaur', 'Chasm', 'Staff', 'Mechanical', 'Scheme', 'Scrapping Against Stone'],
+['Refugee', 'Lighthouse', 'Gauntlet', 'Jagged', 'Suppress', 'Dark Chanting'],
+['Bard', 'Island', 'Wedding', 'Silky', 'Freedom', 'A Tree Falling Nearby'],
+['Archmage', 'Quarry', 'Lens', 'Transparent', 'Resist', 'An Inhuman Roar'],
+['Goblin', 'Town', 'Horn', 'Uneven', 'Defend', 'Rotten Fruit'],
+['Magistrate', 'Fjord', 'Warning', 'Buried', 'Devour', 'Distant Cheering'],
+['Guard', 'Volcano', 'Ring', 'Golden', 'Investigate', 'Damp Clothing'],
+['Fairy', 'Mine', 'Tea', 'Melted', 'Fascination', 'Sharp Pain'],
+['Elder', 'Estate', 'Armor', 'Clockwork', 'Restore', 'A Shiver Down the Spine'],
+['Charlatan', 'Redoubt', 'Bottle', 'Coated', 'Search', 'Cold Metal'],
+['Beggar', 'Canyon', 'Law', 'Faded', 'Threat', 'Erratic Flashes ofLight'],
+['Golem', 'Barrow', 'Chain', 'Colour-Changing', 'Acquire', 'A Pair of Eyes Watching'],
+['Retired Hero', 'Crater', 'Festival', 'Lustrous', 'Passage', 'Fluttering Fabric'],
+['Djinn', 'Shipwreck', 'Mask', 'Smooth', 'Command', 'Heavy Breathing'],
+['Investigator', 'Station', 'Blood', 'Painted', 'Price', 'The Hiss of an Arrow'],
+['Warrior', 'Tundra', 'Throne', 'Magical', 'Transform', 'Chirping Insects'],
+['Druid', 'Meadow', 'Monster', 'Flowering', 'Hide', 'Dry, Crinkling Leaves'],
+['Adventurer', 'Vault', 'Lantern', 'Heavy', 'Survival', 'Distant Fire Smoke'],
+['Scientist', 'Fissure', 'Entrails', 'Elegant', 'Supply', 'Nearby Hoof Beats'],
+['Squire', 'Sanctuary', 'Urn', 'Hollow', 'Fortify', 'A Thick, Pungent Broth'],
+['Vigilante', 'Academy', 'Ritual', 'New', 'Battle', 'The Pop of Frying Food'],
+['Apprentice', 'Orchard', 'Clock', 'Bleached', 'Corrupt', 'An Earthy Musk'],
+['Hunter', 'Factory', 'Vial', 'Pliable', 'Defy', 'Charred Runes'],
+['Diplomat', 'Highlands', 'Dream', 'Musical', 'Warning', 'The Swirl of Colourful Fabric'],
+['Automaton', 'Laboratory', 'Skeleton', 'Restored', 'Duty', 'Coarse Fabric'],
+['Courier', 'Labyrinth', 'Spell', 'Unknown', 'Truth', 'Soft Muttering'],
+['Murderer', 'Mesa', 'Carving', 'Famous', 'Breach', 'A Heavy Fog'],
+['Crime Boss', 'Dig Site', 'Ceremony', 'Lightweight', 'Surrender', 'Fresh Flowers'],
+['Hermit', 'Church', 'Bow', 'Poisoned', 'Avoid', 'A Darting Shadow'],
+['Performer', 'Stronghold', 'Mirror', 'Oozing', 'Gather', 'Liquid Sloshing'],
+['Bounty Hunter', 'Spire', 'Funeral', 'Patterned', 'Deliver', 'Clouds of Dust'],
+['Warlord', 'Lagoon', 'Emblem', 'Fragrant', 'Capture', 'A Low- Pitched Grinding'],
+['Sage', 'College', 'Trap', 'Mind- Reading', 'Learn', 'The Bite of Strong Ale'],
+['Explorer', 'Plateau', 'Potion', 'Incomprehensible', 'Honor', 'Dragging Through Mud'],
+['Drunkard', 'Cathedral', 'Skull', 'Ordinary', 'Opportunity', 'The Aroma of Fine Wine'],
+['Pilgrim', 'Stable', 'Constellation', 'Shattered', 'Knowledge', 'Slithering Against Your Skin'],
+['Fisher', 'Shop', 'Grave', 'Overgrown', 'Reveal', 'Crashing Waves'],
+['Inventor', 'Watchtower', 'Bracelet', 'Distinctive', 'Danger', 'Whispered Prayers'],
+['Oracle', 'Refuge', 'Shipment', 'Smoldering', 'Challenge', 'Soggy, Uneven Ground'],
+['Scout', 'Citadel', 'Bone', 'Gnarled', 'Manipulate', 'Running Water']
+
+  
+];
+
+
+function tab_click(sender) {
+  $('button.selected').removeClass('selected');
+  $(sender).addClass('selected');
+
+  $('#oracle-result').attr('value', sender.value);
+}
+
+
+function oracle_query(scene, surge, roll, roll_unexpected) {
+
+
+  let r = roll;
+  if(r == null)
+    r = dice(100);
+
+  console.log(r);
+
+  if(r <= 50) {
+    r -= surge;
+  }
+  else {
+    r += surge;
+  }
+  if(r < 1) r = 1;
+  if(r > 100) r = 100;
+
+
+  let result = null;
+  let data = data_oracle_loom;
+  let result_enum = {
+    NO_AND_UNEXPECED: 1,
+    NO_BUT: 2,
+    NO_AND: 3,
+    NO: 4,
+    YES: 5,
+    YES_AND: 6,
+    YES_BUT: 7,
+    YES_AND_UNEXPECED: 8,
+
+  };
+  let i = 1;
+  for(i = 1; i <= data.length - 1; ++i) {
+    let current = data[i];
+    let range_check = current[0][scene];
+    if(range_check[0] <= r && r <= range_check[1]) {
+      result = current;
+      break;
+    }
+  }
+
+  let unexpected = null;
+  if(i == result_enum.NO_AND_UNEXPECED || i == result_enum.YES_AND_UNEXPECED) {
+    let unex_data = data_oracle_crge_unexpected;
+    let d = roll_unexpected || dice(unex_data.length - 1);
+    let unex = unex_data[d];
+    unexpected = {
+      result: d,
+      text: unex[0],
+      hint: unex[1]
+    };
+  }
+
+  if(i == result_enum.YES || i == result_enum.NO) {
+    surge += 2;
+  }
+  else {
+    surge = 0;
+  }
+
+  let images = null;
+  if(i == result_enum.YES_AND || i == result_enum.YES_BUT ||
+     i == result_enum.NO_AND || i == result_enum.NO_BUT ) {
+
+    images = [];
+    let n = dice(5);
+    let icons = data_icons_actions;
+    for(let i = 0; i < n; ++i) {
+      images.push(icons[dice(icons.length - 1)]);
+    }
+  }
+
+
+
+  $('#oracle-result').attr('surge', surge);
+  $('#oracle-surge').html(surge);
+
+  return {
+      roll: roll,
+      result: i,
+      text: result[1],
+      images: images,
+      unexpected: unexpected
+  };
+
+}
+
+function oracle_result_contents_click(sender) {
+  
+
+  let action = function() {
+    let scene = $('#oracle-result').attr('value');
+    let surge = $('#oracle-result').attr('surge');
+
+    let result = oracle_query(Number(scene), Number(surge));
+    let text = [
+      '<span>', result.text, '</span> ',
+      '<span>', result.unexpected?.text || '', '</span> ',
+    ];
+
+    let images = null;
+    if(result.images != null) {
+      images = [];
+      for(let i = 0; i < result.images.length; ++i) {
+        images.push(
+          [ '<span class="oracle-result-image">',
+            '<img width="45" height="45" src="',
+            result.images[i],
+            '"/>',
+            '</span>'
+          ].join('')
+        );
+      }
+    }
+
+    $(sender).html(text.join('') + (images?.join('') || ''));
+    // $(sender).attr('title', result.unexpected?.hint);
+    $('#oracle-result-contents-hint').html(result.unexpected?.hint || '');
+  };
+
+
+  sender.innerHTML = '<img src="img/spinner.svg" />';
+
+  setTimeout(function() {
+    action();
+  }, dice(750) + 250);
+
+}
+
+    </script>
+
+</html>
