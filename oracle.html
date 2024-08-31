@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <title>
-            RJ's RPG Tools
+            RJ's RPG Tools - Oracle
         </title>
 
         <link rel="icon" href="img/icons/ffffff/000000/1x1/delapouite/dice-twenty-faces-twenty.svg">
@@ -11,8 +11,10 @@
 
         <link href="css/dice.css" rel="stylesheet">
 
-        <script src="scripts/data/icons.js"></script>
+        <script src="scripts/util.js"></script>
         <script src="scripts/dice.js"></script>
+        <script src="scripts/data.js"></script>
+        <script src="scripts/data/icons.js"></script>
 
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
 
@@ -22,27 +24,71 @@
     </head>
 <style>
 
-    div {
+    ul {
+      margin-bottom: 0px;
     }
 
-    button {
+    textarea {
+        resize: none;
+        width: 100%;
+        height: 100%;
+        border: 0px;
+    }
+
+    textarea:hover {
+        border: none; /* Removes the border */
+        outline: none; /* Removes the outline */
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    .pointer {
+      cursor: pointer;
+    }
+
+    .red {
+      color: red;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .crossout {
+      text-decoration: line-through;
+    }
+
+    .max-width {
+      width: 100%;
+    }
+
+    .thread-tab {
+      margin-right: 5px;
+    }
+
+    .button-item {
+      border-radius: 5px;
+      border-bottom-left-radius: unset;
+      border-bottom-right-radius: unset;
       border-bottom-color: white;
     }
 
     .oracle-scene-stage {
-      border-radius: 5px;
-      border-bottom-left-radius: unset;
-      border-bottom-right-radius: unset;
     }
 
     button.selected {
-      background: none;
+      background: white;
       border: 2px solid black;
       border-bottom-color: white;
       position: relative;
       top: 2px;
     }
-
 
     #oracle-container {
       padding: 1em;;
@@ -52,16 +98,30 @@
     }
 
     #oracle-result {
-      border: 2px solid black;
       border-radius: 5px;
       border-top-left-radius: unset;
-
       padding: 2em;
-
       font-weight: bold;
       font-size: 2em;
       text-align: center;
+      border-left: 2px solid black;
+      border-right: 2px solid black;
+      border-top: 2px solid black;
+      border-bottom-left-radius: unset;
+      border-bottom-right-radius: unset;
+    }
 
+    #oracle-result-contents-hint {
+      border-left: 2px solid black;
+      border-right: 2px solid black;
+      border-bottom: 2px solid black;
+      border-radius: 5px;
+      border-top-left-radius: unset;
+      border-top-right-radius: unset;
+      padding-left: 1em;
+      padding-right: 1em;
+      padding-bottom: 1em;
+      text-align: center;
     }
 
     #oracle-result-contents {
@@ -76,14 +136,44 @@
       border: 1px solid black;
     }
 
-    .hidden {
-        display: none;
-    }
+/*********************************/
 
-    textarea {
-        width: 100%;
-        height: 100%;
-    }
+
+  #thread-container {
+    padding: 1em;
+  }
+
+  #thread-details {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-radius: 5px;
+    border-top-left-radius: unset;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+  }
+
+  #thread-details-contents {
+    padding: 10px;
+  }
+
+  #thread-details-contents-input {
+    height: 300px;
+  }
+
+  #threads-footer {
+    height: 2.5em;
+    text-align: right;
+    padding-right: 10px;
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+
+    border-radius: 5px;
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+  }
+
 
 </style>
 
@@ -95,9 +185,9 @@
         <div class="row">
             <div class="col-12">
               <div class="w3-bar w3-black">
-                <button class="w3-bar-item w3-button oracle-scene-stage selected" value="1" onclick="tab_click(this);">To Knowledge</button>
-                <button class="w3-bar-item w3-button oracle-scene-stage" value="2" onclick="tab_click(this);">To Conflict</button>
-                <button class="w3-bar-item w3-button oracle-scene-stage" value="3" onclick="tab_click(this);">To Endings</button>
+                <button type="oracle" class="w3-bar-item w3-button button-item oracle-scene-stage selected" value="1" onclick="tab_click(this);">To Knowledge</button>
+                <button type="oracle" class="w3-bar-item w3-button button-item oracle-scene-stage" value="2" onclick="tab_click(this);">To Conflict</button>
+                <button type="oracle" class="w3-bar-item w3-button button-item oracle-scene-stage" value="3" onclick="tab_click(this);">To Endings</button>
               </div>
             </div>
             <div class="col-sm">
@@ -107,27 +197,87 @@
                   </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm">
+            <div class="col-12">
                   <div id="oracle-result-contents-hint"> </div>
             </div>
         </div>
     </div>
   </div>
 
-    <div id="thread-main" class="hidden">
-        <div id="thread-edit">
-            <textarea></textarea>
+  <div id="thread-container">
+    <div id="threads">
+      <div class="row">
+        <div class="col-12">
+            <!--button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage selected" onclick="tab_click(this);">Thread 1</button>
+            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="tab_click(this);">Thread 2</button>
+            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="tab_click(this);">Thread 3</button>
+            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="tab_click(this);">Thread 4</button-->
+            <button  class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="new_thread_click(this);">Add Thread</button>
         </div>
 
-        <div id="thread-view">
-            thread view
+        <div class="col-sm">
+            <div id="thread-details">
+              <div id="thread-details-contents">
+                <div class="row">
+                  <div class="col-12 label"><span id="thread-title" field="title" class="pointer editable" onclick="thread_item_click(this);")>Thread 1 Long Title</span></div>
+                  <div class="col-12 label">Description</div>
+                  <div class="col-12">
+                    <span id="thread-description" field="description" class="pointer editable"  onclick="thread_item_click(this);")>
+                    We were hired to find the victim and the kidnapper.
+                    </span>
+                  </div>
+                  <div class="col-12 label">Facts</div>
+                  <div class="col-12">
+                      <ul id="thread-facts" field="facts">
+                        <li class="thread-list-item"><span class="pointer" onclick="thread_list_item_click(this);">The mother was not around during the incident</span></li>
+                        <li class="thread-list-item"><span class="pointer" onclick="thread_list_item_click(this);">The victim was trying to meet someone</span></li>
+                        <li class="thread-list-item"><span class="pointer" onclick="thread_list_item_click(this);">The victom is male</span></li>
+                        <li><span command="add-fact" class="pointer" onclick="thread_list_item_add(this);">Add Fact</span></li>
+                      </ul>
+                  </div>
+                  <div class="col-12 label">Questions / Rumors</div>
+                  <div class="col-12">
+                      <ul id="thread-questions" field="questions">
+                        <li class="thread-list-item" index="0"><span class="pointer" onclick="thread_list_item_click(this);">Where was the mother?</span></li>
+                        <li class="thread-list-item" index="1"><span class="pointer" onclick="thread_list_item_click(this);">What is the victim's name?</span></li>
+                        <li class="thread-list-item" index="2"><span class="pointer" onclick="thread_list_item_click(this);">Who was the victim trying to meet?</span></li>
+                        <li><span command="add-question" class="pointer" onclick="thread_list_item_add(this);">Add Question</span></li>
+                      </ul>
+                  </div>
+
+                  <div class="col-12 label">Notable Characters</div>
+                  <div class="col-sm character-list-item">Character Name 1</div>
+                  <div class="col-sm character-list-item">Character Name 2</div>
+                  <div class="col-sm character-list-item">Character Name 3</div>
+                  <div class="col-sm character-list-item">Character Name 4</div>
+                  <div class="col-sm">Add Existing NPC</div>
+
+                  <div class="col-12 label">Scenes</div>
+                  <div class="col-sm scene-list-item">Scene 1</div>
+                  <div class="col-sm scene-list-item">Scene 2</div>
+                  <div class="col-sm scene-list-item">Scene 3</div>
+                  <div class="col-sm scene-list-item">Scene 4</div>
+                  <div class="col-sm scene-list-item">Scene 5</div>
+                  <div class="col-sm">Add Scene</div>
+                </div>
+              </div>
+              <div id="thread-details-contents-input" class="hidden">
+                  <textarea id="thread-details-contents-input-textarea"></textarea>
+              </div>
+            </div>
         </div>
-        <div>
-            <button>Done</button>
+
+        <div class="col-12">
+            <div id="threads-footer">
+              <button>Edit</button>
+              <button>Ok</button>
+            </div>
         </div>
+
+      </div>
     </div>
+  </div>
+
 
 
 </body>
@@ -135,6 +285,37 @@
 
     <script type="text/javascript">
 
+
+function thread_new(data) {
+
+  let thread = {
+    id: data?.id || crypto.randomUUID(),
+    title: data?.title,
+    description: data?.description,
+    facts: data?.facts,
+    questions: data?.questions,
+    characters: data?.characters,
+    scenes: data?.scenes
+  };
+
+  // thread.facts = [
+  //   {status: 0, text: 'fact one'},
+  //   {status: 1, text: 'fact two'},
+  //   null, // {status: 1, text: 'fact thress'},
+  //   {status: 0, text: 'fact 3 one'},
+  //   {status: 1, text: 'fact 2 two'},
+  //   {status: 1, text: 'fact 1 thress'}
+  // ];
+
+  // thread.questions = [
+  //   {status: 0, text: 'one'},
+  //   {status: 1, text: 'two'},
+  //   {status: 1, text: 'thress'}
+  // ];
+
+
+  return thread;
+}
 
 let data_oracle_loom = [
   {id: 'oracle_cgre_loom', note: 'column 0 is a list of distributions for knowledge, conflict, ending'},
@@ -152,26 +333,26 @@ let data_oracle_loom = [
 
 let data_oracle_crge_unexpected = [
   { id: 'oracle_cgre_unexpected' },
-  [ 'Cross-stitch', 'choose another thread to be the main thread for the rest of the scene.'],
-  [ 'Entering the Red', 'threat of danger or combat arrives. The premise of the scene gets more dangerous in a way that forces the PC’s to respond by leaving, fighting, or taking their chances.'],
-  [ 'Enter Stage Left', 'a PC or NPC (new or pre-existing) arrives fresh in the scene.'],
-  [ 'Costume Change', 'an NPC drastically changes their mind, motivations, alliances, etc. for better or worse. This could be a big story reveal or a simple change of heart.'],
-  [ 'Foreshadowing', 'set a thread to be the main thread for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
-  [ 'Framing', 'an NPC (new or pre-existing) or object becomes critical to the main thread.'],
-  [ 'Key Grip', 'set the location or general elements for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
-  [ 'Limelit', 'the rest of the scene goes great for the PC’s. Assume that the majority of the questions pertaining to the main thread with regard to the scene are answered in a way that benefits the PC’s.'],
-  [ 'Montage', 'the timeframe of the scene changes to a montage of actions set across various scenes to move forward.'],
-  [ 'Pattern Change', 'the main thread gets modified, drastically. Whatever direction the main thread was heading, make a hard left. Use a generator, such as Rory’s Story Cubes, tarot cards or a random Wikipedia page, as necessary.'],
-  [ 'Reroll / Reserved', 'these slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
-  [ 'Reroll / Reserved', 'these slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
-  [ 'Reroll / Reserved', 'these slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
-  [ 'Set Change', 'scene continues in another location. The current thread remains as much as makes sense.'],
-  [ 'Six Degrees', 'a meaningful, but not always positive, connection forms between two PC’s and/or NPC’s.'],
-  [ 'To Endings', 'the next scene resolves or substantially moves forward a thread of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
-  [ 'To Conflict', 'the next scene centers on a conflict of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
-  [ 'To Knowledge', 'the next scene centers on lore or investigation of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
-  [ 'Tying Off ', 'the main thread resolves or substantially moves forward in this scene by narrative decree. This does not mean that the main thread cannot create follow-up threads.'],
-  [ 'Upstaged', 'an NPC makes a big move. If the NPC has any motivations, plot vectors, or goals they go into overdrive']
+  [ 'Foreshadowing', 'Set a thread to be the main thread for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
+  [ 'Tying Off ', 'The main thread resolves or substantially moves forward in this scene by narrative decree. This does not mean that the main thread cannot create follow-up threads.'],
+  [ 'To Conflict', 'The next scene centers on a conflict of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
+  [ 'Costume Change', 'An NPC drastically changes their mind, motivations, alliances, etc. for better or worse. This could be a big story reveal or a simple change of heart.'],
+  [ 'Key Grip', 'Set the location or general elements for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
+  [ 'To Knowledge', 'The next scene centers on lore or investigation of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
+  [ 'Framing', 'An NPC (new or pre-existing) or object becomes critical to the main thread.'],
+  [ 'Set Change', 'Scene continues in another location. The current thread remains as much as makes sense.'],
+  [ 'Upstaged', 'An NPC makes a big move. If the NPC has any motivations, plot vectors, or goals they go into overdrive'],
+  [ 'Pattern Change', 'The main thread gets modified, drastically. Whatever direction the main thread was heading, make a hard left. Use a generator, such as Rory’s Story Cubes, tarot cards or a random Wikipedia page, as necessary.'],
+  [ 'Limelit', 'The rest of the scene goes great for the PC’s. Assume that the majority of the questions pertaining to the main thread with regard to the scene are answered in a way that benefits the PC’s.'],
+  [ 'Entering the Red', 'Threat of danger or combat arrives. The premise of the scene gets more dangerous in a way that forces the PC’s to respond by leaving, fighting, or taking their chances.'],
+  [ 'To Endings', 'The next scene resolves or substantially moves forward a thread of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
+  [ 'Montage', 'The timeframe of the scene changes to a montage of actions set across various scenes to move forward.'],
+  [ 'Enter Stage Left', 'A PC or NPC (new or pre-existing) arrives fresh in the scene.'],
+  [ 'Cross-stitch', 'Choose another thread to be the main thread for the rest of the scene.'],
+  [ 'Six Degrees', 'A meaningful, but not always positive, connection forms between two PC’s and/or NPC’s.'],
+  [ 'Reroll / Reserved 1', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
+  [ 'Reroll / Reserved 2', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
+  [ 'Reroll / Reserved 3', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.']
 
 ];
 
@@ -285,16 +466,297 @@ let data_plot_hooks = [
 ];
 
 
-function tab_click(sender) {
-  $('button.selected').removeClass('selected');
-  $(sender).addClass('selected');
+let data_event_meaning_action = [
+  'Attainment', 'Starting', 'Neglect ', 'Fight', 'Recruit', 
+  'Triumph', 'Violate', 'Oppose', 'Malice', 'Communicate', 
+  'Persecute', 'Increase', 'Decrease', 'Abandon', 'Gratify', 
+  'Inquire', 'Antagonise', 'Move', 'Waste', 'Truce', 
+  'Release', 'Befriend', 'Judge', 'Desert', 'Dominate', 
+  'Procrastinate', 'Praise', 'Separate', 'Take', 'Break', 
+  'Heal', 'Delay', 'Stop', 'Lie', 'Return', 
+  'Immitate', 'Struggle', 'Inform', 'Bestow', 'Postpone', 
+  'Expose', 'Haggle', 'Imprison', 'Release', 'Celebrate', 
+  'Develop', 'Travel', 'Block', 'Harm', 'Debase', 
+  'Overindulge', 'Adjourn', 'Adversity', 'Kill', 'Disrupt', 
+  'Usurp', 'Create', 'Betray', 'Agree', 'Abuse', 
+  'Oppress', 'Inspect', 'Ambush', 'Spy', 'Attach', 
+  'Carry', 'Open', 'Carelessness', 'Ruin', 'Extravagance', 
+  'Trick', 'Arrive', 'Propose', 'Divide', 'Refuse', 
+  'Mistrust', 'Deceive', 'Cruelty', 'Intolerance', 'Trust', 
+  'Excitement', 'Activity', 'Assist', 'Care', 'Negligence', 
+  'Passion', 'Work hard', 'Control', 'Attract', 'Failure', 
+  'Pursue', 'Vengeance', 'Proceedings', 'Dispute', 'Punish', 
+  'Guide', 'Transform', 'Overthrow', 'Oppress', 'Change' ];
 
-  $('#oracle-result').attr('value', sender.value);
+let data_event_meaning_subject = [
+  'Goals', 'Dreams', 'Environment', 'Outside', 'Inside', 
+  'Reality', 'Allies', 'Enemies', 'Evil ', 'Good', 
+  'Emotions', 'Opposition', 'War', 'Peace', 'The innocent', 
+  'Love', 'The spiritual', 'The intellectual', 'New ideas', 'Joy', 
+  'Messages', 'Energy', 'Balance', 'Tension', 'Friendship', 
+  'The physical', 'A project', 'Pleasures', 'Pain', 'Possessions', 
+  'Benefits', 'Plans', 'Lies', 'Expectations', 'Legal matters', 
+  'Bureaucracy', 'Business ', 'A path', 'News', 'Exterior factors', 
+  'Advice', 'A plot', 'Competition', 'Prison', 'Illness', 
+  'Food', 'Attention', 'Success', 'Failure', 'Travel', 
+  'Jealousy', 'Dispute', 'Home', 'Investment', 'Suffering', 
+  'Wishes', 'Tactics', 'Stalemate', 'Randomness', 'Misfortune', 
+  'Death', 'Disruption', 'Power', 'A burden', 'Intrigues', 
+  'Fears', 'Ambush', 'Rumor', 'Wounds ', 'Extravagance', 
+  'A representative', 'Adversities', 'Opulence', 'Liberty', 'Military', 
+  'The mundane', 'Trials', 'Masses', 'Vehicle', 'Art', 
+  'Victory', 'Dispute', 'Riches', 'Status quo', 'Technology', 
+  'Hope', 'Magic', 'Illusions', 'Portals', 'Danger', 
+  'Weapons', 'Animals', 'Weather', 'Elements', 'Nature', 
+  'The public', 'Leadership', 'Fame', 'Anger', 'Information' ];
+
+
+function tab_click(sender) {
+
+  let $s = $(sender);
+
+  $s.parent().find('.selected').removeClass('selected');
+  $s.addClass('selected');
+
+  if($s.attr('type') == 'oracle') {
+    $('#oracle-result').attr('value', sender.value);
+
+    return;
+  }
+
+  if($s.attr('type') == 'threads') {
+    on_thread_tab_click(sender);
+  }
+}
+
+function new_thread_click(sender) {
+
+  let $s = $(sender);
+  let $p = $s.parent();
+
+  $p.find('.selected').removeClass('selected');
+
+
+  let new_thread = thread_new();
+  threads.push(new_thread );
+
+  $s.attr('onclick', 'tab_click(this);');
+  $s.attr('type', 'threads');
+  $s.attr('id', new_thread.id);
+  $s.html('Untitled');
+  $s.addClass('selected');
+
+  $p.append([
+    '<button class="w3-bar-item w3-button button-item thread-tab"',
+    'onclick="new_thread_click(this);">',
+    'Add Thread',
+    '</button>'
+  ].join(''));
+
+  thread_load(new_thread);
+
+}
+
+function on_thread_tab_click(sender) {
+  console.log('loading ' + sender.id);
+
+  $('#thread-details').attr('thread-id', sender.id);
+  
+  let t = get_current_thread();
+  thread_load(t)
+  
+}
+
+function thread_item_click(sender) {
+  console.log('editing ' + sender.id);
+  let $s = $(sender);
+  let $p = $s.parent();
+  let val = $s.html().trim();
+
+  $s.addClass('hidden');
+
+  let input = [
+    '<input type="text" value="', val, '" ',
+    'class="max-width"',
+    'onblur="thread_item_edit_blur(this);"',
+    'onkeypress="thread_item_edit_keypress(this, event);"',
+    '/>'
+  ];
+
+  $p.append(input.join(''));
+  let $in = $p.find('input');
+  $in.focus();
+  $in[0].setSelectionRange(val.length, val.length);
+}
+
+function thread_item_edit_blur(sender) {
+  on_thread_edit_finish(sender);
+}
+
+function thread_item_edit_keypress(sender, event) {
+  if(event.keyCode === 13){
+    on_thread_edit_finish(sender);
+  }
+}
+
+function on_thread_edit_finish(sender) {
+  console.log('edit item lost focus');
+  let $s = $(sender);
+  let $p = $s.parent();
+
+  let $v = $p.find('span');
+  let text = $s.val().trim();
+  $v.html( text.length == 0 ? 'untitled' : text );
+  if($v.hasClass('hidden')) {
+    $v.removeClass('hidden');
+    $s.remove();
+  }
+
+  // var id = $('#thread-details').attr('thread-id');
+  // let t = threads.find( (item) => {return item.id == id} );
+  let t = get_current_thread();
+  if(t) {
+    t[$v.attr('field')] = text;
+  }
+}
+
+function get_current_thread() {
+
+  var id = $('#thread-details').attr('thread-id');
+  let t = threads.find( (item) => {return item.id == id} );
+
+  return t;
+}
+
+function thread_list_item_click(sender) {
+  console.log('list item click');
+
+  let $s = $(sender);
+  let $p = $s.parent();
+  let state = $s.attr('state');
+  let index = Number($p.attr('index'));
+  let thread = get_current_thread();
+  let field = $p.parent().attr('field');
+  
+  if(state == 'crossed') {
+    $s.removeClass('crossout');
+    $s.attr('state', '');
+    let $d = $p.find('.delete-item');
+    $d.remove();
+    thread[field][index].status = 0;
+  }
+  else {
+    $s.addClass('crossout');
+    $s.attr('state', 'crossed');
+    let x = [ ' ',
+      '<span class="delete-item pointer bold red" ',
+      'onclick="thread_list_item_delete(this);"',
+      '>X</span>'
+    ];
+    $p.append(x.join(''));
+    thread[field][index].status = 1;
+  }
+}
+
+function thread_list_item_delete(sender) {
+  let $s = $(sender);
+  let $p = $s.parent();
+
+  // let $v = $p.find('span');
+
+  let index = Number($p.attr('index')); // Number($v.attr('index'));
+
+  let $pp = $p.parent();
+
+  let t = get_current_thread();
+  let field = $pp.attr('field');
+  t[field][index] = null;
+
+
+  $p.remove();
+}
+
+function thread_list_item_add(sender) {
+  let $s = $(sender);
+  let $p = $s.parent();
+  let text = $s.html();
+
+  $s.remove();
+
+  let input = [
+    '<input type="text" ',
+    'class="max-width"',
+    'onblur="thread_list_item_add_blur(this);"',
+    'onkeypress="thread_list_item_add_keypress(this, event);"',
+    '/>'
+  ].join('');
+
+  $p.append(input);
+
+  let add_item = ['<li>',
+    '<span command="add-question" ',
+    'class="pointer" ',
+    'onclick="thread_list_item_add(this);">',
+    text,
+    '</span></li>'].join('');
+
+  $p.parent().append(add_item);
+
+  let $in = $p.find('input');
+  $in.focus();
+  $in[0].setSelectionRange(0, 0);
+}
+
+function thread_list_item_add_blur(sender) {
+  on_thread_list_item_add_finish(sender);
+}
+
+function thread_list_item_add_keypress(sender, event) {
+  if(event.keyCode === 13){
+    on_thread_list_item_add_finish(sender);
+  }
+}
+
+function on_thread_list_item_add_finish(sender) {
+  let $s = $(sender);
+  let $p = $s.parent();
+  
+  let text = $s.val().trim();
+
+  if(text.trim().length == 0) {
+    $p.remove();
+    return;
+  }
+  
+  if($p.find('span').length == 0) {
+    let span = [ '<span ',
+      'class="pointer" ',
+      'onclick="thread_list_item_click(this);">',
+      text,
+      '</span></li>'].join('');
+
+    $p.append(span);
+
+    $s.remove();
+    
+    $pp = $p.parent();
+    let field = $pp.attr('field');
+    let t = get_current_thread();
+    if(t) {
+      if(t[field] == null) {
+        t[field] = [];
+      }
+
+      let index = t[field].length;
+      t[field].push(text);
+      $p.find('span').attr('index', index); 
+    }
+
+  }
 }
 
 
 function oracle_query(scene, surge, roll, roll_unexpected) {
-
 
   let r = roll;
   if(r == null)
@@ -410,18 +872,134 @@ function oracle_result_contents_click(sender) {
     }
 
     $(sender).html(text.join('') + (images?.join('') || ''));
-    // $(sender).attr('title', result.unexpected?.hint);
     $('#oracle-result-contents-hint').html(result.unexpected?.hint || '');
   };
 
 
-  sender.innerHTML = '<img src="img/spinner.svg" />';
+  sender.innerHTML = '<img src="img/spinner.svg" width="45" height="45" />';
 
   setTimeout(function() {
     action();
   }, dice(750) + 250);
 
 }
+
+function plot_hook(r1, r2, r3, r4, r5, r6) {
+
+  let data = data_plot_hooks;
+
+  let rolls = [ r1, r2, r3, r4, r5, r6 ];
+
+  let init = function(v) {
+    if(v == null) {
+      return dice(data.length - 1);
+    }
+    return v;
+  }
+
+  for(let i = 0; i < rolls.length; ++i) {
+    rolls[i] = init(rolls[i]);
+  }
+  
+  let results = [];
+  for(i = 0; i < rolls.length; ++i) {
+    let r = data_lookup_single(data, rolls[i]);
+    results.push([
+      '<span>', r.result[i], '</span> '
+    ].join(''));
+  }
+
+  return results.join('');
+}
+
+
+function thread_load(thread) {
+
+  if(thread == null)
+    return;
+
+  clear_thread_contents();
+
+  $('#thread-details').attr('thread-id', thread.id);
+  $('#thread-title').html(thread.title);
+  $('#thread-description').html(thread.description);
+
+  let prepend_new_li = function($element, i, crossed, text) {
+    
+    let x = '';
+    if(crossed) {
+      x = [ ' ',
+        '<span class="delete-item pointer bold red" ',
+        'onclick="thread_list_item_delete(this);">',
+        'X',
+        '</span>'
+      ].join('');
+    }
+
+    let li = [ 
+      '<li class="thread-list-item" index="',
+      i,
+      '"><span class="pointer ',
+      crossed ? 'crossout' : '',
+      '"' ,
+      'onclick="thread_list_item_click(this);" ', 
+      crossed ? 'state="crossed"' : '',
+      '>',
+      text,
+      '</span>',
+      x,
+      '</li>'].join('');
+
+    $element.prepend(li);
+  }
+
+  if(thread.facts) {
+    let facts = thread.facts.filter((element) => {return element != null});
+    thread.facts = facts;
+    let $q = $('#thread-facts');
+    let data = thread.facts;
+    for(let i = data.length - 1; i >= 0; i--) {
+      let current = data[i];
+      prepend_new_li($q, i, current.status, current.text);
+    }
+  }
+
+  if(thread.questions) {
+    let questions = thread.questions.filter((element) => {return element != null});
+    thread.questions= questions;
+    let $q = $('#thread-questions');
+    let data = thread.questions;
+    for(let i = data.length - 1; i >= 0; i--) {
+      let current = data[i];
+      prepend_new_li($q, i, current.status, current.text);
+    }
+  }
+}
+
+function clear_thread_contents() {
+  let text_ids = [
+    '#thread-title',
+    '#thread-description'
+  ];
+
+  for(i = 0; i < text_ids.length; ++i) {
+    $(text_ids[i]).html('untitled');
+  }
+
+  $('.thread-list-item').remove();
+  $('.character-list-item').remove();
+  $('.scene-list-item').remove();
+}
+
+let threads = [];
+
+function on_load() {
+  // threads.push(thread_new());
+
+  // thread_load(threads[0]);
+}
+
+on_load();
 
     </script>
 

@@ -12,6 +12,7 @@
     <link rel="icon" href="img/icons/ffffff/000000/1x1/delapouite/dice-twenty-faces-twenty.svg">
     <link href="css/dice.css" rel="stylesheet">
     
+    <script src="scripts/util.js"></script>
     <script src="scripts/dice.js"></script>
     <script src="scripts/data/icons.js"></script>
     <script src="scripts/data/npc.js"></script>
@@ -554,35 +555,6 @@ function ui_entity_display(entity) {
   ui_entity_focus(entity);
 }
 
-
-function _(id) {
-  return document.getElementById(id);
-}
-
-function dom_item_new(type, id, text, class_names)
-{
-    let item = document.createElement(type);
-
-    if(id)
-        item.id = id;
-
-    if(text)
-        item.innerHTML = text;
-
-    if(class_names) {
-      item.className = class_names;
-    }
-
-    return item;
-}
-
-function div_new(id, text, class_names) {
-  return dom_item_new('div', id, text, class_names);
-}
-
-function span_new(id, text, class_names) {
-  return dom_item_new('span', id, text, class_names);
-}
 
 
 function ui_entity_render(entity) {
