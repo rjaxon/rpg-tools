@@ -735,6 +735,9 @@ function on_thread_list_item_add_finish(sender) {
       text,
       '</span></li>'].join('');
 
+    if($p.hasClass('thread-list-item') == false ) {
+      $p.addClass('thread-list-item');
+    }
     $p.append(span);
 
     $s.remove();
@@ -748,7 +751,7 @@ function on_thread_list_item_add_finish(sender) {
       }
 
       let index = t[field].length;
-      t[field].push(text);
+      t[field].push({status: 0, text: text});
       $p.find('span').attr('index', index); 
     }
 
