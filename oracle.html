@@ -15,11 +15,12 @@
         <script src="scripts/dice.js"></script>
         <script src="scripts/data.js"></script>
         <script src="scripts/data/icons.js"></script>
+        <script src="scripts/data/oracle.js"></script>
 
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
 
     </head>
 <style>
@@ -66,6 +67,14 @@
 
     .max-width {
       width: 100%;
+    }
+
+    .pad-10px {
+      padding: 10px;
+    }
+
+    .align-right {
+      text-align: right;
     }
 
     .thread-tab {
@@ -174,6 +183,35 @@
     border-top-right-radius: unset;
   }
 
+  #thread-scene {
+  }
+
+  #thread-scene-log {
+    height: 500px;
+    overflow-y: scroll;
+  }
+
+  .thread-log-system {
+    color: red;
+  }
+/
+  .thread-log-gm {
+    color: green;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+  }
+
+  .thread-log-player {
+    color: blue;
+    text-align: right;
+    background: #eee;
+    border-radius: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 5px;
+  }
+
 
 </style>
 
@@ -207,7 +245,7 @@
   <div id="thread-container">
     <div id="threads">
       <div class="row">
-        <div class="col-12">
+        <div class="col-12 ">
             <!--button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage selected" onclick="tab_click(this);">Thread 1</button>
             <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="tab_click(this);">Thread 2</button>
             <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="tab_click(this);">Thread 3</button>
@@ -217,7 +255,7 @@
 
         <div class="col-sm">
             <div id="thread-details">
-              <div id="thread-details-contents">
+              <div id="thread-details-contents" class="">
                 <div class="row">
                   <div class="col-12 label"><span id="thread-title" field="title" class="pointer editable" onclick="thread_item_click(this);")>Thread 1 Long Title</span></div>
                   <div class="col-12 label">Description</div>
@@ -261,9 +299,59 @@
                   <div class="col-sm">Add Scene</div>
                 </div>
               </div>
-              <div id="thread-details-contents-input" class="hidden">
-                  <textarea id="thread-details-contents-input-textarea"></textarea>
+              <div id="thread-scene" >
+                <div id="thread-scene-log" class="col-12">
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                  <div class="thread-log-gm">GM: gm text</div>
+                  <div class="thread-log-player">Sullivan: character text text textt text</div>
+                </div>
+                <div id="thread-scene-input" class="col-12 pad-10px" style="border-top: 2px solid black;">
+                  <div class="row">
+                    <div class="col-6">
+                      <button type="scene-button" userid="gm" class="w3-bar-item w3-button button-item selected" value="1" onclick="thread_scene_input_tab_click(this);">GM</button>
+                      <button type="scene-button" userid="a-char-guid" class="w3-bar-item w3-button button-item " value="1" onclick="thread_scene_input_tab_click(this);">Sullivan</button>
+                    </div>
+                    <div class="col-6 align-right">
+                      <button id="query-oracle" type="query-oracle" class="" value="1" onclick="">Query Oracle</button>
+                    </div>
+                    <div class="col-12">
+                      <input type="text" class="max-width" onkeypress="thread_scene_input_keypress(this, event)" />
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+            <div class="scene">
             </div>
         </div>
 
@@ -284,6 +372,248 @@
 
 
     <script type="text/javascript">
+
+class Oracle {
+
+  constructor() {
+    this.surge = 0;
+    this.scene = 1;
+    this.history = [];
+    this.expectations = data_oracle_crge_unexpected;
+
+    this.query = oracle_query;
+
+    // ({ } )
+    this.on_query_result = [];
+
+    // (new_surge_value)
+    this.on_set_surge = [];
+  }
+  
+  // query(roll, roll_unexpected) {
+
+  //   if(this.constructor.name != 'Oracle') { return; }
+
+  //   let surge = this.surge;
+  //   let scene = this.scene;
+
+  //   let r = roll;
+  //   if(r == null)
+  //     r = dice(100);
+
+  //   console.log(r);
+
+  //   if(r <= 50) {
+  //     r -= surge;
+  //   }
+  //   else {
+  //     r += surge;
+  //   }
+  //   if(r < 1) r = 1;
+  //   if(r > 100) r = 100;
+
+
+  //   let result = null;
+  //   let data = data_oracle_loom;
+
+  //   let result_enum = {
+  //     NO_AND_UNEXPECTED: 1,
+  //     NO_BUT: 2,
+  //     NO_AND: 3,
+  //     NO: 4,
+  //     YES: 5,
+  //     YES_AND: 6,
+  //     YES_BUT: 7,
+  //     YES_AND_UNEXPECTED: 8,
+  //   };
+
+  //   let i = 1;
+  //   for(i = 1; i <= data.length - 1; ++i) {
+  //     let current = data[i];
+  //     let range_check = current[0][scene];
+  //     if(range_check[0] <= r && r <= range_check[1]) {
+  //       result = current;
+  //       break;
+  //     }
+  //   }
+
+  //   let unexpected = null;
+  //   if(i == result_enum.NO_AND_UNEXPECTED || i == result_enum.YES_AND_UNEXPECTED) {
+  //     let unex_data = data_oracle_crge_unexpected;
+  //     let d = roll_unexpected || dice(unex_data.length - 1);
+  //     let unex = unex_data[d];
+  //     unexpected = {
+  //       result: d,
+  //       text: unex[0],
+  //       hint: unex[1]
+  //     };
+  //   }
+
+  //   if(i == result_enum.YES || i == result_enum.NO) {
+  //     surge += 2;
+  //   }
+  //   else {
+  //     surge = 0;
+  //   }
+
+  //   let images = null;
+  //   if(i == result_enum.YES_AND || i == result_enum.YES_BUT ||
+  //      i == result_enum.NO_AND || i == result_enum.NO_BUT ) {
+
+  //     images = [];
+  //     let n = dice(5);
+  //     let icons = data_icons_actions;
+  //     for(let i = 0; i < n; ++i) {
+  //       images.push(icons.length - 1);
+  //     }
+  //   }
+  //   
+  //   let roll_result = {
+  //       roll: r,
+  //       result: i,
+  //       text: result[1],
+  //       images: images,
+  //       unexpected: unexpected
+  //   };
+
+  //   if(this.history.length > 3) {
+  //     this.history.shift();
+  //   }
+
+  //   this.history.push(roll_result);
+
+  //   this.on_query_result.forEach( (func) => { func(roll_result) } );
+  // }
+
+
+  // callback(oracle, roll_result)
+  add_on_query_result_observer(callback) {
+    this.on_query_result.push(callback);
+  }
+
+  add_on_set_surge_observer(callback) {
+    this.on_set_surge.push(callback);
+  }
+
+  set_surge(s) {
+    this.surge = s;
+    this.on_set_surge.forEach( callback => { callback(this.surge); } );
+  }
+};
+
+
+function oracle_query(_scene, _surge, roll, roll_unexpected) {
+
+  if(this.constructor.name != 'Oracle') { return; }
+
+  let surge = this.surge; 
+  let scene = this.scene;
+
+  let r = roll;
+  if(r == null)
+    r = dice(100);
+
+  if(r <= 50) {
+    r -= surge;
+  }
+  else {
+    r += surge;
+  }
+  if(r < 1) r = 1;
+  if(r > 100) r = 100;
+
+
+  let result = null;
+  let data = data_oracle_loom;
+  let result_enum = {
+    NO_AND_UNEXPECTED: 1,
+    NO_BUT: 2,
+    NO_AND: 3,
+    NO: 4,
+    YES: 5,
+    YES_AND: 6,
+    YES_BUT: 7,
+    YES_AND_UNEXPECTED: 8,
+
+  };
+  let i = 1;
+  for(i = 1; i <= data.length - 1; ++i) {
+    let current = data[i];
+    let range_check = current[0][scene];
+    if(range_check[0] <= r && r <= range_check[1]) {
+      result = current;
+      break;
+    }
+  }
+
+  let unexpected = null;
+  if(i == result_enum.NO_AND_UNEXPECTED || i == result_enum.YES_AND_UNEXPECTED) {
+    let unex_data = data_oracle_crge_unexpected;
+    let d = roll_unexpected || dice(unex_data.length - 1);
+    let unex = unex_data[d];
+    unexpected = {
+      result: d,
+      text: unex[0],
+      hint: unex[1]
+    };
+  }
+
+  if(i == result_enum.YES || i == result_enum.NO) {
+    surge += 2;
+  }
+  else {
+    surge = 0;
+  }
+
+  this.set_surge(surge);
+
+  let images = null;
+  if(i == result_enum.YES_AND || i == result_enum.YES_BUT ||
+     i == result_enum.NO_AND || i == result_enum.NO_BUT ) {
+
+    images = [];
+    let n = dice(5);
+    let icons = data_icons_actions;
+    for(let i = 0; i < n; ++i) {
+      images.push(dice(icons.length - 1));
+    }
+  }
+
+  let roll_result = {
+      roll: r,
+      result: i,
+      text: result[1],
+      images: images,
+      unexpected: unexpected
+  };
+  
+  if(this.history.length > 3) {
+    this.history.shift();
+  }
+  this.history.push(roll_result);
+
+  this.on_query_result.forEach( (func) => { func(this, roll_result) } );
+
+  // return roll_result;
+}
+
+
+// function oracle_new() {
+//   let oracle = { 
+//     surge: 0,
+//     scene_stage: 1,
+//     history: [],
+//     expectations: data_oracle_crge_unexpected,
+// 
+//     query: oracle_query,
+//     
+//     on_query_result: []
+//   };
+// 
+//   return oracle;
+// }
+
+let oracle;
 
 
 function thread_new(data) {
@@ -316,199 +646,6 @@ function thread_new(data) {
 
   return thread;
 }
-
-let data_oracle_loom = [
-  {id: 'oracle_cgre_loom', note: 'column 0 is a list of distributions for knowledge, conflict, ending'},
-         /*  | knowledge |  conflict |  endings   | */
-    [ [[0, 0], [  1,   5], [  1,   2], [  1,   1]  ], 'No, and unexpectedly'],
-    [ [[0, 0], [  6,  15], [  3,   6], [  2,   2]  ], 'No, but'],
-    [ [[0, 0], [ 16,  20], [  7,  16], [  3,  20]  ], 'No, and'],
-    [ [[0, 0], [ 21,  50], [ 17,  50], [ 21,  50]  ], 'No'],
-    [ [[0, 0], [ 51,  80], [ 51,  84], [ 51,  80]  ], 'Yes'],
-    [ [[0, 0], [ 81,  85], [ 85,  94], [ 81,  98]  ], 'Yes, and'],
-    [ [[0, 0], [ 86,  95], [ 95,  98], [ 99,  99]  ], 'Yes, but'],
-    [ [[0, 0], [ 96, 100], [ 99, 100], [100, 100]  ], 'Yes, and unexpectedly'],
-];
-
-
-let data_oracle_crge_unexpected = [
-  { id: 'oracle_cgre_unexpected' },
-  [ 'Foreshadowing', 'Set a thread to be the main thread for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
-  [ 'Tying Off ', 'The main thread resolves or substantially moves forward in this scene by narrative decree. This does not mean that the main thread cannot create follow-up threads.'],
-  [ 'To Conflict', 'The next scene centers on a conflict of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
-  [ 'Costume Change', 'An NPC drastically changes their mind, motivations, alliances, etc. for better or worse. This could be a big story reveal or a simple change of heart.'],
-  [ 'Key Grip', 'Set the location or general elements for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
-  [ 'To Knowledge', 'The next scene centers on lore or investigation of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
-  [ 'Framing', 'An NPC (new or pre-existing) or object becomes critical to the main thread.'],
-  [ 'Set Change', 'Scene continues in another location. The current thread remains as much as makes sense.'],
-  [ 'Upstaged', 'An NPC makes a big move. If the NPC has any motivations, plot vectors, or goals they go into overdrive'],
-  [ 'Pattern Change', 'The main thread gets modified, drastically. Whatever direction the main thread was heading, make a hard left. Use a generator, such as Rory’s Story Cubes, tarot cards or a random Wikipedia page, as necessary.'],
-  [ 'Limelit', 'The rest of the scene goes great for the PC’s. Assume that the majority of the questions pertaining to the main thread with regard to the scene are answered in a way that benefits the PC’s.'],
-  [ 'Entering the Red', 'Threat of danger or combat arrives. The premise of the scene gets more dangerous in a way that forces the PC’s to respond by leaving, fighting, or taking their chances.'],
-  [ 'To Endings', 'The next scene resolves or substantially moves forward a thread of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
-  [ 'Montage', 'The timeframe of the scene changes to a montage of actions set across various scenes to move forward.'],
-  [ 'Enter Stage Left', 'A PC or NPC (new or pre-existing) arrives fresh in the scene.'],
-  [ 'Cross-stitch', 'Choose another thread to be the main thread for the rest of the scene.'],
-  [ 'Six Degrees', 'A meaningful, but not always positive, connection forms between two PC’s and/or NPC’s.'],
-  [ 'Reroll / Reserved 1', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
-  [ 'Reroll / Reserved 2', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
-  [ 'Reroll / Reserved 3', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.']
-
-];
-
-
-// https://alyssalostinspace.com/wp-content/uploads/2022/09/d100-keyword-chart.pdf
-let data_plot_hooks = [
-  {id: 'plot_hooks'},
-  /* who, where, what, description, additional element, sensory detail */
-['Priest', 'Village', 'Pyre', 'Decayed', 'Fall', 'Rustling Leaves'],
-['Ghost', 'Plains', 'Tome', 'Abandoned', 'Puzzle', 'Eerie Silence'],
-['Minstrel', 'Lake', 'Lock', 'Scorched', 'Escape', 'Birdsong'],
-['Heretic', 'Cliffs', 'Cage', 'Sparkling', 'Fear', 'Distant Shouts'],
-['Veteran', 'Fortress', 'Heirloom', 'Embroidered', 'Betray', 'Ominous Echo'],
-['Trickster', 'Wasteland', 'Drug', 'Torn', 'Drown', 'Thick Smoke'],
-['Researcher', 'Farm', 'Book', 'Damaged', 'Despair', 'Wet Earth'],
-['Cultist', 'Swamp', 'Sword', 'Ancient', 'Loss', 'Damp Wood'],
-['Ruler', 'Glade', 'Totem', 'Carved', 'Marriage', 'A Swinging Blade'],
-['Prophet', 'Sewers', 'Dagger', 'Ornate', 'Extortion', 'Crackling Fire'],
-['Pirate', 'Forest', 'Egg', 'Possessed', 'Blessing', 'Bubbling Cauldron'],
-['Cartographer', 'Trail', 'Door', 'Small', 'Feud', 'Soft Weeping'],
-['Scholar', 'Monastery', 'Secret', 'Stolen', 'Protect', 'Shattering Glass'],
-['Monk', 'Garden', 'Letter', 'corrupted', 'Heresy', 'Tingling Skin'],
-['Slave', 'Mountains', 'Curse', 'Enchanted', 'Climb', 'Quiet Singing'],
-['Child', 'Observatory', 'Puzzle', 'Forged', 'Espionage', 'Beating ofLarge Wings'],
-['Spy', 'Museum', 'Shield', 'Collapsed', 'Belief', 'Sulfuric Odor'],
-['God', 'Temple', 'Song', 'Rusted', 'Mystery', 'Burning Wood'],
-['Courtesan', 'Sea', 'Campfire', 'Cracked', 'Revenge', 'Metallic Odor'],
-['Merchant', 'Bridge', 'Tool', 'Vibrant', 'Prejudice', 'Light Rain'],
-['Healer', 'Prison', 'Storm', 'Worn', 'Discover', 'Animal Calls'],
-['Knight', 'Marsh', 'Ship', 'Pearlescent', 'Assassination', 'Clashing of Steel'],
-['Blacsmith', 'Desert', 'Shrine', 'Ruined', 'Promise', 'Pouring Tea'],
-['Thief', 'Lair', 'Poison', 'Valuable', 'Journey', 'Cooking Spices'],
-['Fortune Teller', 'Caravan', 'Artifact', 'Polished', 'Jealousy', 'Heavy Perfume'],
-['Noble', 'Ruins', 'Seal', 'Divine', 'Obsession', 'Fresh Blood'],
-['Spirit', 'Greatwood', 'Map', 'Forgotten', 'Endure', 'Buzzing in the Air'],
-['Sailor', 'Battlefield', 'Promise', 'Floating', 'Memory', 'A Slick Surface'],
-['Mage', 'Waterfall', 'Decoy', 'Cursed', 'Return', 'A Distant Glow'],
-['Soldier', 'Coast', 'Painting', 'Pulsating', 'Exchange', 'Falling Snow'],
-['Undertaker', 'Valley', 'Signal', 'Blighted', 'Redemption', 'Something Hissing Nearby'],
-['Witch', 'Palace', 'Chest', 'Frozen', 'Disease', 'Snapping Branches'],
-['Alchemist', 'Harbor', 'Treasure', 'Weathered', 'Love', 'Heavy, Humid Air'],
-['Smuggler', 'Catacombs', 'Rune', 'Sticky', 'Destroy', 'Burning in the Back ofYour Throat'],
-['Necromancer', 'Tower', 'Portal', 'Gilded', 'Break', 'Jangling Coins'],
-['Servant', 'Ravine', 'Name', 'Hungry', 'Guilt', 'Footsteps in Mud'],
-['Monk', 'Cairn', 'Obelisk', 'Massive', 'Forgive', 'The Smell of Old Parchment'],
-['Assassin', 'City', 'Statue', 'Colourful', 'Travel', 'Roasting Meat'],
-['Emissary', 'Graveyard', 'Tree', 'Broken', 'Arrive', 'Heavy Rain'],
-['Professor', 'Abbey', 'Bell', 'Silvery', 'Reconciliation', 'An Herbal Aroma'],
-['Dragon', 'Hideout', 'Arrow', 'Illegal', 'Control', 'Grinding Teeth'],
-['Artist', 'Altar', 'Amulet', 'Whispering', 'Risk', 'Spoiled Meat'],
-['Gladiator', 'River', 'Coin', 'Ashen', 'Abandon', 'Bracing Breeze'],
-['Engineer', 'Library', 'Key', 'Fragile', 'Repulse', 'Pressure on Your Mind'],
-['Farmer', 'Oasis', 'Instrument', 'Glassy', 'Mourn', 'A Cry for Help'],
-['Mercenary', 'Grove', 'Tomb', 'Glowing', 'Create', 'A Rumble ofThunder'],
-['Bandit', 'Tavern', 'Monument', 'Sentient', 'Expense', 'Fresh Baked Bread'],
-['Criminal', 'Castle', 'Flower', 'Singing', 'Flee', 'Heaving Coughs'],
-['Orphan', 'Hamlet', 'Pearl', 'Sodden', 'Hypocrisy', 'A Blaring Horn'],
-['Guildmaster', 'Dungeon', 'Wine', 'Fettered', 'Humiliatioon', 'Gentle Music'],
-['Ship Captain', 'Guild', 'Flag', 'Sealed', 'Respect', 'Distressed Animals'],
-['Coachman', 'Moor', 'Scroll', 'Animated', 'Panic', 'The Glint of Metal'],
-['Animal Tamer', 'Jungle', 'Medicine', 'Festering', 'Torment', 'Clean Soap'],
-['Steward', 'Inn', 'Oil', 'Petrified', 'Death', 'Loud Chewing'],
-['Demon', 'Outpost', 'Symbol', 'Bloody', 'Determined', 'Scrapping Wood'],
-['Preacher', 'Carnival', 'Crystal', 'Dirty', 'Influence', 'Old Manure'],
-['Traveler', 'Hot Spring', 'Rope', 'Frayed', 'Escort', 'Staccato Dripping'],
-['Scribe', 'Camp', 'Ink', 'Mossy', 'Distract', 'Cloying Incense'],
-['Guardian', 'Cave', 'Charm', 'Rare', 'Depart', 'A Medicinal Odor'],
-['Peddler', 'Thicket', 'Crown', 'Crystallized', 'Slumber', 'Startled Birds'],
-['Centaur', 'Chasm', 'Staff', 'Mechanical', 'Scheme', 'Scrapping Against Stone'],
-['Refugee', 'Lighthouse', 'Gauntlet', 'Jagged', 'Suppress', 'Dark Chanting'],
-['Bard', 'Island', 'Wedding', 'Silky', 'Freedom', 'A Tree Falling Nearby'],
-['Archmage', 'Quarry', 'Lens', 'Transparent', 'Resist', 'An Inhuman Roar'],
-['Goblin', 'Town', 'Horn', 'Uneven', 'Defend', 'Rotten Fruit'],
-['Magistrate', 'Fjord', 'Warning', 'Buried', 'Devour', 'Distant Cheering'],
-['Guard', 'Volcano', 'Ring', 'Golden', 'Investigate', 'Damp Clothing'],
-['Fairy', 'Mine', 'Tea', 'Melted', 'Fascination', 'Sharp Pain'],
-['Elder', 'Estate', 'Armor', 'Clockwork', 'Restore', 'A Shiver Down the Spine'],
-['Charlatan', 'Redoubt', 'Bottle', 'Coated', 'Search', 'Cold Metal'],
-['Beggar', 'Canyon', 'Law', 'Faded', 'Threat', 'Erratic Flashes ofLight'],
-['Golem', 'Barrow', 'Chain', 'Colour-Changing', 'Acquire', 'A Pair of Eyes Watching'],
-['Retired Hero', 'Crater', 'Festival', 'Lustrous', 'Passage', 'Fluttering Fabric'],
-['Djinn', 'Shipwreck', 'Mask', 'Smooth', 'Command', 'Heavy Breathing'],
-['Investigator', 'Station', 'Blood', 'Painted', 'Price', 'The Hiss of an Arrow'],
-['Warrior', 'Tundra', 'Throne', 'Magical', 'Transform', 'Chirping Insects'],
-['Druid', 'Meadow', 'Monster', 'Flowering', 'Hide', 'Dry, Crinkling Leaves'],
-['Adventurer', 'Vault', 'Lantern', 'Heavy', 'Survival', 'Distant Fire Smoke'],
-['Scientist', 'Fissure', 'Entrails', 'Elegant', 'Supply', 'Nearby Hoof Beats'],
-['Squire', 'Sanctuary', 'Urn', 'Hollow', 'Fortify', 'A Thick, Pungent Broth'],
-['Vigilante', 'Academy', 'Ritual', 'New', 'Battle', 'The Pop of Frying Food'],
-['Apprentice', 'Orchard', 'Clock', 'Bleached', 'Corrupt', 'An Earthy Musk'],
-['Hunter', 'Factory', 'Vial', 'Pliable', 'Defy', 'Charred Runes'],
-['Diplomat', 'Highlands', 'Dream', 'Musical', 'Warning', 'The Swirl of Colourful Fabric'],
-['Automaton', 'Laboratory', 'Skeleton', 'Restored', 'Duty', 'Coarse Fabric'],
-['Courier', 'Labyrinth', 'Spell', 'Unknown', 'Truth', 'Soft Muttering'],
-['Murderer', 'Mesa', 'Carving', 'Famous', 'Breach', 'A Heavy Fog'],
-['Crime Boss', 'Dig Site', 'Ceremony', 'Lightweight', 'Surrender', 'Fresh Flowers'],
-['Hermit', 'Church', 'Bow', 'Poisoned', 'Avoid', 'A Darting Shadow'],
-['Performer', 'Stronghold', 'Mirror', 'Oozing', 'Gather', 'Liquid Sloshing'],
-['Bounty Hunter', 'Spire', 'Funeral', 'Patterned', 'Deliver', 'Clouds of Dust'],
-['Warlord', 'Lagoon', 'Emblem', 'Fragrant', 'Capture', 'A Low- Pitched Grinding'],
-['Sage', 'College', 'Trap', 'Mind- Reading', 'Learn', 'The Bite of Strong Ale'],
-['Explorer', 'Plateau', 'Potion', 'Incomprehensible', 'Honor', 'Dragging Through Mud'],
-['Drunkard', 'Cathedral', 'Skull', 'Ordinary', 'Opportunity', 'The Aroma of Fine Wine'],
-['Pilgrim', 'Stable', 'Constellation', 'Shattered', 'Knowledge', 'Slithering Against Your Skin'],
-['Fisher', 'Shop', 'Grave', 'Overgrown', 'Reveal', 'Crashing Waves'],
-['Inventor', 'Watchtower', 'Bracelet', 'Distinctive', 'Danger', 'Whispered Prayers'],
-['Oracle', 'Refuge', 'Shipment', 'Smoldering', 'Challenge', 'Soggy, Uneven Ground'],
-['Scout', 'Citadel', 'Bone', 'Gnarled', 'Manipulate', 'Running Water']
-
-  
-];
-
-
-let data_event_meaning_action = [
-  'Attainment', 'Starting', 'Neglect ', 'Fight', 'Recruit', 
-  'Triumph', 'Violate', 'Oppose', 'Malice', 'Communicate', 
-  'Persecute', 'Increase', 'Decrease', 'Abandon', 'Gratify', 
-  'Inquire', 'Antagonise', 'Move', 'Waste', 'Truce', 
-  'Release', 'Befriend', 'Judge', 'Desert', 'Dominate', 
-  'Procrastinate', 'Praise', 'Separate', 'Take', 'Break', 
-  'Heal', 'Delay', 'Stop', 'Lie', 'Return', 
-  'Immitate', 'Struggle', 'Inform', 'Bestow', 'Postpone', 
-  'Expose', 'Haggle', 'Imprison', 'Release', 'Celebrate', 
-  'Develop', 'Travel', 'Block', 'Harm', 'Debase', 
-  'Overindulge', 'Adjourn', 'Adversity', 'Kill', 'Disrupt', 
-  'Usurp', 'Create', 'Betray', 'Agree', 'Abuse', 
-  'Oppress', 'Inspect', 'Ambush', 'Spy', 'Attach', 
-  'Carry', 'Open', 'Carelessness', 'Ruin', 'Extravagance', 
-  'Trick', 'Arrive', 'Propose', 'Divide', 'Refuse', 
-  'Mistrust', 'Deceive', 'Cruelty', 'Intolerance', 'Trust', 
-  'Excitement', 'Activity', 'Assist', 'Care', 'Negligence', 
-  'Passion', 'Work hard', 'Control', 'Attract', 'Failure', 
-  'Pursue', 'Vengeance', 'Proceedings', 'Dispute', 'Punish', 
-  'Guide', 'Transform', 'Overthrow', 'Oppress', 'Change' ];
-
-let data_event_meaning_subject = [
-  'Goals', 'Dreams', 'Environment', 'Outside', 'Inside', 
-  'Reality', 'Allies', 'Enemies', 'Evil ', 'Good', 
-  'Emotions', 'Opposition', 'War', 'Peace', 'The innocent', 
-  'Love', 'The spiritual', 'The intellectual', 'New ideas', 'Joy', 
-  'Messages', 'Energy', 'Balance', 'Tension', 'Friendship', 
-  'The physical', 'A project', 'Pleasures', 'Pain', 'Possessions', 
-  'Benefits', 'Plans', 'Lies', 'Expectations', 'Legal matters', 
-  'Bureaucracy', 'Business ', 'A path', 'News', 'Exterior factors', 
-  'Advice', 'A plot', 'Competition', 'Prison', 'Illness', 
-  'Food', 'Attention', 'Success', 'Failure', 'Travel', 
-  'Jealousy', 'Dispute', 'Home', 'Investment', 'Suffering', 
-  'Wishes', 'Tactics', 'Stalemate', 'Randomness', 'Misfortune', 
-  'Death', 'Disruption', 'Power', 'A burden', 'Intrigues', 
-  'Fears', 'Ambush', 'Rumor', 'Wounds ', 'Extravagance', 
-  'A representative', 'Adversities', 'Opulence', 'Liberty', 'Military', 
-  'The mundane', 'Trials', 'Masses', 'Vehicle', 'Art', 
-  'Victory', 'Dispute', 'Riches', 'Status quo', 'Technology', 
-  'Hope', 'Magic', 'Illusions', 'Portals', 'Danger', 
-  'Weapons', 'Animals', 'Weather', 'Elements', 'Nature', 
-  'The public', 'Leadership', 'Fame', 'Anger', 'Information' ];
 
 
 function tab_click(sender) {
@@ -759,114 +896,36 @@ function on_thread_list_item_add_finish(sender) {
 }
 
 
-function oracle_query(scene, surge, roll, roll_unexpected) {
-
-  let r = roll;
-  if(r == null)
-    r = dice(100);
-
-  console.log(r);
-
-  if(r <= 50) {
-    r -= surge;
-  }
-  else {
-    r += surge;
-  }
-  if(r < 1) r = 1;
-  if(r > 100) r = 100;
-
-
-  let result = null;
-  let data = data_oracle_loom;
-  let result_enum = {
-    NO_AND_UNEXPECED: 1,
-    NO_BUT: 2,
-    NO_AND: 3,
-    NO: 4,
-    YES: 5,
-    YES_AND: 6,
-    YES_BUT: 7,
-    YES_AND_UNEXPECED: 8,
-
-  };
-  let i = 1;
-  for(i = 1; i <= data.length - 1; ++i) {
-    let current = data[i];
-    let range_check = current[0][scene];
-    if(range_check[0] <= r && r <= range_check[1]) {
-      result = current;
-      break;
-    }
-  }
-
-  let unexpected = null;
-  if(i == result_enum.NO_AND_UNEXPECED || i == result_enum.YES_AND_UNEXPECED) {
-    let unex_data = data_oracle_crge_unexpected;
-    let d = roll_unexpected || dice(unex_data.length - 1);
-    let unex = unex_data[d];
-    unexpected = {
-      result: d,
-      text: unex[0],
-      hint: unex[1]
-    };
-  }
-
-  if(i == result_enum.YES || i == result_enum.NO) {
-    surge += 2;
-  }
-  else {
-    surge = 0;
-  }
-
-  let images = null;
-  if(i == result_enum.YES_AND || i == result_enum.YES_BUT ||
-     i == result_enum.NO_AND || i == result_enum.NO_BUT ) {
-
-    images = [];
-    let n = dice(5);
-    let icons = data_icons_actions;
-    for(let i = 0; i < n; ++i) {
-      images.push(icons[dice(icons.length - 1)]);
-    }
-  }
-
-
-
-  $('#oracle-result').attr('surge', surge);
-  $('#oracle-surge').html(surge);
-
-  return {
-      roll: roll,
-      result: i,
-      text: result[1],
-      images: images,
-      unexpected: unexpected
-  };
-
+function oracle_observer_set_surge(value) {
+  console.log('surge: ' + value);
 }
 
-function oracle_result_contents_click(sender) {
-  
+function oracle_observer_query_result(oracle, result) {
+
+  // console.log(result);
+
+  // console.log('query result observer');
+
 
   let action = function() {
-    let scene = $('#oracle-result').attr('value');
-    let surge = $('#oracle-result').attr('surge');
+    let scene = oracle.scene; // $('#oracle-result').attr('value');
+    let surge = oracle.surge; // $('#oracle-result').attr('surge');
 
-    let result = oracle_query(Number(scene), Number(surge));
+    // let result = oracle_query(Number(scene), Number(surge));
     let text = [
       '<span>', result.text, '</span> ',
       '<span>', result.unexpected?.text || '', '</span> ',
     ];
 
     let images = null;
+    let icons = data_icons_actions;
     if(result.images != null) {
       images = [];
       for(let i = 0; i < result.images.length; ++i) {
         images.push(
           [ '<span class="oracle-result-image">',
             '<img width="45" height="45" src="',
-            result.images[i],
+            icons[result.images[i]],
             '"/>',
             '</span>'
           ].join('')
@@ -874,16 +933,61 @@ function oracle_result_contents_click(sender) {
       }
     }
 
-    $(sender).html(text.join('') + (images?.join('') || ''));
+    // $(sender).html(text.join('') + (images?.join('') || ''));
+    _('oracle-result-contents').innerHTML = text.join('') + (images?.join('') || '');
     $('#oracle-result-contents-hint').html(result.unexpected?.hint || '');
   };
 
 
-  sender.innerHTML = '<img src="img/spinner.svg" width="45" height="45" />';
+  _('oracle-result-contents').innerHTML = '<img src="img/spinner.svg" width="45" height="45" />';
+
+  // sender.innerHTML = '<img src="img/spinner.svg" width="45" height="45" />';
 
   setTimeout(function() {
     action();
   }, dice(750) + 250);
+
+}
+
+function oracle_result_contents_click(sender) {
+  
+  oracle.query();
+
+  // let action = function() {
+  //   let scene = $('#oracle-result').attr('value');
+  //   let surge = $('#oracle-result').attr('surge');
+
+  //   let result = oracle_query(Number(scene), Number(surge));
+  //   let text = [
+  //     '<span>', result.text, '</span> ',
+  //     '<span>', result.unexpected?.text || '', '</span> ',
+  //   ];
+
+  //   let images = null;
+  //   if(result.images != null) {
+  //     images = [];
+  //     for(let i = 0; i < result.images.length; ++i) {
+  //       images.push(
+  //         [ '<span class="oracle-result-image">',
+  //           '<img width="45" height="45" src="',
+  //           result.images[i],
+  //           '"/>',
+  //           '</span>'
+  //         ].join('')
+  //       );
+  //     }
+  //   }
+
+  //   $(sender).html(text.join('') + (images?.join('') || ''));
+  //   $('#oracle-result-contents-hint').html(result.unexpected?.hint || '');
+  // };
+
+
+  // sender.innerHTML = '<img src="img/spinner.svg" width="45" height="45" />';
+
+  // setTimeout(function() {
+  //   action();
+  // }, dice(750) + 250);
 
 }
 
@@ -996,13 +1100,160 @@ function clear_thread_contents() {
 
 let threads = [];
 
-function on_load() {
-  // threads.push(thread_new());
+let scenes = [];
 
-  // thread_load(threads[0]);
+function scene_set_active_user(user) {
+
+  this.user_active = user;
+
+  this.on_user_active_change.forEach ( (func) => { func(this) } );
+
+  console.log(this);
+
+}
+
+function scene_new() {
+  let scene = {
+    id: '001',
+
+    user_active: 'gm',
+    users: [],
+    log: [],
+
+    set_active_user: scene_set_active_user, // (user)
+    log_add: scene_log_add, // (text)
+
+    on_user_active_change: [],
+    on_log_add: [],
+    on_load: []
+  };
+
+  scene.users.push('GM')
+
+  // a character object
+  scene.users.push({id: 'a-guid', name: 'Sullivan'});
+
+  scene.user_active = scene.users[0];
+
+  return scene;
+};
+
+function scene_log_add(text) {
+
+  let scene = this;
+
+  scene.log.push(text);
+
+  for(let i = 0; i < scene.on_log_add.length; ++i) {
+    scene.on_log_add[i](scene);
+  }
+}
+
+function test_scene_observer(scene) {
+
+  console.log(scene.log[scene.log.length-1]);
+
+}
+
+function scene_observer_thread_scene_log(scene) {
+  
+  let latest_entry = scene.log[scene.log.length-1];
+
+  let $l = $('#thread-scene-log');
+
+  let user = scene.user_active;
+  let is_gm = user.toUpperCase() == 'GM';
+  let is_system = false;
+  let line_css = 'thread-log-system';
+
+  if(is_gm) {
+    line_css = 'thread-log-gm';
+  }
+  else if(is_system) {
+    line_css = 'thread-log-system';
+  }
+  else {
+    line_css = 'thread-log-player';
+  }
+
+  let div =  [
+    '<div class="',
+    line_css,
+    '">',
+    scene.user_active, ': ',
+    ' ',
+    latest_entry,
+    '</div>'
+  ].join('');
+
+  $l.append(div);
+
+  $l[0].scrollTop = $l[0].scrollHeight;
+}
+
+function scene_observer_thread_scene_user_change(scene) {
+  console.log('user switch: ' + scene.user_active);
+
+  let is_gm = scene.user_active.toUpperCase() == 'GM';
+
+  let $query = $('#query-oracle');
+  if(is_gm) {
+    $query.removeClass('hidden');
+  }
+  else {
+    $query.addClass('hidden');
+  }
+
+
+}
+
+function thread_scene_input_tab_click(sender) {
+  // doing something to get current scene
+
+  let $s = $(sender);
+  let $p = $s.parent();
+  $p.find('.selected').removeClass('selected');
+  $s.addClass('selected');
+
+  let scene = scenes[0];
+
+  scene.set_active_user($(sender).attr('userid'));
+
+}
+
+function thread_scene_input_keypress(sender, event) {
+  if(event.keyCode === 13){
+    // DO something to get current scene
+    let s = scenes[0];
+    let v = sender.value.trim();
+
+    if(v.length > 0) {
+      s.log_add(v);
+    }
+
+    sender.value = '';
+  }
+}
+
+function on_load() {
+
+  let s = scene_new();
+  s.on_log_add.push(test_scene_observer);
+  s.on_log_add.push(scene_observer_thread_scene_log);
+  s.on_user_active_change.push(scene_observer_thread_scene_user_change);
+
+  scenes.push(s);
+
+
+  oracle = new Oracle();
+  oracle.add_on_set_surge_observer( oracle_observer_set_surge );
+  // oracle.add_on_set_surge_observer((e) => {} );
+  // oracle.add_on_query_result_observer( (r) => {console.log(r)} );
+  oracle.add_on_query_result_observer( oracle_observer_query_result );
 }
 
 on_load();
+
 
     </script>
 
