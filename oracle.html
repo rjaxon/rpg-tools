@@ -141,6 +141,7 @@
       padding: 5px;
     }
 
+
     .oracle-scene-stage-item {
       border: 1px solid black;
     }
@@ -189,17 +190,35 @@
   #thread-scene-log {
     height: 500px;
     overflow-y: scroll;
+    padding-bottom: 10px;
   }
 
   .thread-log-system {
     color: red;
+    text-align: center;
+    font-weight: bold;
+    padding-bottom: 10px;
+
+    .oracle-result-image {
+      img {
+        width: 40px;
+      }
+      img:active{
+        width: 50px;
+      }
+      img:active{
+        width: 100px;
+      }
+    }
+    
   }
-/
+
   .thread-log-gm {
     color: green;
     padding-top: 2px;
     padding-bottom: 2px;
     padding-left: 5px;
+    background: #e4e4e4;
   }
 
   .thread-log-player {
@@ -255,7 +274,7 @@
 
         <div class="col-sm">
             <div id="thread-details">
-              <div id="thread-details-contents" class="">
+              <div id="thread-details-contents" class="hidden">
                 <div class="row">
                   <div class="col-12 label"><span id="thread-title" field="title" class="pointer editable" onclick="thread_item_click(this);")>Thread 1 Long Title</span></div>
                   <div class="col-12 label">Description</div>
@@ -338,11 +357,11 @@
                 <div id="thread-scene-input" class="col-12 pad-10px" style="border-top: 2px solid black;">
                   <div class="row">
                     <div class="col-6">
-                      <button type="scene-button" userid="gm" class="w3-bar-item w3-button button-item selected" value="1" onclick="thread_scene_input_tab_click(this);">GM</button>
-                      <button type="scene-button" userid="a-char-guid" class="w3-bar-item w3-button button-item " value="1" onclick="thread_scene_input_tab_click(this);">Sullivan</button>
+                      <button type="scene-button" log_type="1" userid="gm-001"     class="w3-bar-item w3-button char-tab button-item selected" value="1" onclick="thread_scene_input_tab_click(this);">GM</button>
+                      <button type="scene-button" log_type="2" userid="001" class="w3-bar-item w3-button char-tab button-item " value="1" onclick="thread_scene_input_tab_click(this);">Sullivan</button>
                     </div>
                     <div class="col-6 align-right">
-                      <button id="query-oracle" type="query-oracle" class="" value="1" onclick="">Query Oracle</button>
+                      <button id="query-oracle" type="query-oracle" class="" value="1" onclick="oracle.query();">Query Oracle</button>
                     </div>
                     <div class="col-12">
                       <input type="text" class="max-width" onkeypress="thread_scene_input_keypress(this, event)" />
@@ -350,8 +369,6 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="scene">
             </div>
         </div>
 
@@ -383,107 +400,12 @@ class Oracle {
 
     this.query = oracle_query;
 
-    // ({ } )
+    // result: {...}
     this.on_query_result = [];
 
-    // (new_surge_value)
+    // result: new_surge_value
     this.on_set_surge = [];
   }
-  
-  // query(roll, roll_unexpected) {
-
-  //   if(this.constructor.name != 'Oracle') { return; }
-
-  //   let surge = this.surge;
-  //   let scene = this.scene;
-
-  //   let r = roll;
-  //   if(r == null)
-  //     r = dice(100);
-
-  //   console.log(r);
-
-  //   if(r <= 50) {
-  //     r -= surge;
-  //   }
-  //   else {
-  //     r += surge;
-  //   }
-  //   if(r < 1) r = 1;
-  //   if(r > 100) r = 100;
-
-
-  //   let result = null;
-  //   let data = data_oracle_loom;
-
-  //   let result_enum = {
-  //     NO_AND_UNEXPECTED: 1,
-  //     NO_BUT: 2,
-  //     NO_AND: 3,
-  //     NO: 4,
-  //     YES: 5,
-  //     YES_AND: 6,
-  //     YES_BUT: 7,
-  //     YES_AND_UNEXPECTED: 8,
-  //   };
-
-  //   let i = 1;
-  //   for(i = 1; i <= data.length - 1; ++i) {
-  //     let current = data[i];
-  //     let range_check = current[0][scene];
-  //     if(range_check[0] <= r && r <= range_check[1]) {
-  //       result = current;
-  //       break;
-  //     }
-  //   }
-
-  //   let unexpected = null;
-  //   if(i == result_enum.NO_AND_UNEXPECTED || i == result_enum.YES_AND_UNEXPECTED) {
-  //     let unex_data = data_oracle_crge_unexpected;
-  //     let d = roll_unexpected || dice(unex_data.length - 1);
-  //     let unex = unex_data[d];
-  //     unexpected = {
-  //       result: d,
-  //       text: unex[0],
-  //       hint: unex[1]
-  //     };
-  //   }
-
-  //   if(i == result_enum.YES || i == result_enum.NO) {
-  //     surge += 2;
-  //   }
-  //   else {
-  //     surge = 0;
-  //   }
-
-  //   let images = null;
-  //   if(i == result_enum.YES_AND || i == result_enum.YES_BUT ||
-  //      i == result_enum.NO_AND || i == result_enum.NO_BUT ) {
-
-  //     images = [];
-  //     let n = dice(5);
-  //     let icons = data_icons_actions;
-  //     for(let i = 0; i < n; ++i) {
-  //       images.push(icons.length - 1);
-  //     }
-  //   }
-  //   
-  //   let roll_result = {
-  //       roll: r,
-  //       result: i,
-  //       text: result[1],
-  //       images: images,
-  //       unexpected: unexpected
-  //   };
-
-  //   if(this.history.length > 3) {
-  //     this.history.shift();
-  //   }
-
-  //   this.history.push(roll_result);
-
-  //   this.on_query_result.forEach( (func) => { func(roll_result) } );
-  // }
 
 
   // callback(oracle, roll_result)
@@ -593,27 +515,9 @@ function oracle_query(_scene, _surge, roll, roll_unexpected) {
   this.history.push(roll_result);
 
   this.on_query_result.forEach( (func) => { func(this, roll_result) } );
-
-  // return roll_result;
 }
 
 
-// function oracle_new() {
-//   let oracle = { 
-//     surge: 0,
-//     scene_stage: 1,
-//     history: [],
-//     expectations: data_oracle_crge_unexpected,
-// 
-//     query: oracle_query,
-//     
-//     on_query_result: []
-//   };
-// 
-//   return oracle;
-// }
-
-let oracle;
 
 
 function thread_new(data) {
@@ -895,23 +799,16 @@ function on_thread_list_item_add_finish(sender) {
   }
 }
 
-
 function oracle_observer_set_surge(value) {
   console.log('surge: ' + value);
 }
 
 function oracle_observer_query_result(oracle, result) {
 
-  // console.log(result);
-
-  // console.log('query result observer');
-
-
   let action = function() {
-    let scene = oracle.scene; // $('#oracle-result').attr('value');
-    let surge = oracle.surge; // $('#oracle-result').attr('surge');
+    let scene = oracle.scene;
+    let surge = oracle.surge;
 
-    // let result = oracle_query(Number(scene), Number(surge));
     let text = [
       '<span>', result.text, '</span> ',
       '<span>', result.unexpected?.text || '', '</span> ',
@@ -933,15 +830,11 @@ function oracle_observer_query_result(oracle, result) {
       }
     }
 
-    // $(sender).html(text.join('') + (images?.join('') || ''));
     _('oracle-result-contents').innerHTML = text.join('') + (images?.join('') || '');
     $('#oracle-result-contents-hint').html(result.unexpected?.hint || '');
   };
 
-
   _('oracle-result-contents').innerHTML = '<img src="img/spinner.svg" width="45" height="45" />';
-
-  // sender.innerHTML = '<img src="img/spinner.svg" width="45" height="45" />';
 
   setTimeout(function() {
     action();
@@ -952,42 +845,6 @@ function oracle_observer_query_result(oracle, result) {
 function oracle_result_contents_click(sender) {
   
   oracle.query();
-
-  // let action = function() {
-  //   let scene = $('#oracle-result').attr('value');
-  //   let surge = $('#oracle-result').attr('surge');
-
-  //   let result = oracle_query(Number(scene), Number(surge));
-  //   let text = [
-  //     '<span>', result.text, '</span> ',
-  //     '<span>', result.unexpected?.text || '', '</span> ',
-  //   ];
-
-  //   let images = null;
-  //   if(result.images != null) {
-  //     images = [];
-  //     for(let i = 0; i < result.images.length; ++i) {
-  //       images.push(
-  //         [ '<span class="oracle-result-image">',
-  //           '<img width="45" height="45" src="',
-  //           result.images[i],
-  //           '"/>',
-  //           '</span>'
-  //         ].join('')
-  //       );
-  //     }
-  //   }
-
-  //   $(sender).html(text.join('') + (images?.join('') || ''));
-  //   $('#oracle-result-contents-hint').html(result.unexpected?.hint || '');
-  // };
-
-
-  // sender.innerHTML = '<img src="img/spinner.svg" width="45" height="45" />';
-
-  // setTimeout(function() {
-  //   action();
-  // }, dice(750) + 250);
 
 }
 
@@ -1098,9 +955,6 @@ function clear_thread_contents() {
   $('.scene-list-item').remove();
 }
 
-let threads = [];
-
-let scenes = [];
 
 function scene_set_active_user(user) {
 
@@ -1112,75 +966,131 @@ function scene_set_active_user(user) {
 
 }
 
-function scene_new() {
-  let scene = {
-    id: '001',
+class Scene {
+  constructor() {
 
-    user_active: 'gm',
-    users: [],
-    log: [],
+    this.id = crypto.randomUUID();
+    this.user_active = null;
+    this.characters = [{id: 'gm-001', name: 'GM', type: 1}];
+    this.npcs = [];
+    this.log_entries = [];
 
-    set_active_user: scene_set_active_user, // (user)
-    log_add: scene_log_add, // (text)
+    this.log = scene_log_add;
 
-    on_user_active_change: [],
-    on_log_add: [],
-    on_load: []
-  };
+    this.on_user_active_change = [];
+    this.on_log_add = [];
+    this.on_npc_add = [];
+    this.on_characters_add = [];
 
-  scene.users.push('GM')
+    this.user_active = this.characters[0];
+  }
 
-  // a character object
-  scene.users.push({id: 'a-guid', name: 'Sullivan'});
+  set_active_user(user_id) {
+    console.log('User ID: ' + user_id);
 
-  scene.user_active = scene.users[0];
+    let user = this.characters.find( (items) => {return items.id == user_id} );
 
-  return scene;
-};
+    if(user == null) {
+      throw new Error( "user_id with id '" + user_id + "' not found");
+    }
 
-function scene_log_add(text) {
+    this.user_active = user;
+
+    this.on_user_active_change.forEach((func) => {func(this)});
+  }
+
+  add_character(user) {
+    this.characters.push(user);
+    this.on_characters_add.forEach( (func) => {func(user) } );
+  }
+  
+  add_npc(npc) {
+    this.npcs.push(npc);
+    this.on_npc_add.forEach( (func) => {func(npc) } );
+  }
+}
+
+// function scene_new() {
+//   let scene = {
+//     id: '001',
+// 
+//     user_active: 'gm',
+//     users: [],
+//     log: [],
+// 
+//     set_active_user: scene_set_active_user, // (user)
+//     log_add: scene_log_add, // (text)
+// 
+//     on_user_active_change: [],
+//     on_log_add: [],
+//     on_load: []
+//   };
+// 
+//   scene.users.push('GM')
+// 
+//   // a character object
+//   scene.users.push({id: 'a-guid', name: 'Sullivan'});
+// 
+//   scene.user_active = scene.users[0];
+// 
+//   return scene;
+// };
+
+function scene_log_add(text, log_type) {
 
   let scene = this;
 
-  scene.log.push(text);
+  scene.log_entries.push(text);
 
   for(let i = 0; i < scene.on_log_add.length; ++i) {
-    scene.on_log_add[i](scene);
+    scene.on_log_add[i](scene, log_type);
   }
 }
 
 function test_scene_observer(scene) {
 
-  console.log(scene.log[scene.log.length-1]);
+  console.log(scene.log_entries[scene.log_entries.length-1]);
 
 }
 
-function scene_observer_thread_scene_log(scene) {
+function scene_observer_thread_scene_log(scene, log_type) {
   
-  let latest_entry = scene.log[scene.log.length-1];
+  let latest_entry = scene.log_entries[scene.log_entries.length-1];
 
   let $l = $('#thread-scene-log');
 
   let user = scene.user_active;
-  let is_gm = user.toUpperCase() == 'GM';
-  let is_system = false;
+  // let is_gm = user.toUpperCase() == 'GM';
+  // let is_system = false;
   let line_css = 'thread-log-system';
 
-  if(is_gm) {
-    line_css = 'thread-log-gm';
+  switch(Number(log_type || -1)) {
+    case 1:
+     line_css = 'thread-log-gm';
+      break;
+    case 2:
+     line_css = 'thread-log-player';
+      break;
   }
-  else if(is_system) {
-    line_css = 'thread-log-system';
-  }
-  else {
-    line_css = 'thread-log-player';
-  }
+
+  // if(is_gm) {
+  //   line_css = 'thread-log-gm';
+  // }
+  // else if(is_system) {
+  //   line_css = 'thread-log-system';
+  // }
+  // else {
+  //   line_css = 'thread-log-player';
+  // }
+
+  // let user = 'GM';
+  // 
 
   let div =  [
     '<div class="',
     line_css,
     '">',
-    scene.user_active, ': ',
+    log_type === 3 ? '' : [scene.user_active.name, ': '].join(''),
     ' ',
     latest_entry,
     '</div>'
@@ -1192,9 +1102,8 @@ function scene_observer_thread_scene_log(scene) {
 }
 
 function scene_observer_thread_scene_user_change(scene) {
-  console.log('user switch: ' + scene.user_active);
 
-  let is_gm = scene.user_active.toUpperCase() == 'GM';
+  let is_gm = scene.user_active.id.toUpperCase() == 'GM-001';
 
   let $query = $('#query-oracle');
   if(is_gm) {
@@ -1204,7 +1113,39 @@ function scene_observer_thread_scene_user_change(scene) {
     $query.addClass('hidden');
   }
 
+}
 
+function scene_oracle_observer_query_result(oracle, result) {
+
+  if($('#thread-scene').hasClass('hidden')) return;
+
+    let text = [
+      '<span>', result.text, '</span> ',
+      '<span>', result.unexpected?.text || '', '</span> ',
+    ].join('');
+
+    let images = null;
+    let icons = data_icons_actions;
+    if(result.images != null) {
+      images = [];
+      for(let i = 0; i < result.images.length; ++i) {
+        images.push(
+          [ '<span class="oracle-result-image">',
+            '<img src="',
+            icons[result.images[i]],
+            '"/>',
+            '</span>'
+          ].join('')
+        );
+      }
+    }
+
+  // console.log('scene oracle result: ' + text);
+
+  let scene = scenes[0];
+  let contents = [ text, (images?.join('') || '') ].join('');
+
+  scene.log(contents, 3);
 }
 
 function thread_scene_input_tab_click(sender) {
@@ -1219,6 +1160,8 @@ function thread_scene_input_tab_click(sender) {
 
   scene.set_active_user($(sender).attr('userid'));
 
+  //scene.set_active_user($(sender).attr('userid'));
+
 }
 
 function thread_scene_input_keypress(sender, event) {
@@ -1227,20 +1170,35 @@ function thread_scene_input_keypress(sender, event) {
     let s = scenes[0];
     let v = sender.value.trim();
 
+
     if(v.length > 0) {
-      s.log_add(v);
+      let $selected =$('#thread-scene-input')
+                  .find('.char-tab.selected');
+      let log_type = $selected.attr('log_type');
+                
+      s.log(v, log_type);
     }
 
     sender.value = '';
   }
 }
 
+
+let oracle;
+let threads = [];
+let scenes = [];
+
 function on_load() {
 
-  let s = scene_new();
+  // let s = scene_new();
+  let s = new Scene();
+
   s.on_log_add.push(test_scene_observer);
   s.on_log_add.push(scene_observer_thread_scene_log);
   s.on_user_active_change.push(scene_observer_thread_scene_user_change);
+  s.on_npc_add.push( (user) => {console.log('User Add: ' + user)});
+
+  s.add_character({id: '001', name: 'Sullivan', type: 2});
 
   scenes.push(s);
 
@@ -1250,6 +1208,7 @@ function on_load() {
   // oracle.add_on_set_surge_observer((e) => {} );
   // oracle.add_on_query_result_observer( (r) => {console.log(r)} );
   oracle.add_on_query_result_observer( oracle_observer_query_result );
+  oracle.add_on_query_result_observer( scene_oracle_observer_query_result );
 }
 
 on_load();
