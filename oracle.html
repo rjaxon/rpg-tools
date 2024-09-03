@@ -86,6 +86,10 @@
       border-bottom-left-radius: unset;
       border-bottom-right-radius: unset;
       border-bottom-color: white;
+      width: 100px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     .oracle-scene-stage {
@@ -193,11 +197,35 @@
     padding-bottom: 10px;
   }
 
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Apply the animation to an element */
+  .fade-in {
+    animation-name: fadeIn;
+    animation-duration: 2s; /* Duration of the animation */
+    animation-timing-function: ease-in; /* Smooth transition */
+  }
+
+
   .thread-log-system {
-    color: red;
     text-align: center;
     font-weight: bold;
     padding-bottom: 10px;
+    padding: 10px;
+    margin-left: 20%;
+    margin-right: 20%;
+    border: 1px solid #ccc;
+
+    animation-name: fadeIn;
+    animation-duration: 3s; /* Duration of the animation */
+    animation-timing-function: ease-in; /* Smooth transition */
 
     .oracle-result-image {
       img {
@@ -264,22 +292,25 @@
   <div id="thread-container">
     <div id="threads">
       <div class="row">
-        <div class="col-12 ">
+        <div id="thread-tabs" class="col-12 ">
             <!--button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage selected" onclick="tab_click(this);">Thread 1</button>
-            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="tab_click(this);">Thread 2</button>
-            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="tab_click(this);">Thread 3</button>
-            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="tab_click(this);">Thread 4</button-->
-            <button  class="w3-bar-item w3-button button-item oracle-scene-stage" onclick="new_thread_click(this);">Add Thread</button>
+            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item thread-tab" onclick="tab_click(this);">Thread 2</button>
+            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item thread-tab" onclick="tab_click(this);">Thread 3</button>
+            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item thread-tab" onclick="tab_click(this);">Thread 4</button-->
+            <button  class="w3-bar-item w3-button button-item " onclick="thread_init(adventure.create_thread());">Add Thread</button>
         </div>
 
         <div class="col-sm">
             <div id="thread-details">
-              <div id="thread-details-contents" class="hidden">
+              <div id="thread-details-contents" class="">
                 <div class="row">
-                  <div class="col-12 label"><span id="thread-title" field="title" class="pointer editable" onclick="thread_item_click(this);")>Thread 1 Long Title</span></div>
+                  <div id="thread-title" field="title" >
+                    <span class="col-12 label pointer editable" onclick="thread_item_click(this);">Thread 1 Long Title</span>
+                  </div>
+
                   <div class="col-12 label">Description</div>
-                  <div class="col-12">
-                    <span id="thread-description" field="description" class="pointer editable"  onclick="thread_item_click(this);")>
+                  <div id="thread-description" field="description" class="col-12">
+                    <span class="pointer editable"  onclick="thread_item_click(this);")>
                     We were hired to find the victim and the kidnapper.
                     </span>
                   </div>
@@ -318,41 +349,8 @@
                   <div class="col-sm">Add Scene</div>
                 </div>
               </div>
-              <div id="thread-scene" >
+              <div id="thread-scene" class="hidden" >
                 <div id="thread-scene-log" class="col-12">
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
-                  <div class="thread-log-gm">GM: gm text</div>
-                  <div class="thread-log-player">Sullivan: character text text textt text</div>
                 </div>
                 <div id="thread-scene-input" class="col-12 pad-10px" style="border-top: 2px solid black;">
                   <div class="row">
@@ -361,7 +359,7 @@
                       <button type="scene-button" log_type="2" userid="001" class="w3-bar-item w3-button char-tab button-item " value="1" onclick="thread_scene_input_tab_click(this);">Sullivan</button>
                     </div>
                     <div class="col-6 align-right">
-                      <button id="query-oracle" type="query-oracle" class="" value="1" onclick="oracle.query();">Query Oracle</button>
+                      <button id="query-oracle" type="query-oracle" class="" value="1" onclick="scene_oracle_query_click();">Query Oracle</button>
                     </div>
                     <div class="col-12">
                       <input type="text" class="max-width" onkeypress="thread_scene_input_keypress(this, event)" />
@@ -374,8 +372,13 @@
 
         <div class="col-12">
             <div id="threads-footer">
-              <button>Edit</button>
-              <button>Ok</button>
+              <span id="thread-footer-buttons" class="">
+                <button>Edit</button>
+                <button>Ok</button>
+              </span>
+              <span id="thread-footer-scene-buttons" class="hidden">
+                <button onclick="thread_end_scene();">End Scene</button>
+              </span>
             </div>
         </div>
 
@@ -395,6 +398,7 @@ class Oracle {
   constructor() {
     this.surge = 0;
     this.scene = 1;
+    this.history_max = 20;
     this.history = [];
     this.expectations = data_oracle_crge_unexpected;
 
@@ -509,7 +513,7 @@ function oracle_query(_scene, _surge, roll, roll_unexpected) {
       unexpected: unexpected
   };
   
-  if(this.history.length > 3) {
+  if(this.history_max != 0 && this.history_max <= this.history.length ) {
     this.history.shift();
   }
   this.history.push(roll_result);
@@ -517,6 +521,157 @@ function oracle_query(_scene, _surge, roll, roll_unexpected) {
   this.on_query_result.forEach( (func) => { func(this, roll_result) } );
 }
 
+class Adventure {
+
+  #active_thread;
+
+
+  constructor() {
+    this.id= crypto.randomUUID();
+    this.title= 'Untitled';
+    this.description= '';
+
+    this.threads = [];
+    
+    this.on_title_change = [];
+    this.on_description_change = [];
+    this.on_thread_add = [];
+    this.on_thread_active = [];
+  }
+
+  set active_thread(thread) {
+    if(thread == null) return;
+
+    this.#active_thread = thread;
+    this.on_thread_active.forEach( (func) => func(thread) );
+  }
+
+  set_title(title) {
+    this.title = title;
+    this.on_title_change.forEach((func) => func(this.title) );
+  }
+
+  set_description(description) {
+    this.description = description;
+    this.on_description_change.forEach((func) => func(this.description) );
+  }
+
+  get_thread(thread_id) {
+    let t = this.threads.find( (item) => {return item.id == thread_id} );
+    return t;
+  }
+
+
+  create_thread() {
+    let t = new Thread();
+    this.threads.push(t);
+    this.on_thread_add.forEach( (func) => func(t) );
+    return t;
+  }
+}
+
+function adventure_observer_on_thread_add(new_thread) {
+  console.log(new_thread);
+
+  $('.thread-tab.selected').removeClass('selected');
+
+  let button = ['<button id="',
+    new_thread.id, '" ',
+    'type="threads" ',
+    'class="w3-bar-item w3-button button-item thread-tab selected"',
+    'onclick="tab_click(this);">',
+    new_thread.title,
+    '</button>'].join('');
+
+  let threads = adventure.threads;
+  if($('#thread-tabs').find('.thread-tab').length == 0) {
+    $('#thread-tabs').prepend(button);
+  }
+  else {
+    let last = threads[threads.length - 2];
+    $(button).insertAfter($('#'+last.id));
+  }
+
+  thread_load(new_thread);
+}
+
+function adventure_observer_on_thread_active(thread) {
+  console.log('thread active ' + thread.id);
+  $('#thread-details').attr('thread-id', thread.id);
+  thread_load(thread);
+}
+
+
+class Thread {
+
+  #id;
+  #title;
+  #description;
+  #active_thread;
+
+  constructor() {
+    this.#id= crypto.randomUUID();
+    this.#title= 'Untitled';
+    this.#description= '';
+
+    this.facts= [];
+    this.questions= [];
+    this.characters= [];
+    this.scenes= [];
+
+    this.on_title_change = [];
+    this.on_description_change = [];
+    this.on_facts_add = [];
+    this.on_questions_add = [];
+    this.on_characters_add = [];
+    this.on_scene_add = [];
+  }
+
+  get id() {
+    return this.#id;
+  }
+
+  get title() {
+    return this.#title;
+  }
+
+  set title(_title) {
+    if(this.#title == _title) return;
+    this.#title = _title;
+    this.on_title_change.forEach((func) => func(this.#title) );
+  }
+
+  get description() {
+    return this.#description;
+  }
+
+  set description(_description) {
+    if(this.#description == _description) return;
+    this.#description = _description;
+    this.on_description_change.forEach((func) => func(this.#description) );
+  }
+
+
+  create_scene() {
+    let s = new Scene();
+    this.scenes.push(s);
+    this.on_scene_add.forEach((func) => func(s) );
+  }
+}
+
+function thread_observer_on_scene_add(new_scene) {
+  console.log('new_scene');
+
+  console.log(new_scene);
+}
+
+function thread_observer_on_title_change(new_value) {
+  $('#thread-title').find('span').html(new_value);
+}
+
+function thread_observer_on_description_change(new_value) {
+  $('#thread-description').find('span').html(new_value);
+}
 
 
 
@@ -566,35 +721,37 @@ function tab_click(sender) {
   }
 
   if($s.attr('type') == 'threads') {
-    on_thread_tab_click(sender);
+    // on_thread_tab_click(sender);
+    // adventure.set_active_thread(sender.id)
+    adventure.active_thread = adventure.get_thread(sender.id);
   }
 }
 
 function new_thread_click(sender) {
 
-  let $s = $(sender);
-  let $p = $s.parent();
+  // let $s = $(sender);
+  // let $p = $s.parent();
 
-  $p.find('.selected').removeClass('selected');
+  // $p.find('.selected').removeClass('selected');
 
 
-  let new_thread = thread_new();
-  threads.push(new_thread );
+  // let new_thread = thread_new();
+  // threads.push(new_thread );
 
-  $s.attr('onclick', 'tab_click(this);');
-  $s.attr('type', 'threads');
-  $s.attr('id', new_thread.id);
-  $s.html('Untitled');
-  $s.addClass('selected');
+  // $s.attr('onclick', 'tab_click(this);');
+  // $s.attr('type', 'threads');
+  // $s.attr('id', new_thread.id);
+  // $s.html('Untitled');
+  // $s.addClass('selected');
 
-  $p.append([
-    '<button class="w3-bar-item w3-button button-item thread-tab"',
-    'onclick="new_thread_click(this);">',
-    'Add Thread',
-    '</button>'
-  ].join(''));
+  // $p.append([
+  //   '<button class="w3-bar-item w3-button button-item thread-tab"',
+  //   'onclick="new_thread_click(this);">',
+  //   'Add Thread',
+  //   '</button>'
+  // ].join(''));
 
-  thread_load(new_thread);
+  // thread_load(new_thread);
 
 }
 
@@ -612,9 +769,9 @@ function thread_item_click(sender) {
   console.log('editing ' + sender.id);
   let $s = $(sender);
   let $p = $s.parent();
-  let val = $s.html().trim();
+  let val = $p.find('span').html().trim();
 
-  $s.addClass('hidden');
+  $p.find('span').addClass('hidden');
 
   let input = [
     '<input type="text" value="', val, '" ',
@@ -631,33 +788,33 @@ function thread_item_click(sender) {
 }
 
 function thread_item_edit_blur(sender) {
+  // console.log('BLUR: edit item lost focus');
   on_thread_edit_finish(sender);
 }
 
 function thread_item_edit_keypress(sender, event) {
   if(event.keyCode === 13){
+    // console.log('ENTER: edit item lost focus');
     on_thread_edit_finish(sender);
   }
 }
 
 function on_thread_edit_finish(sender) {
-  console.log('edit item lost focus');
   let $s = $(sender);
   let $p = $s.parent();
 
   let $v = $p.find('span');
   let text = $s.val().trim();
-  $v.html( text.length == 0 ? 'untitled' : text );
+  // $v.html( text.length == 0 ? 'untitled' : text );
   if($v.hasClass('hidden')) {
     $v.removeClass('hidden');
     $s.remove();
   }
 
-  // var id = $('#thread-details').attr('thread-id');
-  // let t = threads.find( (item) => {return item.id == id} );
-  let t = get_current_thread();
-  if(t) {
-    t[$v.attr('field')] = text;
+  let thread_id = $('#thread-details').attr('thread-id');
+  let t = adventure.threads.find( (t) => {return t.id == thread_id} );
+  if(t[$p.attr('field')] != text) {
+    t[$p.attr('field')] = text;
   }
 }
 
@@ -885,8 +1042,9 @@ function thread_load(thread) {
   clear_thread_contents();
 
   $('#thread-details').attr('thread-id', thread.id);
-  $('#thread-title').html(thread.title);
-  $('#thread-description').html(thread.description);
+
+  $('#thread-title').find('span').html( thread.title || 'untitled');
+  $('#thread-description').find('span').html(thread.description || 'No Description');
 
   let prepend_new_li = function($element, i, crossed, text) {
     
@@ -947,7 +1105,7 @@ function clear_thread_contents() {
   ];
 
   for(i = 0; i < text_ids.length; ++i) {
-    $(text_ids[i]).html('untitled');
+    $(text_ids[i]).find('span').html('untitled');
   }
 
   $('.thread-list-item').remove();
@@ -970,6 +1128,8 @@ class Scene {
   constructor() {
 
     this.id = crypto.randomUUID();
+    this.title = 'untitled';
+
     this.user_active = null;
     this.characters = [{id: 'gm-001', name: 'GM', type: 1}];
     this.npcs = [];
@@ -1047,6 +1207,21 @@ function scene_log_add(text, log_type) {
   }
 }
 
+function scene_oracle_query_click() {
+  oracle.query();
+
+  $('#thread-scene-input input[type=text]').focus();
+}
+
+function thread_end_scene() {
+  $('#thread-tabs').removeClass('hidden');
+  $('#thread-details-contents').removeClass('hidden');
+  $('#thread-footer-buttons').removeClass('hidden');
+
+  $('#thread-scene').addClass('hidden');
+  $('#thread-footer-scene-buttons').addClass('hidden');
+}
+
 function test_scene_observer(scene) {
 
   console.log(scene.log_entries[scene.log_entries.length-1]);
@@ -1060,8 +1235,7 @@ function scene_observer_thread_scene_log(scene, log_type) {
   let $l = $('#thread-scene-log');
 
   let user = scene.user_active;
-  // let is_gm = user.toUpperCase() == 'GM';
-  // let is_system = false;
+
   let line_css = 'thread-log-system';
 
   switch(Number(log_type || -1)) {
@@ -1072,19 +1246,6 @@ function scene_observer_thread_scene_log(scene, log_type) {
      line_css = 'thread-log-player';
       break;
   }
-
-  // if(is_gm) {
-  //   line_css = 'thread-log-gm';
-  // }
-  // else if(is_system) {
-  //   line_css = 'thread-log-system';
-  // }
-  // else {
-  //   line_css = 'thread-log-player';
-  // }
-
-  // let user = 'GM';
-  // 
 
   let div =  [
     '<div class="',
@@ -1112,6 +1273,9 @@ function scene_observer_thread_scene_user_change(scene) {
   else {
     $query.addClass('hidden');
   }
+
+  let $input = $('#thread-scene-input input[type=text]');
+  $input.focus();
 
 }
 
@@ -1156,12 +1320,11 @@ function thread_scene_input_tab_click(sender) {
   $p.find('.selected').removeClass('selected');
   $s.addClass('selected');
 
+
+  
+
   let scene = scenes[0];
-
   scene.set_active_user($(sender).attr('userid'));
-
-  //scene.set_active_user($(sender).attr('userid'));
-
 }
 
 function thread_scene_input_keypress(sender, event) {
@@ -1185,10 +1348,32 @@ function thread_scene_input_keypress(sender, event) {
 
 
 let oracle;
+let adventure = null;
 let threads = [];
 let scenes = [];
 
+
+function thread_init(thread) {
+  thread.on_scene_add.push(thread_observer_on_scene_add);
+  thread.on_title_change.push(thread_observer_on_title_change);
+  thread.on_description_change.push(thread_observer_on_description_change);
+}
+
 function on_load() {
+
+  adventure = new Adventure();
+  adventure.on_thread_add.push(adventure_observer_on_thread_add);
+  adventure.on_thread_active.push(adventure_observer_on_thread_active);
+
+  let t = adventure.create_thread();
+  thread_init(t);
+  
+
+  //let t = new Thread();
+  //t.on_scene_add.push(thread_observer_on_scene_add);
+  //t.create_scene();
+  
+  
 
   // let s = scene_new();
   let s = new Scene();
