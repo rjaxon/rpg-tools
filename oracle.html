@@ -77,9 +77,6 @@
       text-align: right;
     }
 
-    .thread-tab {
-      margin-right: 5px;
-    }
 
     .button-item {
       border-radius: 5px;
@@ -93,6 +90,11 @@
     }
 
     .oracle-scene-stage {
+      width: 120px;
+    }
+
+    .thread-tab {
+      margin-right: 5px;
     }
 
     button.selected {
@@ -372,13 +374,17 @@
 
         <div class="col-12">
             <div id="threads-footer">
-              <span id="thread-footer-buttons" class="">
-                <button>Edit</button>
-                <button>Ok</button>
-              </span>
-              <span id="thread-footer-scene-buttons" class="hidden">
-                <button onclick="thread_end_scene();">End Scene</button>
-              </span>
+              <div>
+                <span id="thread-footer-buttons" class="">
+                  <button>Edit</button>
+                  <button>Ok</button>
+                </span>
+              </div>
+              <div>
+                <span id="thread-footer-scene-buttons" class="hidden">
+                  <button onclick="thread_end_scene();">End Scene</button>
+                </span>
+              </div>
             </div>
         </div>
 
@@ -539,8 +545,15 @@ class Adventure {
     this.on_thread_active = [];
   }
 
+  get active_thread() {
+    return this.#active_thread;
+  }
+
   set active_thread(thread) {
     if(thread == null) return;
+    if(this.active_thread && (this.active_thread.id == thread.id)) {
+      return;
+    }
 
     this.#active_thread = thread;
     this.on_thread_active.forEach( (func) => func(thread) );
@@ -548,7 +561,7 @@ class Adventure {
 
   set_title(title) {
     this.title = title;
-    this.on_title_change.forEach((func) => func(this.title) );
+    this.on_title_change.forEach((func) => func(this) );
   }
 
   set_description(description) {
@@ -635,10 +648,14 @@ class Thread {
     return this.#title;
   }
 
+  get active_thread() {
+    return this.#active_thread;
+  }
+
   set title(_title) {
     if(this.#title == _title) return;
     this.#title = _title;
-    this.on_title_change.forEach((func) => func(this.#title) );
+    this.on_title_change.forEach((func) => func(this) );
   }
 
   get description() {
@@ -665,8 +682,13 @@ function thread_observer_on_scene_add(new_scene) {
   console.log(new_scene);
 }
 
-function thread_observer_on_title_change(new_value) {
-  $('#thread-title').find('span').html(new_value);
+function thread_observer_on_title_change(thread) {
+
+  if(thread.id == adventure.active_thread.id) {
+    $('#thread-title').find('span').html(thread.title);
+  }
+  //$('.thread-tab.selected').html(thread.title);
+  $('#'+thread.id).html(thread.title);
 }
 
 function thread_observer_on_description_change(new_value) {
@@ -675,36 +697,36 @@ function thread_observer_on_description_change(new_value) {
 
 
 
-function thread_new(data) {
-
-  let thread = {
-    id: data?.id || crypto.randomUUID(),
-    title: data?.title,
-    description: data?.description,
-    facts: data?.facts,
-    questions: data?.questions,
-    characters: data?.characters,
-    scenes: data?.scenes
-  };
-
-  // thread.facts = [
-  //   {status: 0, text: 'fact one'},
-  //   {status: 1, text: 'fact two'},
-  //   null, // {status: 1, text: 'fact thress'},
-  //   {status: 0, text: 'fact 3 one'},
-  //   {status: 1, text: 'fact 2 two'},
-  //   {status: 1, text: 'fact 1 thress'}
-  // ];
-
-  // thread.questions = [
-  //   {status: 0, text: 'one'},
-  //   {status: 1, text: 'two'},
-  //   {status: 1, text: 'thress'}
-  // ];
-
-
-  return thread;
-}
+// function thread_new(data) {
+// 
+//   let thread = {
+//     id: data?.id || crypto.randomUUID(),
+//     title: data?.title,
+//     description: data?.description,
+//     facts: data?.facts,
+//     questions: data?.questions,
+//     characters: data?.characters,
+//     scenes: data?.scenes
+//   };
+// 
+//   // thread.facts = [
+//   //   {status: 0, text: 'fact one'},
+//   //   {status: 1, text: 'fact two'},
+//   //   null, // {status: 1, text: 'fact thress'},
+//   //   {status: 0, text: 'fact 3 one'},
+//   //   {status: 1, text: 'fact 2 two'},
+//   //   {status: 1, text: 'fact 1 thress'}
+//   // ];
+// 
+//   // thread.questions = [
+//   //   {status: 0, text: 'one'},
+//   //   {status: 1, text: 'two'},
+//   //   {status: 1, text: 'thress'}
+//   // ];
+// 
+// 
+//   return thread;
+// }
 
 
 function tab_click(sender) {
@@ -1041,7 +1063,11 @@ function thread_load(thread) {
 
   clear_thread_contents();
 
+  // adventure.active_thread = thread; // adventure.get_thread(sender.id);
+
+  adventure.active_thread = thread;
   $('#thread-details').attr('thread-id', thread.id);
+  $('#'+thread.id).html(thread.title || 'untitled');
 
   $('#thread-title').find('span').html( thread.title || 'untitled');
   $('#thread-description').find('span').html(thread.description || 'No Description');
