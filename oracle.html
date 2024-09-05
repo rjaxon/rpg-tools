@@ -614,6 +614,14 @@ function adventure_observer_on_thread_active(thread) {
   thread_load(thread);
 }
 
+class ListItem {
+
+  constructor(status, text) {
+    this.status = status;
+    this.text = text;
+  }
+
+}
 
 class Thread {
 
@@ -629,13 +637,15 @@ class Thread {
 
     this.facts= [];
     this.questions= [];
+
     this.characters= [];
     this.scenes= [];
 
     this.on_title_change = [];
     this.on_description_change = [];
-    this.on_facts_add = [];
-    this.on_questions_add = [];
+    // this.on_facts_add = [];
+    // this.on_questions_add = [];
+    this.on_list_item_add = []; // fact / question added
     this.on_characters_add = [];
     this.on_scene_add = [];
   }
@@ -668,6 +678,21 @@ class Thread {
     this.on_description_change.forEach((func) => func(this.#description) );
   }
 
+  add_fact(text) {
+    if(0 == text.trim().length) return;
+
+    this.facts.push(new ListItem(0, text));
+    
+    this.on_list_item_add.forEach( (func) => func(this, 'fact') );
+  }
+
+  add_question(text) {
+    if(0 == text.trim().length) return;
+
+    this.questions.push(new ListItem(0, text));
+    
+    this.on_list_item_add.forEach( (func) => func(this, 'question') );
+  }
 
   create_scene() {
     let s = new Scene();
@@ -695,38 +720,41 @@ function thread_observer_on_description_change(new_value) {
   $('#thread-description').find('span').html(new_value);
 }
 
+function thread_observer_on_question_or_fact_add(thread, listname) {
 
+  if(adventure.active_thread.id != thread.id) return;
 
-// function thread_new(data) {
-// 
-//   let thread = {
-//     id: data?.id || crypto.randomUUID(),
-//     title: data?.title,
-//     description: data?.description,
-//     facts: data?.facts,
-//     questions: data?.questions,
-//     characters: data?.characters,
-//     scenes: data?.scenes
-//   };
-// 
-//   // thread.facts = [
-//   //   {status: 0, text: 'fact one'},
-//   //   {status: 1, text: 'fact two'},
-//   //   null, // {status: 1, text: 'fact thress'},
-//   //   {status: 0, text: 'fact 3 one'},
-//   //   {status: 1, text: 'fact 2 two'},
-//   //   {status: 1, text: 'fact 1 thress'}
-//   // ];
-// 
-//   // thread.questions = [
-//   //   {status: 0, text: 'one'},
-//   //   {status: 1, text: 'two'},
-//   //   {status: 1, text: 'thress'}
-//   // ];
-// 
-// 
-//   return thread;
-// }
+  if(listname == 'fact') {
+    add_list_item(thread.facts, 'thread-facts');
+  }
+  else if(listname == 'question') {
+    add_list_item(thread.questions, 'thread-questions');
+  }
+
+}
+
+function add_list_item(list, list_id) {
+
+  //let added_fact = thread.facts[thread.facts.length - 1];
+  let added_list_item = list[list.length - 1];
+
+  // let $ul = $('#thread-facts');
+  let $ul = $('#' + list_id);
+  let span = [ '<li class="thread-list-item"><span ',
+    'class="pointer" ',
+    'onclick="thread_list_item_click(this);" ',
+    'index="', list.length - 1, '"',
+    '>',
+    added_list_item.text,
+    '</span></li>'].join('');
+
+  if(0 == $ul.find('.thread-list-item').length) {
+    $ul.prepend(span);
+  }
+  else {
+    $(span).insertAfter($ul.find('li.thread-list-item').last() );
+  }
+}
 
 
 function tab_click(sender) {
@@ -750,30 +778,6 @@ function tab_click(sender) {
 }
 
 function new_thread_click(sender) {
-
-  // let $s = $(sender);
-  // let $p = $s.parent();
-
-  // $p.find('.selected').removeClass('selected');
-
-
-  // let new_thread = thread_new();
-  // threads.push(new_thread );
-
-  // $s.attr('onclick', 'tab_click(this);');
-  // $s.attr('type', 'threads');
-  // $s.attr('id', new_thread.id);
-  // $s.html('Untitled');
-  // $s.addClass('selected');
-
-  // $p.append([
-  //   '<button class="w3-bar-item w3-button button-item thread-tab"',
-  //   'onclick="new_thread_click(this);">',
-  //   'Add Thread',
-  //   '</button>'
-  // ].join(''));
-
-  // thread_load(new_thread);
 
 }
 
@@ -810,13 +814,11 @@ function thread_item_click(sender) {
 }
 
 function thread_item_edit_blur(sender) {
-  // console.log('BLUR: edit item lost focus');
   on_thread_edit_finish(sender);
 }
 
 function thread_item_edit_keypress(sender, event) {
   if(event.keyCode === 13){
-    // console.log('ENTER: edit item lost focus');
     on_thread_edit_finish(sender);
   }
 }
@@ -827,7 +829,7 @@ function on_thread_edit_finish(sender) {
 
   let $v = $p.find('span');
   let text = $s.val().trim();
-  // $v.html( text.length == 0 ? 'untitled' : text );
+
   if($v.hasClass('hidden')) {
     $v.removeClass('hidden');
     $s.remove();
@@ -882,9 +884,7 @@ function thread_list_item_delete(sender) {
   let $s = $(sender);
   let $p = $s.parent();
 
-  // let $v = $p.find('span');
-
-  let index = Number($p.attr('index')); // Number($v.attr('index'));
+  let index = Number($p.attr('index'));
 
   let $pp = $p.parent();
 
@@ -901,11 +901,12 @@ function thread_list_item_add(sender) {
   let $p = $s.parent();
   let text = $s.html();
 
-  $s.remove();
+  $s.addClass('hidden')
 
   let input = [
     '<input type="text" ',
     'class="max-width"',
+    'command="', $s.attr('command'), '" ',
     'onblur="thread_list_item_add_blur(this);"',
     'onkeypress="thread_list_item_add_keypress(this, event);"',
     '/>'
@@ -913,14 +914,14 @@ function thread_list_item_add(sender) {
 
   $p.append(input);
 
-  let add_item = ['<li>',
-    '<span command="add-question" ',
-    'class="pointer" ',
-    'onclick="thread_list_item_add(this);">',
-    text,
-    '</span></li>'].join('');
+  // let add_item = ['<li>',
+  //   '<span command="add-question" ',
+  //   'class="pointer" ',
+  //   'onclick="thread_list_item_add(this);">',
+  //   text,
+  //   '</span></li>'].join('');
 
-  $p.parent().append(add_item);
+  // $p.parent().append(add_item);
 
   let $in = $p.find('input');
   $in.focus();
@@ -931,51 +932,69 @@ function thread_list_item_add_blur(sender) {
   on_thread_list_item_add_finish(sender);
 }
 
-function thread_list_item_add_keypress(sender, event) {
+function thread_list_item_add_keypress(sender) {
   if(event.keyCode === 13){
-    on_thread_list_item_add_finish(sender);
+
+    $(sender).remove();
+    // on_thread_list_item_add_finish(sender);
   }
 }
 
-function on_thread_list_item_add_finish(sender) {
+function on_thread_list_item_add_finish(sender, enter_pressed) {
+
   let $s = $(sender);
   let $p = $s.parent();
-  
-  let text = $s.val().trim();
 
-  if(text.trim().length == 0) {
-    $p.remove();
-    return;
+  let command = $s.attr('command');
+
+  if(command == 'add-fact') {
+    adventure.active_thread.add_fact($s.val() );
   }
-  
-  if($p.find('span').length == 0) {
-    let span = [ '<span ',
-      'class="pointer" ',
-      'onclick="thread_list_item_click(this);">',
-      text,
-      '</span></li>'].join('');
-
-    if($p.hasClass('thread-list-item') == false ) {
-      $p.addClass('thread-list-item');
-    }
-    $p.append(span);
-
-    $s.remove();
-    
-    $pp = $p.parent();
-    let field = $pp.attr('field');
-    let t = get_current_thread();
-    if(t) {
-      if(t[field] == null) {
-        t[field] = [];
-      }
-
-      let index = t[field].length;
-      t[field].push({status: 0, text: text});
-      $p.find('span').attr('index', index); 
-    }
-
+  else if(command == 'add-question') {
+    adventure.active_thread.add_question($s.val() );
   }
+
+  // $s.remove();
+  $p.find('span').removeClass('hidden');
+
+  // let $s = $(sender);
+  // let $p = $s.parent();
+  // 
+  // let text = $s.val().trim();
+
+  // if(text.trim().length == 0) {
+  //   $p.remove();
+  //   return;
+  // }
+  // 
+  // if($p.find('span').length == 0) {
+  //   let span = [ '<span ',
+  //     'class="pointer" ',
+  //     'onclick="thread_list_item_click(this);">',
+  //     text,
+  //     '</span></li>'].join('');
+
+  //   if($p.hasClass('thread-list-item') == false ) {
+  //     $p.addClass('thread-list-item');
+  //   }
+  //   $p.append(span);
+
+  //   $s.remove();
+  //   
+  //   $pp = $p.parent();
+  //   let field = $pp.attr('field');
+  //   let t = get_current_thread();
+  //   if(t) {
+  //     if(t[field] == null) {
+  //       t[field] = [];
+  //     }
+
+  //     let index = t[field].length;
+  //     t[field].push({status: 0, text: text});
+  //     $p.find('span').attr('index', index); 
+  //   }
+
+  // }
 }
 
 function oracle_observer_set_surge(value) {
@@ -1062,8 +1081,6 @@ function thread_load(thread) {
     return;
 
   clear_thread_contents();
-
-  // adventure.active_thread = thread; // adventure.get_thread(sender.id);
 
   adventure.active_thread = thread;
   $('#thread-details').attr('thread-id', thread.id);
@@ -1196,32 +1213,6 @@ class Scene {
   }
 }
 
-// function scene_new() {
-//   let scene = {
-//     id: '001',
-// 
-//     user_active: 'gm',
-//     users: [],
-//     log: [],
-// 
-//     set_active_user: scene_set_active_user, // (user)
-//     log_add: scene_log_add, // (text)
-// 
-//     on_user_active_change: [],
-//     on_log_add: [],
-//     on_load: []
-//   };
-// 
-//   scene.users.push('GM')
-// 
-//   // a character object
-//   scene.users.push({id: 'a-guid', name: 'Sullivan'});
-// 
-//   scene.user_active = scene.users[0];
-// 
-//   return scene;
-// };
-
 function scene_log_add(text, log_type) {
 
   let scene = this;
@@ -1248,11 +1239,6 @@ function thread_end_scene() {
   $('#thread-footer-scene-buttons').addClass('hidden');
 }
 
-function test_scene_observer(scene) {
-
-  console.log(scene.log_entries[scene.log_entries.length-1]);
-
-}
 
 function scene_observer_thread_scene_log(scene, log_type) {
   
@@ -1380,9 +1366,13 @@ let scenes = [];
 
 
 function thread_init(thread) {
-  thread.on_scene_add.push(thread_observer_on_scene_add);
   thread.on_title_change.push(thread_observer_on_title_change);
   thread.on_description_change.push(thread_observer_on_description_change);
+  thread.on_list_item_add.push(thread_observer_on_question_or_fact_add);
+  // thread.on_facts_add.push(thread_observer_on_question_or_fact_add);
+  // thread.on_questions_add.push(thread_observer_on_questions_add);
+
+  thread.on_scene_add.push(thread_observer_on_scene_add);
 }
 
 function on_load() {
@@ -1404,7 +1394,6 @@ function on_load() {
   // let s = scene_new();
   let s = new Scene();
 
-  s.on_log_add.push(test_scene_observer);
   s.on_log_add.push(scene_observer_thread_scene_log);
   s.on_user_active_change.push(scene_observer_thread_scene_user_change);
   s.on_npc_add.push( (user) => {console.log('User Add: ' + user)});
