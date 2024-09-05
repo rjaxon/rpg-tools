@@ -643,6 +643,9 @@ class Thread {
 
     this.on_title_change = [];
     this.on_description_change = [];
+
+    this.on_list_item_toggle = [];
+
     // this.on_facts_add = [];
     // this.on_questions_add = [];
     this.on_list_item_add = []; // fact / question added
@@ -699,6 +702,16 @@ class Thread {
     this.scenes.push(s);
     this.on_scene_add.forEach((func) => func(s) );
   }
+
+  toggle_list_item(field, index) {
+
+    let item = this[field][index];
+    if(item == null) return;
+
+    item.status = item.status == 0 ? 1 : 0;
+
+    this.on_list_item_toggle.forEach( (func) => func(field, index) );
+  }
 }
 
 function thread_observer_on_scene_add(new_scene) {
@@ -712,7 +725,6 @@ function thread_observer_on_title_change(thread) {
   if(thread.id == adventure.active_thread.id) {
     $('#thread-title').find('span').html(thread.title);
   }
-  //$('.thread-tab.selected').html(thread.title);
   $('#'+thread.id).html(thread.title);
 }
 
@@ -730,15 +742,36 @@ function thread_observer_on_question_or_fact_add(thread, listname) {
   else if(listname == 'question') {
     add_list_item(thread.questions, 'thread-questions');
   }
+}
 
+function thread_observer_on_list_item_toggle(field, index) {
+
+  let $span = $('*[field=' + field + ']').find('li *[index=' + index + ']');
+
+  if(adventure.active_thread[field][index].status) {
+    $span.addClass('crossout');
+    add_thread_item_delete_button($span.parent());
+  }
+  else {
+    $span.removeClass('crossout');
+    $span.parent().find('.delete-item').remove();
+  }
+}
+
+function add_thread_item_delete_button($element) {
+  let x = [ ' ',
+    '<span class="delete-item pointer bold red" ',
+    'onclick="thread_list_item_delete(this);"',
+    '>X</span>'
+  ].join('');
+
+  $element.append(x);
 }
 
 function add_list_item(list, list_id) {
 
-  //let added_fact = thread.facts[thread.facts.length - 1];
   let added_list_item = list[list.length - 1];
 
-  // let $ul = $('#thread-facts');
   let $ul = $('#' + list_id);
   let span = [ '<li class="thread-list-item"><span ',
     'class="pointer" ',
@@ -851,49 +884,60 @@ function get_current_thread() {
 }
 
 function thread_list_item_click(sender) {
-  console.log('list item click');
 
   let $s = $(sender);
   let $p = $s.parent();
-  let state = $s.attr('state');
-  let index = Number($p.attr('index'));
-  let thread = get_current_thread();
-  let field = $p.parent().attr('field');
+  let $pp = $p.parent();
+
+  let field = $pp.attr('field');
+  let index = Number($s.attr('index'));
+
+  // let state = $s.attr('state');
+  let thread = adventure.active_thread;
+
+  //let list_item = thread[field][index];
+  thread.toggle_list_item(field, index);
+
   
-  if(state == 'crossed') {
-    $s.removeClass('crossout');
-    $s.attr('state', '');
-    let $d = $p.find('.delete-item');
-    $d.remove();
-    thread[field][index].status = 0;
-  }
-  else {
-    $s.addClass('crossout');
-    $s.attr('state', 'crossed');
-    let x = [ ' ',
-      '<span class="delete-item pointer bold red" ',
-      'onclick="thread_list_item_delete(this);"',
-      '>X</span>'
-    ];
-    $p.append(x.join(''));
-    thread[field][index].status = 1;
-  }
+  // if(state == 'crossed') {
+  //   $s.removeClass('crossout');
+  //   $s.attr('state', '');
+  //   let $d = $p.find('.delete-item');
+  //   $d.remove();
+  //   thread[field][index].status = 0;
+  // }
+  // else {
+  //   $s.addClass('crossout');
+  //   $s.attr('state', 'crossed');
+  //   let x = [ ' ',
+  //     '<span class="delete-item pointer bold red" ',
+  //     'onclick="thread_list_item_delete(this);"',
+  //     '>X</span>'
+  //   ];
+  //   $p.append(x.join(''));
+  //   thread[field][index].status = 1;
+  // }
 }
+
 
 function thread_list_item_delete(sender) {
   let $s = $(sender);
   let $p = $s.parent();
-
-  let index = Number($p.attr('index'));
-
   let $pp = $p.parent();
 
-  let t = get_current_thread();
-  let field = $pp.attr('field');
-  t[field][index] = null;
-
-
   $p.remove();
+
+  // let index = Number($p.attr('index'));
+
+
+  // let t = get_current_thread();
+  let thread = adventure.active_thread;
+  // let field = $pp.attr('field');
+  let field = $pp.attr('field');
+  let index = Number($p.find('span').attr('index'));
+  thread[field][index] = null;
+
+
 }
 
 function thread_list_item_add(sender) {
@@ -914,15 +958,6 @@ function thread_list_item_add(sender) {
 
   $p.append(input);
 
-  // let add_item = ['<li>',
-  //   '<span command="add-question" ',
-  //   'class="pointer" ',
-  //   'onclick="thread_list_item_add(this);">',
-  //   text,
-  //   '</span></li>'].join('');
-
-  // $p.parent().append(add_item);
-
   let $in = $p.find('input');
   $in.focus();
   $in[0].setSelectionRange(0, 0);
@@ -936,7 +971,6 @@ function thread_list_item_add_keypress(sender) {
   if(event.keyCode === 13){
 
     $(sender).remove();
-    // on_thread_list_item_add_finish(sender);
   }
 }
 
@@ -954,47 +988,7 @@ function on_thread_list_item_add_finish(sender, enter_pressed) {
     adventure.active_thread.add_question($s.val() );
   }
 
-  // $s.remove();
   $p.find('span').removeClass('hidden');
-
-  // let $s = $(sender);
-  // let $p = $s.parent();
-  // 
-  // let text = $s.val().trim();
-
-  // if(text.trim().length == 0) {
-  //   $p.remove();
-  //   return;
-  // }
-  // 
-  // if($p.find('span').length == 0) {
-  //   let span = [ '<span ',
-  //     'class="pointer" ',
-  //     'onclick="thread_list_item_click(this);">',
-  //     text,
-  //     '</span></li>'].join('');
-
-  //   if($p.hasClass('thread-list-item') == false ) {
-  //     $p.addClass('thread-list-item');
-  //   }
-  //   $p.append(span);
-
-  //   $s.remove();
-  //   
-  //   $pp = $p.parent();
-  //   let field = $pp.attr('field');
-  //   let t = get_current_thread();
-  //   if(t) {
-  //     if(t[field] == null) {
-  //       t[field] = [];
-  //     }
-
-  //     let index = t[field].length;
-  //     t[field].push({status: 0, text: text});
-  //     $p.find('span').attr('index', index); 
-  //   }
-
-  // }
 }
 
 function oracle_observer_set_surge(value) {
@@ -1369,8 +1363,7 @@ function thread_init(thread) {
   thread.on_title_change.push(thread_observer_on_title_change);
   thread.on_description_change.push(thread_observer_on_description_change);
   thread.on_list_item_add.push(thread_observer_on_question_or_fact_add);
-  // thread.on_facts_add.push(thread_observer_on_question_or_fact_add);
-  // thread.on_questions_add.push(thread_observer_on_questions_add);
+  thread.on_list_item_toggle.push(thread_observer_on_list_item_toggle);
 
   thread.on_scene_add.push(thread_observer_on_scene_add);
 }
