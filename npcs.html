@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            RJ's RPG Tools - Oracle
+        </title>
+
+        <link rel="icon" href="img/icons/ffffff/000000/1x1/delapouite/dice-twenty-faces-twenty.svg">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+        <link href="css/dice.css" rel="stylesheet">
+
+        <script src="scripts/util.js"></script>
+        <script src="scripts/dice.js"></script>
+        <script src="scripts/data.js"></script>
+        <script src="scripts/data/npc.js"></script>
+        <script src="scripts/data/icons.js"></script>
+        <script src="scripts/data/oracle.js"></script>
+
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.2.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    </head>
+<style>
+
+body {padding: 1em; background: #767676};
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container {
+  padding: 2px 16px;
+}
+
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  background-color: transparent;
+  /*width: 250px;*/
+  height: 300px;
+  /*border: 1px solid #f1f1f1;*/
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  border-radius: 10px;
+}
+
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+/*.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+*/
+
+.selected {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  /*background-color: #bbb;*/
+  color: black;
+  border-radius: 10px;
+}
+
+/* Style the back side */
+.flip-card-back {
+  background-color: dodgerblue;
+  color: white;
+  transform: rotateY(180deg);
+  border-radius: 10px;
+}
+
+/*
+
+  .card {
+    border-radius: 10px;
+  }
+
+  .card-container {
+    width: 225px;
+    overflow: hidden;
+  }
+*/
+
+  .card-image {
+    /*width: 200px;*/
+    height: 200px;
+    background: #ccc;
+    overflow: hidden;
+    border-radius: 10px;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+    padding: 10px;
+  }
+/*
+  .front {
+  }
+
+  .back{
+    
+  }
+  */
+
+
+  .card-container {
+    cursor: pointer;
+  }
+
+  .card-item {
+    padding-bottom: 1em;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<div id="test" class="row"> 
+
+
+    <!--div class="col-sm-3 card-item">
+      <div class="flip-card card-container"> 
+        <div class="flip-card-inner card">
+          <div class="flip-card-front" onclick="on_card_click(this);">
+            <div class="card-image" >
+            </div>
+            <div class="card-text">
+              <div>
+                <h4><b>Delewin Bilejaunt</b></h4>
+                <p>optimistic pionee</p>
+              </div>
+            </div>
+          </div>
+          <div class="flip-card-back" onclick="$(this).parent().removeClass('selected')">
+            more information here
+          </div>
+
+        </div>
+      </div>
+    </div-->
+
+
+</div>
+
+<body>
+
+</body>
+
+<script type="text/javascript">
+
+function on_card_click(sender) {
+  console.log('clicked');
+  let $s = $(sender);
+  let $p = $s.parent();
+
+  let $c = $('.flip-card-inner.card.selected');
+  $c.removeClass('selected');
+
+  $p.addClass('selected');
+}
+
+function on_card_back_click(sender) {
+  $(sender).parent().removeClass('selected');
+}
+
+function render_card(npc) {
+
+  let div = function(css_class, text) {
+    return div_new(null, text, css_class);
+  }
+
+  let card_item = div('col-sm-3 card-item');
+
+  let card_container = div('flip-card card-container');
+  let card = div('flip-card-inner card');
+
+  let card_front = div('flip-card-front');
+  let card_image = div('card-image');
+
+  let d = '<h4><b>' + npc.name.fullname + '</b></h4>';
+  d += '<p>' + npc.core.phrase() + '</p';
+  let card_text = div('card-text', d);
+
+  let card_back = div('flip-card-back');
+  //$(card_back).attr('onclick', 'on_card_back_click(this);');
+  $(card_back).attr('onclick', "$(this).parent().removeClass('selected')");
+
+  
+  $(card_front).attr('onclick', 'on_card_click(this);');
+  card_front.appendChild(card_image);
+  card_front.appendChild(card_text);
+
+  card.appendChild(card_front);
+  card.appendChild(card_back);
+
+  card_container.appendChild(card);
+
+  card_item.appendChild(card_container);
+
+  $c = $(card_item).find('.card-image');
+  $c.css('background', random_color() );
+  // $c.append('<img src="' + 
+  //   //data_icons_actions[dice(data_icons_actions.length - 1)] 
+  //   'https://api.dicebear.com/9.x/croodles/svg?beardProbability=0'
+  //   + '"/>');
+
+  _('test').appendChild(card_item);
+}
+
+function random_color() {
+  let col = ['#'];
+  for(let i = 0; i < 6; ++i) {
+    let v = dice(5) + 10; //dice(16) - 1;
+    if(v < 10)
+      col.push(v);
+    else {
+      col.push(String.fromCharCode(65 + (v - 10) ));
+    }
+  }
+
+  return col.join('');
+}
+
+class Entity {
+
+  #id
+  #name;
+  #power;
+  #core;
+  #motivation;
+  #appearance;
+
+  constructor() {
+    this.#name = new Name();
+    this.#core = new Core();
+    this.#motivation = new Motivation();
+    this.#appearance = new Appearance();
+
+    this.power_level_table = data_npc_power_level;
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  get core() {
+    return this.#core;
+  }
+
+  get motivation() {
+    return this.#motivation;
+  }
+
+  generate_power_level() {
+    this.power_text = null;
+    this.#power = dice_n(3, 6).total;
+  }
+
+  get power_level() {
+    if(this.power_text == null) {
+
+      if(this.#power) {
+        let r = data_lookup_range(this.power_level_table,  this.#power).result;
+        this.power_text = r[2];
+      }
+    }
+
+    return this.power_text;
+  }
+}
+
+class Name {
+
+  #first;
+  #last_a;
+  #last_a_type;
+
+  #last_b;
+  #last_b_type;
+  #last_b_type_ext;
+
+  constructor() {
+    this.npc_names_table = data_npc_names;
+  }
+
+  get fullname() {
+    let last = this.lastname();
+
+    if(last)
+      return this.firstname() + ' ' + last;
+
+    return this.firstname();
+  }
+
+  generate() {
+    this.generate_firstname();
+    this.generate_lastname();
+  }
+
+  generate_firstname() {
+    this.#first = dice(this.npc_names_table.length - 1);
+  }
+
+  generate_lastname() {
+
+    if(10 < dice(100)) {
+      this.#last_a = dice(this.npc_names_table.length - 1);
+      this.#last_a_type = dice(2) - 1;
+    }
+
+    if(20 < dice(100)) {
+      this.#last_b = dice(this.npc_names_table.length - 1);
+      this.#last_b_type = dice(2) - 1;
+      this.#last_b_type_ext = dice(2) - 1;
+    }
+  }
+
+  firstname() {
+    let first = '';
+    if(this.#first == null)
+        this.generate_firstname();
+
+    if(this.#first)
+      first = this.npc_names_table[this.#first][0];
+
+    return first;
+  }
+
+  lastname() {
+    let last1;
+    let last2;
+
+    if(this.#last_a == null)
+      this.generate_lastname();
+
+
+    let column = this.#last_a_type == 1 ? 1 : 3;
+    if(this.#last_a)
+      last1 = this.npc_names_table[this.#last_a][column];
+
+    if(this.#last_b_type || 2) {
+      column = this.#last_b_type == 1 ? 2: 4;
+      if(this.#last_b)
+        last2 = this.npc_names_table[this.#last_b][column];
+    }
+
+    if(last2) {
+      if(this.#last_b_type_ext == 1) {
+        last2 = last2.replace('(', '').replace(')', '');
+      }
+      else if(0 < last2.indexOf('(')) {
+        last2 = last2.substring(0, last2.indexOf('('));
+      }
+    }
+
+    let cap_first = function (string) {
+      if(string == null) return string;
+
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    return cap_first( (last1 || '') + (last2 || '') );
+  }
+}
+
+class TwoWordPhrase {
+  #first;
+  #second
+
+  constructor(table1, table2) {
+    this.first_table = table1;
+    this.second_table = table2;
+  }
+
+  generate_first() {
+    this.#first = dice(this.first_table.length - 1);
+  }
+
+  generate_second() {
+    this.#second = dice(this.second_table.length - 1);
+  }
+
+  generate() {
+    this.generate_first();
+    this.generate_second();
+  }
+
+  phrase() {
+
+    if(this.#first == null || this.#second == null)
+      this.generate();
+
+    if(this.#second)
+      return this.first_table[this.#first] + ' ' + this.second_table[this.#second];
+
+    else if(this.#first)
+      return this.first_table[this.#first];
+    
+    return null;
+  }
+}
+
+class Core extends TwoWordPhrase {
+  constructor() {
+    super(data_npc_modifiers, data_npc_nouns);
+  }
+}
+
+class Motivation extends TwoWordPhrase {
+
+  constructor() {
+    super(data_npc_motivation_verbs, data_npc_motivation_nouns);
+  }
+}
+
+class Appearance {
+
+  #hair;
+  #eyes;
+  #height;
+  #skin;
+
+  constructor() {
+    this.#hair = new Hair();
+    this.#skin = new Skin();
+    this.#eyes = new Eyes();
+    this.#height = new Height();
+  }
+
+  generate() {
+    this.#hair.generate();
+    this.#skin.generate();
+    this.#eyes.generate();
+    this.#height.generate();
+  }
+
+  text() {
+    return [this.#hair.phrase(), ' ',
+    this.#skin.value(), ' ',
+    this.#eyes.value(), ' ',
+    this.#height.value() ].join('');
+  }
+  
+}
+
+class MultiWordPhrase {
+  
+  #words;
+  #words_range_tables;
+  
+  constructor(word_range_tables) {
+
+    this.#words_range_tables = word_range_tables;
+    this.#words = new Array(this.#words_range_tables.length);
+  }
+
+  generate(n) {
+  
+    this.text = null;
+
+    if(n && 0 <= n && n < this.#words_range_tables.length) {
+      this.#words[n] = dice(100);
+      return;
+    }
+
+    for(let i = 0; i < this.#words.length; ++i) {
+      this.#words[i] = dice(100);
+    }
+  }
+
+  phrase() {
+    if(this.text == null){
+      let list = [];
+      if(0 == this.#words.filter( (e) => {return e != null} ).length) {
+        this.generate();
+      }
+
+      for(let i = 0; i < this.#words.length; ++i) {
+        let current = this.#words[i]
+        if(current != null) {
+          let current_table = this.#words_range_tables[i];
+          let r = data_lookup_range(current_table, current).result;
+          list.push(r[2]);
+        }
+      }
+      this.text = list.join(' ').toLowerCase();
+    }
+
+    return this.text;
+  }
+}
+
+class Hair extends MultiWordPhrase
+{
+  constructor() {
+    super([ npc_appearance_hair_color,
+      npc_appearance_hair_length,
+      npc_appearance_hair_texture]);
+  }
+}
+
+
+class RangedTableValue {
+  
+  #value;
+  #ranged_table;
+
+  constructor(ranged_table) {
+    this.#ranged_table = ranged_table;
+  }
+
+  generate() {
+    this.text = null;
+    this.#value = dice(100);
+  }
+
+  value() {
+    if(this.#value == null) return null;
+
+    if(this.text == null) {
+      let r = data_lookup_range(this.#ranged_table, this.#value).result;
+      this.text = r[2];
+    }
+    return this.text;
+  }
+}
+
+class Eyes extends RangedTableValue
+{
+  constructor() {
+    super(npc_appearance_eyes);
+  }
+}
+
+class Height extends RangedTableValue
+{
+  constructor() {
+    super(npc_appearance_height);
+  }
+}
+
+class Skin extends RangedTableValue
+{
+  constructor() {
+    super(npc_appearance_skin);
+  }
+}
+
+function on_load() {
+
+  let entity = new Entity();
+  for(let i = 0; i < 20; ++i) {
+    entity.name.generate();
+    entity.core.generate();
+    render_card(entity);
+  }
+
+}
+
+on_load();
+
+
+</script>
+
+
+</html>

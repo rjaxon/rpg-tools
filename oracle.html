@@ -181,6 +181,7 @@
     height: 2.5em;
     text-align: right;
     padding-right: 10px;
+    padding-left: 10px;
     border-bottom: 2px solid black;
     border-left: 2px solid black;
     border-right: 2px solid black;
@@ -191,6 +192,13 @@
   }
 
   #thread-scene {
+  }
+
+  #thread-scene-title {
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 2px solid black;
   }
 
   #thread-scene-log {
@@ -342,16 +350,24 @@
                   <div class="col-sm character-list-item">Character Name 4</div>
                   <div class="col-sm">Add Existing NPC</div>
 
-                  <div class="col-12 label">Scenes</div>
-                  <div class="col-sm scene-list-item">Scene 1</div>
-                  <div class="col-sm scene-list-item">Scene 2</div>
-                  <div class="col-sm scene-list-item">Scene 3</div>
-                  <div class="col-sm scene-list-item">Scene 4</div>
-                  <div class="col-sm scene-list-item">Scene 5</div>
-                  <div class="col-sm">Add Scene</div>
+                  <div class="col-12">
+                      <div class="label">Scenes</div>
+                      <ul id="thread-scene-list" >
+                        
+                      </ul>
+                      <div class="col-sm scene-list-item">Scene 1</div>
+                      <div class="col-sm scene-list-item">Scene 2</div>
+                      <div class="col-sm scene-list-item">Scene 3</div>
+                      <div class="col-sm scene-list-item">Scene 4</div>
+                      <div class="col-sm scene-list-item">Scene 5</div>
+                  </div>
+                  <div class="col-sm pointer" onclick="add_scene_click();">Add Scene</div>
                 </div>
               </div>
               <div id="thread-scene" class="hidden" >
+                <div id="thread-scene-title" class="label center">
+                    <span>Scene Title Here</span>
+                </div>                  
                 <div id="thread-scene-log" class="col-12">
                 </div>
                 <div id="thread-scene-input" class="col-12 pad-10px" style="border-top: 2px solid black;">
@@ -361,7 +377,6 @@
                       <button type="scene-button" log_type="2" userid="001" class="w3-bar-item w3-button char-tab button-item " value="1" onclick="thread_scene_input_tab_click(this);">Sullivan</button>
                     </div>
                     <div class="col-6 align-right">
-                      <button id="query-oracle" type="query-oracle" class="" value="1" onclick="scene_oracle_query_click();">Query Oracle</button>
                     </div>
                     <div class="col-12">
                       <input type="text" class="max-width" onkeypress="thread_scene_input_keypress(this, event)" />
@@ -380,10 +395,22 @@
                   <button>Ok</button>
                 </span>
               </div>
-              <div>
-                <span id="thread-footer-scene-buttons" class="hidden">
-                  <button onclick="thread_end_scene();">End Scene</button>
-                </span>
+              <div  id="thread-footer-scene-buttons" class="hidden">
+                  <div class="row">
+                <div class="col-6" style="text-align: left;">
+                    <div id="gm-buttons">
+                        <button id="query-oracle" type="query-oracle" class="" value="1" onclick="scene_oracle_query_click();">Query Oracle</button>
+                    </div>
+                    <div id="player-buttons" class="hidden">
+                        <button>Roll 20</button>
+                    </div>
+                </div>
+                <div class="col-6">
+                  <span>
+                    <button onclick="thread_end_scene();">End Scene</button>
+                  </span>
+                </div>
+                  </div>
               </div>
             </div>
         </div>
@@ -628,7 +655,7 @@ class Thread {
   #id;
   #title;
   #description;
-  #active_thread;
+  #active_scene;
 
   constructor() {
     this.#id= crypto.randomUUID();
@@ -661,8 +688,12 @@ class Thread {
     return this.#title;
   }
 
-  get active_thread() {
-    return this.#active_thread;
+  set active_scene(scene) {
+      this.#active_scene = scene;
+  }
+    
+  get active_scene() {
+    return this.#active_scene;
   }
 
   set title(_title) {
@@ -701,6 +732,7 @@ class Thread {
     let s = new Scene();
     this.scenes.push(s);
     this.on_scene_add.forEach((func) => func(s) );
+    return s;
   }
 
   toggle_list_item(field, index) {
@@ -716,6 +748,15 @@ class Thread {
 
 function thread_observer_on_scene_add(new_scene) {
   console.log('new_scene');
+
+  let li = dom_item_new('li');
+  let span = span_new(new_scene.id, new_scene.title, 'col-sm pointer scene-list-item');
+  li.append(span);
+    
+  $(span).attr('onclick', 'scene_click(this);');
+
+  $('#thread-scene-list').append(li);
+    //<div class="col-sm scene-list-item">Scene 3</div>
 
   console.log(new_scene);
 }
@@ -804,14 +845,31 @@ function tab_click(sender) {
   }
 
   if($s.attr('type') == 'threads') {
-    // on_thread_tab_click(sender);
-    // adventure.set_active_thread(sender.id)
     adventure.active_thread = adventure.get_thread(sender.id);
   }
 }
 
 function new_thread_click(sender) {
 
+}
+
+function add_scene_click() {
+  let scene = adventure.active_thread.create_scene();
+  scene_init(scene);
+
+}
+
+function scene_click(sender) {
+  console.log('scene click');
+  $('#thread-scene').removeClass('hidden');
+  $('#thread-footer-scene-buttons').removeClass('hidden');
+  
+  $('#thread-details-contents').addClass('hidden');
+  $('#thread-footer-buttons').addClass('hidden');
+  $('#thread-tabs').addClass('hidden');
+
+  adventure.active_thread.active_scene = 
+        adventure.active_thread.scenes.find( (e) => {return e.id == sender.id});
 }
 
 function on_thread_tab_click(sender) {
@@ -892,31 +950,8 @@ function thread_list_item_click(sender) {
   let field = $pp.attr('field');
   let index = Number($s.attr('index'));
 
-  // let state = $s.attr('state');
   let thread = adventure.active_thread;
-
-  //let list_item = thread[field][index];
   thread.toggle_list_item(field, index);
-
-  
-  // if(state == 'crossed') {
-  //   $s.removeClass('crossout');
-  //   $s.attr('state', '');
-  //   let $d = $p.find('.delete-item');
-  //   $d.remove();
-  //   thread[field][index].status = 0;
-  // }
-  // else {
-  //   $s.addClass('crossout');
-  //   $s.attr('state', 'crossed');
-  //   let x = [ ' ',
-  //     '<span class="delete-item pointer bold red" ',
-  //     'onclick="thread_list_item_delete(this);"',
-  //     '>X</span>'
-  //   ];
-  //   $p.append(x.join(''));
-  //   thread[field][index].status = 1;
-  // }
 }
 
 
@@ -1272,12 +1307,14 @@ function scene_observer_thread_scene_user_change(scene) {
 
   let is_gm = scene.user_active.id.toUpperCase() == 'GM-001';
 
-  let $query = $('#query-oracle');
+  let $query = $('#gm-buttons');
   if(is_gm) {
     $query.removeClass('hidden');
+    $('#player-buttons').addClass('hidden');
   }
   else {
     $query.addClass('hidden');
+    $('#player-buttons').removeClass('hidden');
   }
 
   let $input = $('#thread-scene-input input[type=text]');
@@ -1312,7 +1349,7 @@ function scene_oracle_observer_query_result(oracle, result) {
 
   // console.log('scene oracle result: ' + text);
 
-  let scene = scenes[0];
+  let scene = adventure.active_thread.active_scene; //scenes[0];
   let contents = [ text, (images?.join('') || '') ].join('');
 
   scene.log(contents, 3);
@@ -1329,14 +1366,14 @@ function thread_scene_input_tab_click(sender) {
 
   
 
-  let scene = scenes[0];
+  let scene = adventure.active_thread.active_scene; //scenes[0];
   scene.set_active_user($(sender).attr('userid'));
 }
 
 function thread_scene_input_keypress(sender, event) {
   if(event.keyCode === 13){
     // DO something to get current scene
-    let s = scenes[0];
+    let s = adventure.active_thread.active_scene; // scenes[0];
     let v = sender.value.trim();
 
 
@@ -1368,6 +1405,14 @@ function thread_init(thread) {
   thread.on_scene_add.push(thread_observer_on_scene_add);
 }
 
+function scene_init(scene) {
+  scene.on_log_add.push(scene_observer_thread_scene_log);
+  scene.on_user_active_change.push(scene_observer_thread_scene_user_change);
+  scene.on_npc_add.push( (user) => {console.log('User Add: ' + user)});
+
+  scene.add_character({id: '001', name: 'Sullivan', type: 2});
+}
+
 function on_load() {
 
   adventure = new Adventure();
@@ -1385,15 +1430,15 @@ function on_load() {
   
 
   // let s = scene_new();
-  let s = new Scene();
+  // let s = new Scene();
 
-  s.on_log_add.push(scene_observer_thread_scene_log);
-  s.on_user_active_change.push(scene_observer_thread_scene_user_change);
-  s.on_npc_add.push( (user) => {console.log('User Add: ' + user)});
+  // s.on_log_add.push(scene_observer_thread_scene_log);
+  // s.on_user_active_change.push(scene_observer_thread_scene_user_change);
+  // s.on_npc_add.push( (user) => {console.log('User Add: ' + user)});
 
-  s.add_character({id: '001', name: 'Sullivan', type: 2});
+  // s.add_character({id: '001', name: 'Sullivan', type: 2});
 
-  scenes.push(s);
+  // scenes.push(s);
 
 
   oracle = new Oracle();

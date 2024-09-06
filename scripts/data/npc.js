@@ -486,18 +486,19 @@ let data_npc_focus = [
 
 let npc_appearance_skin = [
   { id: 'skin', name: 'Skin' },
-  [1,   4, 'Pale'],
-  [5,   8, 'Fair'],
-  [9,  12, 'Tan'],
-  [13, 16, 'Brown'],
-  [17, 20, 'Dark']
+  [1,   19, 'Pale'],
+  [20,  39, 'Fair'],
+  [40,  69, 'Tan'],
+  [70,  89, 'Brown'],
+  [90, 100, 'Dark']
 ];
 
 let npc_appearance_hair_color = [ 
   { id: 'haircolor', name: 'Hair Color' },
   [  1,  24, 'Black'],
   [ 25,  48, 'Brown'],
-  [ 49,  57, 'Red'],
+  [ 49,  53, 'Red'],
+  [ 54,  57, 'White'],
   [ 58,  66, 'Orange'],
   [ 67,  91, 'Yellow'],
   [ 92,  94, 'Blue'],
@@ -508,33 +509,35 @@ let npc_appearance_hair_color = [
 
 let npc_appearance_hair_length = [ 
   { id: 'haillength', name: 'Hair Length' },
-  [  1,  11, 'Bald/Buzz Cut'],
-  [ 12,  22, 'Short'],
+  [  1,   3, 'Buzz Cut'],
+  [  4,  22, 'Short'],
   [ 23,  33, 'Half Cut'],
-  [ 34,  44, 'Shaggy'],
-  [ 45,  55, 'Shoulder Length'],
-  [ 56,  66, 'Middle Back'],
-  [ 78,  88, 'Long'],
-  [ 89,  98, 'Knees'],
-  [ 99, 100, 'Floor']
+  [ 34,  44, 'Half Shaved'],
+  [ 45,  55, 'Shoulder length'],
+  [ 56,  66, 'Medium length'],
+  [ 67,  88, 'Long'],
+  [ 89,  98, 'Knees length'],
+  [ 99, 100, 'Floor touching']
 ];
 
 let npc_appearance_hair_texture = [
   { id: 'texture', name: 'Hair Texture' },
   [  1,  20, 'Straight'],
-  [ 31,  50, 'Wavy'],
+  [ 21,  40, 'Wavy'],
+  [ 41,  50, 'Silky'],
   [ 51,  65, 'Curly'],
   [ 66,  77, 'Frizzy'],
-  [ 78,  83, 'Patchy'],
-  [ 84,  88, 'Patchy'],
-  [ 89, 100, 'Balding']
+  [ 78,  81, 'Patchy'],
+  [ 82,  85, 'Bouncy'],
+  [ 86,  93, 'Thick'],
+  [ 94, 100, 'Dirty'],
 ];
 
 let npc_appearance_eyes = [
   {},
-  [  1,  19, 'Brown'],
-  [ 20,  39, 'Green'],
-  [ 40,  59, 'Hazel'],
+  [  1,  39, 'Brown'],
+  [ 40,  49, 'Green'],
+  [ 50,  59, 'Hazel'],
   [ 60,  79, 'Blue'],
   [ 80,  86, 'Violet'],
   [ 87,  87, 'Pink'],
