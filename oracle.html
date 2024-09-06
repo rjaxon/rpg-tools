@@ -12,6 +12,7 @@
         <link href="css/dice.css" rel="stylesheet">
 
         <script src="scripts/util.js"></script>
+        <!--script type="module" src="scripts/dice.js"></script-->
         <script src="scripts/dice.js"></script>
         <script src="scripts/data.js"></script>
         <script src="scripts/data/icons.js"></script>
@@ -372,7 +373,7 @@
                 </div>
                 <div id="thread-scene-input" class="col-12 pad-10px" style="border-top: 2px solid black;">
                   <div class="row">
-                    <div class="col-6">
+                    <div class="col-6 char-tab-container">
                       <button type="scene-button" log_type="1" userid="gm-001"     class="w3-bar-item w3-button char-tab button-item selected" value="1" onclick="thread_scene_input_tab_click(this);">GM</button>
                       <button type="scene-button" log_type="2" userid="001" class="w3-bar-item w3-button char-tab button-item " value="1" onclick="thread_scene_input_tab_click(this);">Sullivan</button>
                     </div>
@@ -424,7 +425,12 @@
 </body>
 
 
+    <!--script type="module"-->
     <script type="text/javascript">
+
+// import {dice, dice_n, fudge} from './scripts/dice.js';
+// 
+// console.log(fudge());
 
 class Oracle {
 
@@ -554,14 +560,36 @@ function oracle_query(_scene, _surge, roll, roll_unexpected) {
   this.on_query_result.forEach( (func) => { func(this, roll_result) } );
 }
 
+class Character {
+
+  id;
+  name;
+  type;
+
+  constructor(id, name, type) {
+    this.id = id || crypto.randomUUID();
+    this.name = name || '';
+    this.type = type || 1;
+  }
+}
+
 class Adventure {
+
+  #id;
+
+  #characters;
 
   #active_thread;
 
 
   constructor() {
-    this.id= crypto.randomUUID();
-    this.title= 'Untitled';
+    this.#id = crypto.randomUUID();
+    this.#characters = [];
+
+    this.#characters.push(new Character('gm-001', 'GM', 1));
+    this.#characters.push(new Character(crypto.randomUUID(), 'Sullivan', 2))
+
+    this.title = 'Untitled';
     this.description= '';
 
     this.threads = [];
@@ -570,6 +598,18 @@ class Adventure {
     this.on_description_change = [];
     this.on_thread_add = [];
     this.on_thread_active = [];
+  }
+
+  get id() {
+    return this.#id;
+  }
+
+  set id(_value) {
+    throw new Error('Not Implemented');
+  }
+
+  get characters() {
+    return this.#characters;
   }
 
   get active_thread() {
@@ -678,6 +718,7 @@ class Thread {
     this.on_list_item_add = []; // fact / question added
     this.on_characters_add = [];
     this.on_scene_add = [];
+    this.on_active_scene_change = [];
   }
 
   get id() {
@@ -689,7 +730,9 @@ class Thread {
   }
 
   set active_scene(scene) {
-      this.#active_scene = scene;
+    this.#active_scene = scene;
+
+    this.on_active_scene_change.forEach( (func) => func(scene) );
   }
     
   get active_scene() {
@@ -728,9 +771,16 @@ class Thread {
     this.on_list_item_add.forEach( (func) => func(this, 'question') );
   }
 
-  create_scene() {
+  create_scene(initial_characters) {
     let s = new Scene();
+    
+    if(initial_characters) {
+      initial_characters.forEach( (c) => s.add_character(c) );
+      s.set_active_user(initial_characters[0].id);
+    }
+
     this.scenes.push(s);
+
     this.on_scene_add.forEach((func) => func(s) );
     return s;
   }
@@ -750,7 +800,7 @@ function thread_observer_on_scene_add(new_scene) {
   console.log('new_scene');
 
   let li = dom_item_new('li');
-  let span = span_new(new_scene.id, new_scene.title, 'col-sm pointer scene-list-item');
+  let span = span_new(new_scene.id, new_scene.name, 'col-sm pointer scene-list-item');
   li.append(span);
     
   $(span).attr('onclick', 'scene_click(this);');
@@ -797,6 +847,37 @@ function thread_observer_on_list_item_toggle(field, index) {
     $span.removeClass('crossout');
     $span.parent().find('.delete-item').remove();
   }
+}
+
+function thread_observer_on_active_scene_change(scene) {
+  if(scene == null) return;
+  // $('#thread-scene-list').find('#' + scene.id).html(scene.name); 
+  $('#thread-scene-title').find('span').html(scene.name);
+
+  $('#thread-scene').removeClass('hidden');
+  $('#thread-footer-scene-buttons').removeClass('hidden');
+  
+  $('#thread-details-contents').addClass('hidden');
+  $('#thread-footer-buttons').addClass('hidden');
+  $('#thread-tabs').addClass('hidden');
+
+  $('.char-tab').remove();
+  
+  let button = function (id, name, type, css_class) { 
+    return ['<button type="scene-button" ',
+    'log_type="', type, '" ',
+    'userid="', id, '" ',
+    'class="w3-bar-item w3-button char-tab button-item ',
+    css_class, '" ',
+    'value="', type, '" onclick="thread_scene_input_tab_click(this);">', 
+    name,
+    ,'</button>' ].join('') 
+  };
+  let $char_tab_container = $('.char-tab-container');
+  scene.characters.forEach( (c, i) => {
+    let b = button(c.id, c.name, c.type, i == 0 ? 'selected': '');
+    $char_tab_container.append(b);
+  });
 }
 
 function add_thread_item_delete_button($element) {
@@ -854,22 +935,29 @@ function new_thread_click(sender) {
 }
 
 function add_scene_click() {
-  let scene = adventure.active_thread.create_scene();
-  scene_init(scene);
 
+  let starting_chars = adventure.characters;
+
+  let scene = adventure.active_thread.create_scene(starting_chars);
+  scene_init(scene);
 }
 
 function scene_click(sender) {
   console.log('scene click');
-  $('#thread-scene').removeClass('hidden');
-  $('#thread-footer-scene-buttons').removeClass('hidden');
-  
-  $('#thread-details-contents').addClass('hidden');
-  $('#thread-footer-buttons').addClass('hidden');
-  $('#thread-tabs').addClass('hidden');
+  // $('#thread-scene').removeClass('hidden');
+  // $('#thread-footer-scene-buttons').removeClass('hidden');
+  // 
+  // $('#thread-details-contents').addClass('hidden');
+  // $('#thread-footer-buttons').addClass('hidden');
+  // $('#thread-tabs').addClass('hidden');
+
+  // $('.char-tab').remove();
 
   adventure.active_thread.active_scene = 
         adventure.active_thread.scenes.find( (e) => {return e.id == sender.id});
+
+  let chars = adventure.characters;
+  adventure.active_thread.active_scene.set_active_user(chars[0].id);
 }
 
 function on_thread_tab_click(sender) {
@@ -1176,7 +1264,7 @@ function clear_thread_contents() {
     '#thread-description'
   ];
 
-  for(i = 0; i < text_ids.length; ++i) {
+  for(let i = 0; i < text_ids.length; ++i) {
     $(text_ids[i]).find('span').html('untitled');
   }
 
@@ -1197,24 +1285,39 @@ function scene_set_active_user(user) {
 }
 
 class Scene {
+
+  #name;
+
   constructor() {
 
     this.id = crypto.randomUUID();
-    this.title = 'untitled';
+    this.#name= 'untitled';
 
     this.user_active = null;
-    this.characters = [{id: 'gm-001', name: 'GM', type: 1}];
+    this.characters = []; // [{id: 'gm-001', name: 'GM', type: 1}];
     this.npcs = [];
     this.log_entries = [];
 
     this.log = scene_log_add;
 
+    this.on_name_change = [];
     this.on_user_active_change = [];
     this.on_log_add = [];
     this.on_npc_add = [];
     this.on_characters_add = [];
 
     this.user_active = this.characters[0];
+  }
+
+  get name() {
+    return this.#name;
+  }
+
+  set name(_name) {
+    this.#name = _name;
+
+    this.on_name_change.forEach( (f) => f(this) );
+
   }
 
   set_active_user(user_id) {
@@ -1248,9 +1351,10 @@ function scene_log_add(text, log_type) {
 
   scene.log_entries.push(text);
 
-  for(let i = 0; i < scene.on_log_add.length; ++i) {
-    scene.on_log_add[i](scene, log_type);
-  }
+  this.on_log_add.forEach( (f) => f(scene, log_type) );
+  // for(let i = 0; i < scene.on_log_add.length; ++i) {
+  //   scene.on_log_add[i](scene, log_type);
+  // }
 }
 
 function scene_oracle_query_click() {
@@ -1266,12 +1370,46 @@ function thread_end_scene() {
 
   $('#thread-scene').addClass('hidden');
   $('#thread-footer-scene-buttons').addClass('hidden');
+
+  adventure.active_thread.active_scene = null;
 }
 
 
 function scene_observer_thread_scene_log(scene, log_type) {
   
   let latest_entry = scene.log_entries[scene.log_entries.length-1];
+
+  let oracle_result_string = (result) => {
+
+    let text = [
+      '<span>', result.text, '</span> ',
+      '<span>', result.unexpected?.text || '', '</span> ',
+    ].join('');
+
+    let images = null;
+    let icons = data_icons_actions;
+    if(result.images != null) {
+      images = [];
+      for(let i = 0; i < result.images.length; ++i) {
+        images.push(
+          [ '<span class="oracle-result-image">',
+            '<img src="',
+            icons[result.images[i]],
+            '"/>',
+            '</span>'
+          ].join('')
+        );
+      }
+    }
+
+    let contents = [ text, (images?.join('') || '') ].join('');
+    return contents;
+  }
+
+  let is_object = (typeof latest_entry === 'object');
+
+  if(is_object)
+    latest_entry = oracle_result_string(latest_entry);
 
   let $l = $('#thread-scene-log');
 
@@ -1289,7 +1427,7 @@ function scene_observer_thread_scene_log(scene, log_type) {
   }
 
   let div =  [
-    '<div class="',
+    '<div class="scene-log-item ',
     line_css,
     '">',
     log_type === 3 ? '' : [scene.user_active.name, ': '].join(''),
@@ -1301,6 +1439,19 @@ function scene_observer_thread_scene_log(scene, log_type) {
   $l.append(div);
 
   $l[0].scrollTop = $l[0].scrollHeight;
+}
+
+function scene_observer_on_name_change(scene) {
+    console.log(adventure.active_thread.scenes[0]);
+    console.log(adventure.active_thread.active_scene);
+    console.log(scene);
+
+  if(adventure.active_thread.active_scene.id == scene.id) {
+    $('#thread-scene-title').find('span').html(scene.name);
+  }
+
+  $('#thread-scene-list').find('#' + scene.id).html(scene.name);
+
 }
 
 function scene_observer_thread_scene_user_change(scene) {
@@ -1352,7 +1503,7 @@ function scene_oracle_observer_query_result(oracle, result) {
   let scene = adventure.active_thread.active_scene; //scenes[0];
   let contents = [ text, (images?.join('') || '') ].join('');
 
-  scene.log(contents, 3);
+  scene.log(result, 3);
 }
 
 function thread_scene_input_tab_click(sender) {
@@ -1401,6 +1552,7 @@ function thread_init(thread) {
   thread.on_description_change.push(thread_observer_on_description_change);
   thread.on_list_item_add.push(thread_observer_on_question_or_fact_add);
   thread.on_list_item_toggle.push(thread_observer_on_list_item_toggle);
+  thread.on_active_scene_change.push(thread_observer_on_active_scene_change);
 
   thread.on_scene_add.push(thread_observer_on_scene_add);
 }
@@ -1408,12 +1560,15 @@ function thread_init(thread) {
 function scene_init(scene) {
   scene.on_log_add.push(scene_observer_thread_scene_log);
   scene.on_user_active_change.push(scene_observer_thread_scene_user_change);
+  scene.on_name_change.push(scene_observer_on_name_change);
+
   scene.on_npc_add.push( (user) => {console.log('User Add: ' + user)});
 
-  scene.add_character({id: '001', name: 'Sullivan', type: 2});
+  // scene.add_character({id: '001', name: 'Sullivan', type: 2});
 }
 
 function on_load() {
+
 
   adventure = new Adventure();
   adventure.on_thread_add.push(adventure_observer_on_thread_add);
