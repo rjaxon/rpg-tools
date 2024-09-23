@@ -17,7 +17,7 @@ let data_oracle_loom = [
 let data_oracle_crge_unexpected = [
   { id: 'oracle_cgre_unexpected' },
   [ 'Foreshadowing', 'Set a thread to be the main thread for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
-  [ 'Tying Off ', 'The main thread resolves or substantially moves forward in this scene by narrative decree. This does not mean that the main thread cannot create follow-up threads.'],
+  [ 'Tying Off', 'The main thread resolves or substantially moves forward in this scene by narrative decree. This does not mean that the main thread cannot create follow-up threads.'],
   [ 'To Conflict', 'The next scene centers on a conflict of your choosing. Set the main elements of the next scene, and start heading toward them in this scene.'],
   [ 'Costume Change', 'An NPC drastically changes their mind, motivations, alliances, etc. for better or worse. This could be a big story reveal or a simple change of heart.'],
   [ 'Key Grip', 'Set the location or general elements for the next scene. The current scene should then start wrapping up and heading towards the next scene.'],
@@ -33,15 +33,69 @@ let data_oracle_crge_unexpected = [
   [ 'Enter Stage Left', 'A PC or NPC (new or pre-existing) arrives fresh in the scene.'],
   [ 'Cross-stitch', 'Choose another thread to be the main thread for the rest of the scene.'],
   [ 'Six Degrees', 'A meaningful, but not always positive, connection forms between two PC’s and/or NPC’s.'],
-  [ 'Reroll / Reserved 1', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
-  [ 'Reroll / Reserved 2', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
-  [ 'Reroll / Reserved 3', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.']
+  // [ 'Reroll / Reserved 1', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
+  // [ 'Reroll / Reserved 2', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.'],
+  // [ 'Reroll / Reserved 3', 'These slots are reserved for specific “GM actions” found in an RPG system, such as a compel action in the FATE system. Specific examples can be found at conjecturegames.com.']
 
 ];
 
 
+
+let data_event_meaning_action = [
+  { id: 'event_meaning_action' },
+  'Attainment', 'Starting', 'Neglect', 'Fight', 'Recruit', 
+  'Triumph', 'Violate', 'Oppose', 'Malice', 'Communicate', 
+  'Persecute', 'Increase', 'Decrease', 'Abandon', 'Gratify', 
+  'Inquire', 'Antagonise', 'Move', 'Waste', 'Truce', 
+  'Release', 'Befriend', 'Judge', 'Desert', 'Dominate', 
+  'Procrastinate', 'Praise', 'Separate', 'Take', 'Break', 
+  'Heal', 'Delay', 'Stop', 'Lie', 'Return', 
+  'Immitate', 'Struggle', 'Inform', 'Bestow', 'Postpone', 
+  'Expose', 'Haggle', 'Imprison', 'Release', 'Celebrate', 
+  'Develop', 'Travel', 'Block', 'Harm', 'Debase', 
+  'Overindulge', 'Adjourn', 'Adversity', 'Kill', 'Disrupt', 
+  'Usurp', 'Create', 'Betray', 'Agree', 'Abuse', 
+  'Oppress', 'Inspect', 'Ambush', 'Spy', 'Attach', 
+  'Carry', 'Open', 'Carelessness', 'Ruin', 'Extravagance', 
+  'Trick', 'Arrive', 'Propose', 'Divide', 'Refuse', 
+  'Mistrust', 'Deceive', 'Cruelty', 'Intolerance', 'Trust', 
+  'Excitement', 'Activity', 'Assist', 'Care', 'Negligence', 
+  'Passion', 'Work hard', 'Control', 'Attract', 'Failure', 
+  'Pursue', 'Vengeance', 'Proceedings', 'Dispute', 'Punish', 
+  'Guide', 'Transform', 'Overthrow', 'Oppress', 'Change' 
+];
+
+let data_event_meaning_subject = [
+  { id: 'event_meaning_subject' },
+  'Goals', 'Dreams', 'Environment', 'Outside', 'Inside', 
+  'Reality', 'Allies', 'Enemies', 'Evil', 'Good', 
+  'Emotions', 'Opposition', 'War', 'Peace', 'The innocent', 
+  'Love', 'The spiritual', 'The intellectual', 'New ideas', 'Joy', 
+  'Messages', 'Energy', 'Balance', 'Tension', 'Friendship', 
+  'The physical', 'A project', 'Pleasures', 'Pain', 'Possessions', 
+  'Benefits', 'Plans', 'Lies', 'Expectations', 'Legal matters', 
+  'Bureaucracy', 'Business', 'A path', 'News', 'Exterior factors', 
+  'Advice', 'A plot', 'Competition', 'Prison', 'Illness', 
+  'Food', 'Attention', 'Success', 'Failure', 'Travel', 
+  'Jealousy', 'Dispute', 'Home', 'Investment', 'Suffering', 
+  'Wishes', 'Tactics', 'Stalemate', 'Randomness', 'Misfortune', 
+  'Death', 'Disruption', 'Power', 'A burden', 'Intrigues', 
+  'Fears', 'Ambush', 'Rumor', 'Wounds', 'Extravagance', 
+  'A representative', 'Adversities', 'Opulence', 'Liberty', 'Military', 
+  'The mundane', 'Trials', 'Masses', 'Vehicle', 'Art', 
+  'Victory', 'Dispute', 'Riches', 'Status quo', 'Technology', 
+  'Hope', 'Magic', 'Illusions', 'Portals', 'Danger', 
+  'Weapons', 'Animals', 'Weather', 'Elements', 'Nature', 
+  'The public', 'Leadership', 'Fame', 'Anger', 'Information' 
+];
+
+
+
 // https://alyssalostinspace.com/wp-content/uploads/2022/09/d100-keyword-chart.pdf
-let data_plot_hooks = [
+//
+//   --- the 2-d table is split into a single list following this one
+
+let data_plot_hooks = [ /*  DEPRECATED  */
   {id: 'plot_hooks'},
   /* who, where, what, description, additional element, sensory detail */
 ['Priest', 'Village', 'Pyre', 'Decayed', 'Fall', 'Rustling Leaves'],
@@ -149,48 +203,138 @@ let data_plot_hooks = [
 ];
 
 
-let data_event_meaning_action = [
-  'Attainment', 'Starting', 'Neglect ', 'Fight', 'Recruit', 
-  'Triumph', 'Violate', 'Oppose', 'Malice', 'Communicate', 
-  'Persecute', 'Increase', 'Decrease', 'Abandon', 'Gratify', 
-  'Inquire', 'Antagonise', 'Move', 'Waste', 'Truce', 
-  'Release', 'Befriend', 'Judge', 'Desert', 'Dominate', 
-  'Procrastinate', 'Praise', 'Separate', 'Take', 'Break', 
-  'Heal', 'Delay', 'Stop', 'Lie', 'Return', 
-  'Immitate', 'Struggle', 'Inform', 'Bestow', 'Postpone', 
-  'Expose', 'Haggle', 'Imprison', 'Release', 'Celebrate', 
-  'Develop', 'Travel', 'Block', 'Harm', 'Debase', 
-  'Overindulge', 'Adjourn', 'Adversity', 'Kill', 'Disrupt', 
-  'Usurp', 'Create', 'Betray', 'Agree', 'Abuse', 
-  'Oppress', 'Inspect', 'Ambush', 'Spy', 'Attach', 
-  'Carry', 'Open', 'Carelessness', 'Ruin', 'Extravagance', 
-  'Trick', 'Arrive', 'Propose', 'Divide', 'Refuse', 
-  'Mistrust', 'Deceive', 'Cruelty', 'Intolerance', 'Trust', 
-  'Excitement', 'Activity', 'Assist', 'Care', 'Negligence', 
-  'Passion', 'Work hard', 'Control', 'Attract', 'Failure', 
-  'Pursue', 'Vengeance', 'Proceedings', 'Dispute', 'Punish', 
-  'Guide', 'Transform', 'Overthrow', 'Oppress', 'Change' ];
 
-let data_event_meaning_subject = [
-  'Goals', 'Dreams', 'Environment', 'Outside', 'Inside', 
-  'Reality', 'Allies', 'Enemies', 'Evil ', 'Good', 
-  'Emotions', 'Opposition', 'War', 'Peace', 'The innocent', 
-  'Love', 'The spiritual', 'The intellectual', 'New ideas', 'Joy', 
-  'Messages', 'Energy', 'Balance', 'Tension', 'Friendship', 
-  'The physical', 'A project', 'Pleasures', 'Pain', 'Possessions', 
-  'Benefits', 'Plans', 'Lies', 'Expectations', 'Legal matters', 
-  'Bureaucracy', 'Business ', 'A path', 'News', 'Exterior factors', 
-  'Advice', 'A plot', 'Competition', 'Prison', 'Illness', 
-  'Food', 'Attention', 'Success', 'Failure', 'Travel', 
-  'Jealousy', 'Dispute', 'Home', 'Investment', 'Suffering', 
-  'Wishes', 'Tactics', 'Stalemate', 'Randomness', 'Misfortune', 
-  'Death', 'Disruption', 'Power', 'A burden', 'Intrigues', 
-  'Fears', 'Ambush', 'Rumor', 'Wounds ', 'Extravagance', 
-  'A representative', 'Adversities', 'Opulence', 'Liberty', 'Military', 
-  'The mundane', 'Trials', 'Masses', 'Vehicle', 'Art', 
-  'Victory', 'Dispute', 'Riches', 'Status quo', 'Technology', 
-  'Hope', 'Magic', 'Illusions', 'Portals', 'Danger', 
-  'Weapons', 'Animals', 'Weather', 'Elements', 'Nature', 
-  'The public', 'Leadership', 'Fame', 'Anger', 'Information' ];
+let data_plot_hook_start_who = [
+    {id: 'WHO' },
+    'Priest', 'Ghost', 'Minstrel', 'Heretic', 'Veteran', 'Trickster',
+    'Researcher', 'Cultist', 'Ruler', 'Prophet', 'Pirate', 'Cartographer',
+    'Scholar', 'Monk', 'Slave', 'Child', 'Spy', 'God',
+    'Courtesan', 'Merchant', 'Healer', 'Knight', 'Blacksmith', 'Thief',
+    'Fortune Teller', 'Noble', 'Spirit', 'Sailor', 'Mage', 'Soldier',
+    'Undertaker', 'Witch', 'Alchemist', 'Smuggler', 'Necromancer', 'Servant',
+    'Monk', 'Assassin', 'Emissary', 'Professor', 'Dragon', 'Artist',
+    'Gladiator', 'Engineer', 'Farmer', 'Mercenary', 'Bandit', 'Criminal',
+    'Orphan', 'Guild master', 'Ship Captain', 'Coachman', 'Animal Tamer', 'Steward',
+    'Demon', 'Preacher', 'Traveler', 'Scribe', 'Guardian', 'Peddler',
+    'Centaur', 'Refugee', 'Bard', 'Archmage', 'Goblin', 'Magistrate',
+    'Guard', 'Fairy', 'Elder', 'Charlatan', 'Beggar', 'Golem',
+    'Retired Hero', 'Djinn', 'Investigator', 'Warrior', 'Druid', 'Adventurer',
+    'Scientist', 'Squire', 'Vigilante', 'Apprentice', 'Hunter', 'Diplomat',
+    'Automaton', 'Courier', 'Murderer', 'Crime Boss', 'Hermit', 'Performer',
+    'Bounty Hunter', 'Warlord', 'Sage', 'Explorer', 'Drunkard', 'Pilgrim',
+    'Fisher', 'Inventor', 'Oracle', 'Scout'
+];
+
+
+let data_plot_hook_start_where = [
+    {id: 'WHERE' },
+    'Village', 'Plains', 'Lake', 'Cliffs', 'Fortress', 'Wasteland',
+    'Farm', 'Swamp', 'Glade', 'Sewers', 'Forest', 'Trail',
+    'Monastery', 'Garden', 'Mountains', 'Observatory', 'Museum', 'Temple',
+    'Sea', 'Bridge', 'Prison', 'Marsh', 'Desert', 'Lair',
+    'Caravan', 'Ruins', 'Greatwood', 'Battlefield', 'Waterfall', 'Coast',
+    'Valley', 'Palace', 'Harbor', 'Catacombs', 'Tower', 'Ravine',
+    'Cairn', 'City', 'Graveyard', 'Abbey', 'Hideout', 'Altar',
+    'River', 'Library', 'Oasis', 'Grove', 'Tavern', 'Castle',
+    'Hamlet', 'Dungeon', 'Guild', 'Moor', 'Jungle', 'Inn',
+    'Outpost', 'Carnival', 'Hot Spring', 'Camp', 'Cave', 'Thicket',
+    'Chasm', 'Lighthouse', 'Island', 'Quarry', 'Town', 'Fjord',
+    'Volcano', 'Mine', 'Estate', 'Redoubt', 'Canyon', 'Barrow',
+    'Crater', 'Shipwreck', 'Station', 'Tundra', 'Meadow', 'Vault',
+    'Fissure', 'Sanctuary', 'Academy', 'Orchard', 'Factory', 'Highlands',
+    'Laboratory', 'Labyrinth', 'Mesa', 'Dig Site', 'Church', 'Stronghold',
+    'Spire', 'Lagoon', 'College', 'Plateau', 'Cathedral', 'Stable',
+    'Shop', 'Watchtower', 'Refuge', 'Citadel'
+];
+
+
+let data_plot_hook_start_what = [
+    {id: 'WHAT' },
+    'Pyre', 'Tome', 'Lock', 'Cage', 'Heirloom', 'Drug',
+    'Book', 'Sword', 'Totem', 'Dagger', 'Egg', 'Door',
+    'Secret', 'Letter', 'Curse', 'Puzzle', 'Shield', 'Song',
+    'Campfire', 'Tool', 'Storm', 'Ship', 'Shrine', 'Poison',
+    'Artifact', 'Seal', 'Map', 'Promise', 'Decoy', 'Painting',
+    'Signal', 'Chest', 'Treasure', 'Rune', 'Portal', 'Name',
+    'Obelisk', 'Statue', 'Tree', 'Bell', 'Arrow', 'Amulet',
+    'Coin', 'Key', 'Instrument', 'Tomb', 'Monument', 'Flower',
+    'Pearl', 'Wine', 'Flag', 'Scroll', 'Medicine', 'Oil',
+    'Symbol', 'Crystal', 'Rope', 'Ink', 'Charm', 'Crown',
+    'Staff', 'Gauntlet', 'Wedding', 'Lens', 'Horn', 'Warning',
+    'Ring', 'Tea', 'Armor', 'Bottle', 'Law', 'Chain',
+    'Festival', 'Mask', 'Blood', 'Throne', 'Monster', 'Lantern',
+    'Entrails', 'Urn', 'Ritual', 'Clock', 'Vial', 'Dream',
+    'Skeleton', 'Spell', 'Carving', 'Ceremony', 'Bow', 'Mirror',
+    'Funeral', 'Emblem', 'Trap', 'Potion', 'Skull', 'Constellation',
+    'Grave', 'Bracelet', 'Shipment', 'Bone'
+];
+
+
+
+let data_plot_hook_start_description = [
+    {id: 'DESCRIPTION' },
+    'Decayed', 'Abandoned', 'Scorched', 'Sparkling', 'Embroidered', 'Torn',
+    'Damaged', 'Ancient', 'Carved', 'Ornate', 'Possessed', 'Small',
+    'Stolen', 'corrupted', 'Enchanted', 'Forged', 'Collapsed', 'Rusted',
+    'Cracked', 'Vibrant', 'Worn', 'Pearlescent', 'Ruined', 'Valuable',
+    'Polished', 'Divine', 'Forgotten', 'Floating', 'Cursed', 'Pulsating',
+    'Blighted', 'Frozen', 'Weathered', 'Sticky', 'Gilded', 'Hungry',
+    'Massive', 'Colorful', 'Broken', 'Silvery', 'Illegal', 'Whispering',
+    'Ashen', 'Fragile', 'Glassy', 'Glowing', 'Sentient', 'Singing',
+    'Sodden', 'Fettered', 'Sealed', 'Animated', 'Festering', 'Petrified',
+    'Bloody', 'Dirty', 'Frayed', 'Mossy', 'Rare', 'Crystallized',
+    'Mechanical', 'Jagged', 'Silky', 'Transparent', 'Uneven', 'Buried',
+    'Golden', 'Melted', 'Clockwork', 'Coated', 'Faded', 'Color-Changing',
+    'Lustrous', 'Smooth', 'Painted', 'Magical', 'Flowering', 'Heavy',
+    'Elegant', 'Hollow', 'New', 'Bleached', 'Pliable', 'Musical',
+    'Restored', 'Unknown', 'Famous', 'Lightweight', 'Poisoned', 'Oozing',
+    'Patterned', 'Fragrant', 'Mind- Reading', 'Incomprehensible', 'Ordinary', 'Shattered',
+    'Overgrown', 'Distinctive', 'Smoldering', 'Gnarled'
+];
+
+
+let data_plot_hook_start_addtional_element = [
+    {id: 'ADDITIONAL ELEMENT' },
+    'Fall', 'Puzzle', 'Escape', 'Fear', 'Betray', 'Drown',
+    'Despair', 'Loss', 'Marriage', 'Extortion', 'Blessing', 'Feud',
+    'Protect', 'Heresy', 'Climb', 'Espionage', 'Belief', 'Mystery',
+    'Revenge', 'Prejudice', 'Discover', 'Assassination', 'Promise', 'Journey',
+    'Jealousy', 'Obsession', 'Endure', 'Memory', 'Return', 'Exchange',
+    'Redemption', 'Disease', 'Love', 'Destroy', 'Break', 'Guilt',
+    'Forgive', 'Travel', 'Arrive', 'Reconciliation', 'Control', 'Risk',
+    'Abandon', 'Repulse', 'Mourn', 'Create', 'Expense', 'Flee',
+    'Hypocrisy', 'Humiliation', 'Respect', 'Panic', 'Torment', 'Death',
+    'Determined', 'Influence', 'Escort', 'Distract', 'Depart', 'Slumber',
+    'Scheme', 'Suppress', 'Freedom', 'Resist', 'Defend', 'Devour',
+    'Investigate', 'Fascination', 'Restore', 'Search', 'Threat', 'Acquire',
+    'Passage', 'Command', 'Price', 'Transform', 'Hide', 'Survival',
+    'Supply', 'Fortify', 'Battle', 'Corrupt', 'Defy', 'Warning',
+    'Duty', 'Truth', 'Breach', 'Surrender', 'Avoid', 'Gather',
+    'Deliver', 'Capture', 'Learn', 'Honor', 'Opportunity', 'Knowledge',
+    'Reveal', 'Danger', 'Challenge', 'Manipulate'
+];
+
+
+let data_plot_hook_start_sensory_detail = [
+    {id: 'SENSORY DETAIL' },
+    'Rustling Leaves', 'Eerie Silence', 'Birdsong', 'Distant Shouts', 'Ominous Echo', 'Thick Smoke',
+    'Wet Earth', 'Damp Wood', 'A Swinging Blade', 'Crackling Fire', 'Bubbling Cauldron', 'Soft Weeping',
+    'Shattering Glass', 'Tingling Skin', 'Quiet Singing', 'Beating of Large Wings', 'Sulfuric Odor', 'Burning Wood',
+    'Metallic Odor', 'Light Rain', 'Animal Calls', 'Clashing of Steel', 'Pouring Tea', 'Cooking Spices',
+    'Heavy Perfume', 'Fresh Blood', 'Buzzing in the Air', 'A Slick Surface', 'A Distant Glow', 'Falling Snow',
+    'Something Hissing Nearby', 'Snapping Branches', 'Heavy, Humid Air', 'Burning in the Back of Your Throat', 'Jangling Coins', 'Footsteps in Mud',
+    'The Smell of Old Parchment', 'Roasting Meat', 'Heavy Rain', 'An Herbal Aroma', 'Grinding Teeth', 'Spoiled Meat',
+    'Bracing Breeze', 'Pressure on Your Mind', 'A Cry for Help', 'A Rumble of Thunder', 'Fresh Baked Bread', 'Heaving Coughs',
+    'A Blaring Horn', 'Gentle Music', 'Distressed Animals', 'The Glint of Metal', 'Clean Soap', 'Loud Chewing',
+    'Scrapping Wood', 'Old Manure', 'Staccato Dripping', 'Cloying Incense', 'A Medicinal Odor', 'Startled Birds',
+    'Scrapping Against Stone', 'Dark Chanting', 'A Tree Falling Nearby', 'An Inhuman Roar', 'Rotten Fruit', 'Distant Cheering',
+    'Damp Clothing', 'Sharp Pain', 'A Shiver Down the Spine', 'Cold Metal', 'Erratic Flashes of Light', 'A Pair of Eyes Watching',
+    'Fluttering Fabric', 'Heavy Breathing', 'The Hiss of an Arrow', 'Chirping Insects', 'Dry, Crinkling Leaves', 'Distant Fire Smoke',
+    'Nearby Hoof Beats', 'A Thick, Pungent Broth', 'The Pop of Frying Food', 'An Earthy Musk', 'Charred Runes', 'The Swirl of Colorful Fabric',
+    'Coarse Fabric', 'Soft Muttering', 'A Heavy Fog', 'Fresh Flowers', 'A Darting Shadow', 'Liquid Sloshing',
+    'Clouds of Dust', 'A Low-Pitched Grinding', 'The Bite of Strong Ale', 'Dragging Through Mud', 'The Aroma of Fine Wine', 'Slithering Against Your Skin',
+    'Crashing Waves', 'Whispered Prayers', 'Soggy, Uneven Ground', 'Running Water'
+];
+
 
 

@@ -300,14 +300,14 @@
     </div>
   </div>
 
-  <div id="thread-container">
+  <!--div id="thread-container">
     <div id="threads">
       <div class="row">
         <div id="thread-tabs" class="col-12 ">
-            <!--button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage selected" onclick="tab_click(this);">Thread 1</button>
+            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item oracle-scene-stage selected" onclick="tab_click(this);">Thread 1</button>
             <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item thread-tab" onclick="tab_click(this);">Thread 2</button>
             <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item thread-tab" onclick="tab_click(this);">Thread 3</button>
-            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item thread-tab" onclick="tab_click(this);">Thread 4</button-->
+            <button id="a-guid-001" type="threads" class="w3-bar-item w3-button button-item thread-tab" onclick="tab_click(this);">Thread 4</button>
             <button  class="w3-bar-item w3-button button-item " onclick="thread_init(adventure.create_thread());">Add Thread</button>
         </div>
 
@@ -345,11 +345,11 @@
                   </div>
 
                   <div class="col-12 label">Notable Characters</div>
-                  <div class="col-sm character-list-item">Character Name 1</div>
-                  <div class="col-sm character-list-item">Character Name 2</div>
-                  <div class="col-sm character-list-item">Character Name 3</div>
-                  <div class="col-sm character-list-item">Character Name 4</div>
-                  <div class="col-sm">Add Existing NPC</div>
+                  <div class="col-sm character-list-item"><span>Character Name 1</span></div>
+                  <div class="col-sm character-list-item"><span>Character Name 2</span></div>
+                  <div class="col-sm character-list-item"><span>Character Name 3</span></div>
+                  <div class="col-sm character-list-item"><span>Character Name 4</span></div>
+                  <div class="col-sm pointer" onclick="add_character_click();">Add Existing NPC</div>
 
                   <div class="col-12">
                       <div class="label">Scenes</div>
@@ -420,6 +420,30 @@
     </div>
   </div>
 
+
+
+  <div id="character-container">
+    <div id="characters">
+      <div class="row">
+
+        <div class="col-sm-4" style="border: 1px solid black; width:200px; height: 300px;">
+        </div>
+
+        <div class="col-sm-4" style="border: 1px solid black; width:200px; height: 300px;">
+        </div>
+
+        <div class="col-sm-4" style="border: 1px solid black; width:200px; height: 300px;">
+        </div>
+
+        <div class="col-sm-4" style="border: 1px solid black; width:200px; height: 300px;">
+        </div>
+        
+        <div class="col-sm-4" style="border: 1px solid black; width:200px; height: 300px;">
+        </div>
+
+      </div>
+    </div>
+  </div-->
 
 
 </body>
@@ -934,6 +958,11 @@ function new_thread_click(sender) {
 
 }
 
+function add_character_click() {
+
+  console.log('add character click');
+}
+
 function add_scene_click() {
 
   let starting_chars = adventure.characters;
@@ -1269,7 +1298,7 @@ function clear_thread_contents() {
   }
 
   $('.thread-list-item').remove();
-  $('.character-list-item').remove();
+  // $('.character-list-item').remove();
   $('.scene-list-item').remove();
 }
 
@@ -1503,7 +1532,7 @@ function scene_oracle_observer_query_result(oracle, result) {
   let scene = adventure.active_thread.active_scene; //scenes[0];
   let contents = [ text, (images?.join('') || '') ].join('');
 
-  scene.log(result, 3);
+  //scene.log(result, 3);
 }
 
 function thread_scene_input_tab_click(sender) {
